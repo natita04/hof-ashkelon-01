@@ -1,0 +1,2840 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CRCC — אב טיפוס · חוף אשקלון</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #f6f7f9;
+    --surface:  #ffffff;
+    --ink:      #1f2532;
+    --ink-2:    #5b6576;
+    --ink-3:    #98a0ae;
+    --line:     #e6e9ef;
+    --line-2:   #f0f2f6;
+    --brand:    #2a6099;
+    --brand-soft:#eaf0f6;
+    --accent:   #b0651a;   /* single warm accent, used sparingly */
+    --shadow:   0 1px 2px rgba(25,35,60,.04), 0 8px 24px rgba(25,35,60,.06);
+    --r-s: 8px;
+    --r-m: 14px;
+    --r-l: 22px;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: "Heebo", -apple-system, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header.page {
+    padding: 32px 32px 4px;
+    text-align:center;
+  }
+  header.page h1 { font-size: 18px; margin: 0 0 4px; font-weight: 600;}
+  header.page .sub { color: var(--ink-3); font-size: 13px;}
+
+  .stage {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 24px 32px 48px;
+    align-items: start;
+  }
+  @media (max-width: 780px) {
+    .stage { grid-template-columns: 1fr; }
+    .sidenav { order: 2; }
+  }
+
+  /* side nav mirrors the 5 tabs */
+  .sidenav {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    padding: 8px;
+    position: sticky;
+    top: 16px;
+  }
+  .sidenav h3 {
+    font-size: 11px; font-weight: 600; color: var(--ink-3);
+    margin: 8px 10px 6px; letter-spacing: .3px;
+  }
+  .sidenav .row {
+    display:flex; align-items:center; gap: 10px;
+    padding: 10px 12px; border-radius: 10px;
+    font-size: 13.5px; color: var(--ink-2); cursor: pointer;
+    user-select: none;
+  }
+  .sidenav .row:hover { background: var(--bg);}
+  .sidenav .row.on { background: var(--brand-soft); color: var(--brand); font-weight: 600;}
+  .sidenav .row .ic {
+    width: 22px; text-align: center; font-size: 15px;
+  }
+  .sidenav .lang-note {
+    font-size: 11px; color: var(--ink-3);
+    margin: 2px 10px 10px; line-height: 1.45;
+  }
+  .sidenav .lang-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 10px;
+    font-size: 14px; color: var(--ink-2); cursor: pointer;
+    user-select: none;
+    margin-bottom: 2px;
+  }
+  .sidenav .lang-row:hover { background: var(--bg);}
+  .sidenav .lang-row.on { background: var(--brand-soft); color: var(--brand); font-weight: 600;}
+  .sidenav .lang-flag { font-size: 18px; line-height: 1;}
+
+  .phone-wrap { display:flex; justify-content:center;}
+  .phone {
+    width: 100%;
+    max-width: 380px;
+    background: var(--surface);
+    border-radius: 36px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    position: relative;
+  }
+  .screen {
+    height: 760px;
+    display: none;
+    flex-direction: column;
+    background: var(--bg);
+  }
+  .screen.on { display: flex; animation: fade 160ms ease-out; }
+  @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
+
+  .statusbar {
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 10px 18px 4px;
+    font-size: 11px; color: var(--ink-3);
+    background: var(--surface);
+  }
+  /* Language-direction mirror.
+     Force `direction: ltr` on everything in English mode — flex/grid
+     inline axis flips automatically, so the HTML order (dot/icon first,
+     chev last) renders dot/icon on the LEFT and chev on the RIGHT. */
+  body.lang-en, body.lang-en * { direction: ltr !important; }
+  body.lang-he, body.lang-he * { direction: rtl !important; }
+  body.lang-en { text-align: left; }
+  body.lang-he { text-align: right; }
+
+  /* branded header on home */
+  .brandbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 18px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line-2);
+  }
+  .brandbar-logo {
+    width: 40px; height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .brandbar-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .brandbar-app {
+    font-size: 17px; font-weight: 700; color: var(--ink); line-height: 1.1;
+  }
+  .brandbar-council {
+    font-size: 11.5px; color: var(--ink-3); line-height: 1.2;
+  }
+
+  .appbar {
+    padding: 8px 18px 14px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line-2);
+  }
+  .appbar.with-back {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    align-items: center;
+    column-gap: 12px;
+    padding-top: 10px;
+  }
+  .appbar .title { font-size: 18px; font-weight: 600;}
+  .appbar .sub { font-size: 12px; color: var(--ink-3); margin-top: 2px;}
+  .appbar.with-back .appbar-main { min-width: 0;}
+  .appbar .back {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: grid; place-items: center;
+    cursor: pointer;
+    color: var(--ink);
+    transition: background 120ms;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .appbar .back:hover { background: var(--line-2);}
+  .appbar .back:active { background: var(--line);}
+  .appbar .back svg {
+    width: 22px; height: 22px; display: block;
+  }
+  /* arrow icon points left by default; flip only in RTL so it points toward start (right) */
+  [dir="rtl"] .appbar .back svg { transform: scaleX(-1); }
+
+  .content {
+    flex: 1; padding: 16px 18px 20px; overflow: auto;
+  }
+
+  /* simple, quiet cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .card-pad { padding: 14px 16px;}
+  .card-title {
+    font-size: 13px; font-weight: 600; color: var(--ink-2);
+    margin: 18px 2px 8px;
+  }
+  .card-title:first-child { margin-top: 4px;}
+
+  .row-item {
+    display:flex; align-items:center; gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line-2);
+    cursor: pointer;
+  }
+  .row-item:last-child { border-bottom: 0;}
+  .row-item:hover { background: var(--bg);}
+  .row-main { flex: 1; min-width: 0;}
+  .row-name { font-size: 14px; font-weight: 500; color: var(--ink);}
+  .row-sub { font-size: 12px; color: var(--ink-3); margin-top: 2px;}
+
+  .dot-status {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ink-3); flex-shrink: 0;
+  }
+  .dot-status.urgent { background: var(--accent);}
+
+  .chev { color: var(--ink-3); font-size: 14px;}
+  /* flip chevron glyph so it always points toward drill-down direction */
+  [dir="rtl"] .chev { transform: scaleX(-1); display: inline-block; }
+
+  /* primary button + quiet button */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 12px 16px; border-radius: 12px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    font-family: inherit; border: none; user-select: none;
+    width: 100%;
+  }
+  .btn.primary { background: var(--brand); color: #fff;}
+  .btn.quiet { background: var(--surface); color: var(--ink); border: 1px solid var(--line);}
+  .btn.ghost { background: var(--line-2); color: var(--ink-2);}
+
+  .btn-pair { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;}
+
+  /* quick actions on home */
+  .actions {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-bottom: 4px;
+  }
+  .action {
+    display: flex; align-items: center; gap: 12px;
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: start;
+    color: var(--ink);
+    transition: background 120ms, border-color 120ms;
+  }
+  .action:hover { background: var(--bg); border-color: var(--line); }
+  .action-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--brand-soft); color: var(--brand);
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .action-icon svg { width: 20px; height: 20px; display: block; }
+  .action-main {
+    flex: 1; min-width: 0;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .action-title { font-size: 14px; font-weight: 600; line-height: 1.25; }
+  .action-sub   { font-size: 11.5px; color: var(--ink-3); line-height: 1.35; }
+
+  /* tiny tag */
+  .tag {
+    display:inline-flex; align-items:center;
+    font-size: 11px; font-weight: 600; color: var(--ink-3);
+    letter-spacing: .2px;
+  }
+  .tag.urgent { color: var(--accent);}
+
+  /* segmented */
+  .seg-group {
+    display:flex; background: var(--line-2); border-radius: 10px; padding: 3px;
+    margin-bottom: 14px;
+  }
+  .seg-group .seg {
+    flex: 1; text-align: center;
+    padding: 8px; font-size: 12.5px; font-weight: 500;
+    color: var(--ink-2); border-radius: 8px;
+    cursor: pointer; user-select: none;
+  }
+  .seg-group .seg.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(25,35,60,.06);}
+
+  /* search input */
+  .search {
+    display:flex; align-items:center; gap: 8px;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 12px; padding: 10px 12px;
+    margin-bottom: 14px;
+  }
+  .search input {
+    flex:1; border: 0; background: transparent; outline: none;
+    font-family: inherit; font-size: 13.5px; color: var(--ink);
+  }
+  .search .ic { color: var(--ink-3);}
+
+  /* questionnaire */
+  .progress {
+    display:flex; gap: 3px; margin-bottom: 8px;
+  }
+  .progress .seg { flex:1; height: 3px; border-radius: 2px; background: var(--line);}
+  .progress .seg.done { background: var(--brand);}
+  .progress .seg.active { background: var(--brand);}
+  .progress-label {
+    font-size: 11.5px; color: var(--ink-3); margin-bottom: 14px;
+  }
+
+  .q {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  .q-text { font-size: 13.5px; font-weight: 500; line-height: 1.45; margin-bottom: 10px;}
+  .q-help { font-size: 11.5px; color: var(--ink-3); margin-top: -4px; margin-bottom: 10px;}
+
+  .chip-row { display:flex; gap: 6px; flex-wrap: wrap;}
+  .chip {
+    padding: 7px 12px; border-radius: 999px;
+    background: var(--line-2); color: var(--ink-2);
+    font-size: 12.5px; font-weight: 500;
+    border: 1px solid transparent;
+    cursor: pointer; user-select: none;
+  }
+  .chip:hover { border-color: var(--line);}
+  .chip.on { background: var(--brand); color: #fff; border-color: var(--brand);}
+
+  .ta {
+    width: 100%; padding: 10px 12px; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--surface);
+    font-family: inherit; font-size: 13px; color: var(--ink);
+    min-height: 70px; resize: vertical;
+  }
+
+  .footerbar {
+    padding: 12px 16px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    display:flex; gap: 8px;
+  }
+  .footerbar .btn { padding: 10px 14px;}
+  .footerbar .ghost { flex: 0 0 auto;}
+  .footerbar .primary { flex: 1;}
+
+  /* insights support */
+  .scope-view { display: none; }
+  .scope-view.on { display: block; }
+
+  .scope-dd {
+    position: relative;
+    margin-bottom: 14px;
+  }
+  .scope-dd-btn {
+    display: flex; align-items: center; gap: 10px;
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-family: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+  .scope-dd-lbl {
+    font-size: 11.5px; color: var(--ink-3); font-weight: 500;
+  }
+  .scope-dd-val {
+    flex: 1;
+    font-size: 14px; font-weight: 600; color: var(--ink);
+  }
+  .scope-dd-caret {
+    font-size: 12px; color: var(--ink-3);
+    transition: transform 140ms;
+  }
+  .scope-dd.open .scope-dd-caret { transform: rotate(180deg);}
+
+  .scope-dd-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px); right: 0; left: 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    list-style: none; margin: 0; padding: 4px;
+    z-index: 5;
+  }
+  .scope-dd.open .scope-dd-menu { display: block;}
+  .scope-dd-menu li {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13.5px; color: var(--ink-2);
+    cursor: pointer;
+  }
+  .scope-dd-menu li:hover { background: var(--bg);}
+  .scope-dd-menu li.on { background: var(--brand-soft); color: var(--brand); font-weight: 600;}
+
+  .metric-label {
+    font-size: 11.5px; color: var(--ink-3);
+    margin: 0 2px 6px;
+    font-weight: 500;
+  }
+
+  .empty-state {
+    padding: 32px 16px; text-align: center;
+  }
+  .empty-title {
+    font-size: 14px; font-weight: 600; color: var(--ink);
+  }
+
+  /* family members carousel */
+  .members-wrap {
+    position: relative;
+    margin: 0 -18px 6px;
+  }
+  .members {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 18px 14px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+  }
+  .members::-webkit-scrollbar { display: none; }
+  .members-arrow {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-2);
+    font-family: inherit; font-size: 16px; font-weight: 600; line-height: 1;
+    cursor: pointer;
+    display: grid; place-items: center;
+    box-shadow: 0 1px 4px rgba(25,35,60,.08);
+    z-index: 2;
+    opacity: 0; pointer-events: none;
+    transition: opacity 140ms;
+  }
+  .members-wrap.scrollable .members-arrow { opacity: 1; pointer-events: auto; }
+  .members-arrow.start { inset-inline-start: 4px; }
+  .members-arrow.end   { inset-inline-end: 4px; }
+  .members-arrow:hover { background: var(--bg);}
+  .members-arrow:disabled { opacity: 0; pointer-events: none;}
+  .member {
+    flex: 0 0 auto;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px;
+    scroll-snap-align: start;
+    width: 64px;
+  }
+  .member-avatar {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--bg) no-repeat center / 100%;
+    border: 2px solid var(--member-color, var(--line));
+    overflow: hidden;
+  }
+  .member-avatar.man   { --member-color: #3b82c7; background-image: url('assets/avatar-man.png');   } /* blue  */
+  .member-avatar.woman { --member-color: #e48ab1; background-image: url('assets/avatar-woman.png'); } /* pink  */
+  .member-avatar.child { --member-color: #5aa67a; background-image: url('assets/avatar-child.png'); } /* green */
+  .member-name {
+    font-size: 12.5px; font-weight: 600; color: var(--ink);
+    line-height: 1; max-width: 64px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .member-age {
+    font-size: 11px; color: var(--ink-3); line-height: 1;
+  }
+
+  /* documents list on profile */
+  .doc-badge {
+    display: inline-grid; place-items: center;
+    min-width: 38px; height: 30px; padding: 0 6px;
+    border-radius: 8px;
+    background: var(--brand-soft); color: var(--brand);
+    font-size: 10.5px; font-weight: 700;
+    letter-spacing: .3px;
+    flex-shrink: 0;
+  }
+  .doc-badge.add {
+    background: var(--line-2); color: var(--ink-3);
+  }
+  .doc-badge.add svg { width: 16px; height: 16px; }
+  .doc-add .row-name { color: var(--brand); font-weight: 600; }
+
+  /* detail screen */
+  .detail-meta {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    font-size: 11.5px; color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .detail-meta .meta-item {
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .detail-meta .meta-item::before {
+    content: ''; width: 4px; height: 4px; border-radius: 50%;
+    background: var(--ink-3);
+  }
+  .detail-meta .meta-item:first-child::before { display: none;}
+  .detail-body {
+    margin: 0; font-size: 13.5px; color: var(--ink);
+    line-height: 1.6;
+  }
+  .detail-badge {
+    display: inline-flex; align-items: center;
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 600;
+    background: var(--line-2); color: var(--ink-2);
+    margin-bottom: 10px;
+  }
+  .detail-badge.urgent { background: rgba(176,101,26,.12); color: var(--accent);}
+  .detail-badge.ai     { background: var(--brand-soft); color: var(--brand);}
+
+  /* settings: profile card + editor */
+  .profile-card {
+    display: flex; align-items: center; gap: 12px;
+    width: 100%;
+    padding: 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    margin: 4px 0 14px;
+    cursor: pointer;
+    text-align: start;
+    font-family: inherit;
+    transition: background 120ms, border-color 120ms;
+  }
+  .profile-card:hover { background: var(--bg); border-color: var(--line); }
+  .profile-avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--brand-soft); color: var(--brand);
+    display: grid; place-items: center;
+    font-size: 18px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .profile-avatar.lg {
+    width: 88px; height: 88px;
+    font-size: 30px;
+  }
+  .profile-main {
+    flex: 1; min-width: 0;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .profile-name { font-size: 16px; font-weight: 600; }
+  .profile-role { font-size: 12.5px; color: var(--ink-3); }
+  .profile-edit {
+    display: inline-flex; align-items: center; gap: 4px;
+    color: var(--brand);
+    font-size: 12.5px; font-weight: 600;
+  }
+  .profile-edit svg { width: 14px; height: 14px; }
+
+  .avatar-edit {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 12px 0 8px;
+  }
+  .avatar-edit-btn {
+    background: transparent; border: 0; padding: 6px 10px; border-radius: 8px;
+    font-family: inherit; font-size: 13px; font-weight: 600; color: var(--brand);
+    cursor: pointer;
+  }
+  .avatar-edit-btn:hover { background: var(--brand-soft); }
+
+  .field {
+    display: block;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .field:last-child { border-bottom: 0; }
+  .field-label {
+    display: block;
+    font-size: 11.5px; color: var(--ink-3);
+    margin-bottom: 4px;
+  }
+  .field-input {
+    width: 100%; border: 0; padding: 0;
+    background: transparent;
+    font-family: inherit; font-size: 14px; color: var(--ink);
+    outline: none;
+  }
+  .field-input:focus { color: var(--ink); }
+  .field .chip-row { padding-top: 2px; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translate(-50%, 12px);
+    background: var(--ink); color: #fff;
+    padding: 10px 18px; border-radius: 999px;
+    font-size: 13px; font-weight: 600;
+    box-shadow: 0 10px 30px rgba(25,35,60,.3);
+    opacity: 0; pointer-events: none;
+    transition: opacity 180ms, transform 180ms;
+    z-index: 50;
+  }
+  .toast.on { opacity: 1; transform: translate(-50%, 0);}
+
+  /* demographics strip on residents list */
+  .demo {
+    display: inline-flex; align-items: center; gap: 3px;
+    margin-inline-start: 8px;
+  }
+  .demo-group {
+    display: inline-flex; align-items: center; gap: 3px;
+  }
+  .demo-group .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--dot, var(--ink-3));
+    flex-shrink: 0;
+  }
+  .demo-group.man    { --dot: #3b82c7; } /* blue */
+  .demo-group.woman  { --dot: #e48ab1; } /* pink */
+  .demo-group.child  { --dot: #5aa67a; } /* green */
+
+  /* tasks urgency groups */
+  .group-head {
+    display: flex; align-items: center; gap: 8px;
+    margin: 18px 2px 8px;
+  }
+  .group-head:first-child,
+  [data-group]:first-child .group-head { margin-top: 4px;}
+  .group-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ink-3); flex-shrink: 0;
+  }
+  .group-dot.urgent { background: var(--accent);}
+  .group-dot.immediate { background: var(--ink-2);}
+  .group-dot.normal { background: var(--ink-3);}
+  .group-name {
+    font-size: 13px; font-weight: 600; color: var(--ink);
+  }
+  .group-count {
+    margin-inline-start: auto;
+    font-size: 12px; color: var(--ink-3); font-weight: 500;
+  }
+
+  .micro {
+    margin: 0; font-size: 11.5px; color: var(--ink-3); line-height: 1.55;
+  }
+
+  .split-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 0; font-size: 12.5px;
+  }
+  .split-lbl { flex: 0 0 88px; color: var(--ink-2);}
+  .split-track {
+    flex: 1; height: 8px; border-radius: 999px;
+    background: var(--line-2); overflow: hidden;
+  }
+  .split-track .split-bar {
+    display: block; height: 100%;
+    background: var(--brand); border-radius: 999px;
+  }
+  .split-v { flex: 0 0 32px; text-align: end; color: var(--ink-2); font-weight: 500;}
+
+  .theme {
+    padding: 10px 0;
+    border-top: 1px solid var(--line-2);
+  }
+  .theme:first-of-type { border-top: 0; padding-top: 4px;}
+  .theme-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 10px; margin-bottom: 4px;
+  }
+  .theme-name { font-size: 13.5px; font-weight: 600; color: var(--ink);}
+  .theme-trend {
+    font-size: 11px; color: var(--ink-3); white-space: nowrap;
+  }
+  .theme-body {
+    margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--ink-2);
+  }
+
+  .suggestion {
+    padding: 12px 0;
+    border-top: 1px solid var(--line-2);
+  }
+  .suggestion:first-of-type { border-top: 0; padding-top: 4px;}
+  .sugg-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 10px; margin-bottom: 4px;
+  }
+  .sugg-title { font-size: 13.5px; font-weight: 600; color: var(--ink);}
+  .sugg-weight {
+    font-size: 11px; color: var(--ink-3); white-space: nowrap;
+  }
+  .sugg-why {
+    margin: 0 0 8px; font-size: 12.5px; line-height: 1.55; color: var(--ink-2);
+  }
+  .sugg-cta {
+    display: flex; gap: 8px; justify-content: flex-start;
+  }
+  .btn-link {
+    border: none; background: transparent;
+    font-family: inherit; font-size: 12.5px; font-weight: 600;
+    color: var(--ink-3); cursor: pointer;
+    padding: 6px 10px; border-radius: 8px;
+  }
+  .btn-link:hover { background: var(--line-2); color: var(--ink-2);}
+  .btn-link.primary { color: var(--brand);}
+  .btn-link.primary:hover { background: var(--brand-soft);}
+  .btn-link.done { color: var(--ink-3); pointer-events: none;}
+
+  /* dashboard */
+  .metric-row {
+    display:grid; grid-template-columns: repeat(3,1fr);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .metric {
+    padding: 14px; text-align: center;
+    border-inline-start: 1px solid var(--line-2);
+    cursor: pointer;
+  }
+  .metric:first-child { border-inline-start: 0;}
+  .metric:hover { background: var(--bg);}
+  .metric .v { font-size: 22px; font-weight: 700;}
+  .metric .l { font-size: 11px; color: var(--ink-3); margin-top: 2px;}
+  .metric.accent .v { color: var(--accent);}
+
+  .bar-row {
+    display:flex; align-items:center; gap: 10px;
+    padding: 8px 0;
+    font-size: 12.5px;
+  }
+  .bar-row .lbl { flex: 0 0 96px; color: var(--ink-2);}
+  .bar-row .bar { flex:1; height: 6px; border-radius: 999px; background: var(--line-2); overflow: hidden;}
+  .bar-row .bar > span { display:block; height: 100%; background: var(--brand); border-radius: 999px;}
+  .bar-row .v { flex: 0 0 26px; text-align: end; color: var(--ink-3); font-weight: 500;}
+
+  /* settings */
+  .list-plain .row-item .row-name { font-weight: 400;}
+  .toggle {
+    width: 36px; height: 22px; border-radius: 999px; background: var(--line);
+    position: relative; flex-shrink: 0;
+  }
+  .toggle.on { background: var(--brand);}
+  .toggle::after {
+    content: ''; position: absolute; top: 2px; inset-inline-start: 2px;
+    width: 18px; height: 18px; border-radius: 50%; background: #fff;
+    transition: all 140ms;
+  }
+  .toggle.on::after { inset-inline-start: auto; inset-inline-end: 2px;}
+
+  /* bottom tabs */
+  .tabbar {
+    display:grid; grid-template-columns: repeat(5, 1fr);
+    padding: 6px 4px 10px;
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .tabbar .t {
+    display:flex; flex-direction:column; align-items:center; gap: 3px;
+    padding: 6px 0;
+    color: var(--ink-3); cursor: pointer; user-select: none;
+  }
+  .tabbar .t .ic { font-size: 18px; line-height: 1;}
+  .tabbar .t .lbl { font-size: 10.5px;}
+  .tabbar .t.on { color: var(--brand);}
+  .tabbar .t.on .lbl { font-weight: 600;}
+
+  footer.page {
+    padding: 8px 32px 40px;
+    color: var(--ink-3); font-size: 11.5px; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header class="page">
+  <h1>מערכת מיפוי חברתי — אב טיפוס</h1>
+  <div class="sub">Hof Ashkelon · v0.3 · ניווט בחמישה טאבים</div>
+</header>
+
+<section class="stage">
+
+  <!-- Language switcher (presentation-only, not part of the app) -->
+  <aside class="sidenav" aria-label="בחירת שפה">
+    <h3>שפה / Language</h3>
+    <p class="lang-note">החלפה מקומית להצגה בלבד · for demo purposes only</p>
+    <div class="lang-row on" data-lang="he" onclick="document.body.classList.remove('lang-en');document.body.classList.add('lang-he');document.documentElement.setAttribute('dir','rtl');document.documentElement.setAttribute('lang','he');if(window.__translate)window.__translate('he');">
+      <span class="lang-flag">🇮🇱</span>
+      <span>עברית</span>
+    </div>
+    <div class="lang-row" data-lang="en" onclick="document.body.classList.remove('lang-he');document.body.classList.add('lang-en');document.documentElement.setAttribute('dir','ltr');document.documentElement.setAttribute('lang','en');if(window.__translate)window.__translate('en');">
+      <span class="lang-flag">🇬🇧</span>
+      <span>English</span>
+    </div>
+  </aside>
+
+  <div class="phone-wrap">
+    <div class="phone">
+
+      <!-- HOME -->
+      <div class="screen on" data-screen="home">
+        <div class="statusbar"><span>9:42</span><span>4G · 78%</span></div>
+        <div class="brandbar">
+          <img class="brandbar-logo" src="assets/council-logo.png" alt="לוגו מועצה אזורית חוף אשקלון" />
+          <div class="brandbar-text">
+            <div class="brandbar-app">מיפוי חברתי</div>
+            <div class="brandbar-council">מועצה אזורית חוף אשקלון</div>
+          </div>
+        </div>
+
+        <div class="content">
+
+          <div class="card-title" style="margin-top: 4px;">פעולות מהירות</div>
+          <div class="actions">
+            <button class="action" data-nav="questionnaire">
+              <span class="action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M12 13v6M9 16h6"/></svg>
+              </span>
+              <span class="action-main">
+                <span class="action-title">פתיחת תיק חדש</span>
+                <span class="action-sub">שאלון שלב א' — חירום אקוטי</span>
+              </span>
+              <span class="chev">›</span>
+            </button>
+            <button class="action" data-nav="residents">
+              <span class="action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+              </span>
+              <span class="action-main">
+                <span class="action-title">תושב חדש</span>
+                <span class="action-sub">הוספה לרשימת תושבים</span>
+              </span>
+              <span class="chev">›</span>
+            </button>
+            <button class="action" data-toast="העלאת מסמכים — דמו">
+              <span class="action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 21h14"/></svg>
+              </span>
+              <span class="action-main">
+                <span class="action-title">העלאת מסמכים</span>
+                <span class="action-sub">סריקות, טפסים, אישורים</span>
+              </span>
+              <span class="chev">›</span>
+            </button>
+          </div>
+
+          <div class="card-title">המשימות שלי היום</div>
+          <div class="card">
+            <div class="row-item" data-nav="profile" data-family="cohen">
+              <span class="dot-status urgent"></span>
+              <div class="row-main">
+                <div class="row-name">מימוש זכויות — משפחת כהן</div>
+                <div class="row-sub">11:00 · יד מרדכי</div>
+              </div>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-family="avraham">
+              <span class="dot-status"></span>
+              <div class="row-main">
+                <div class="row-name">שיחת המשך — רחלי אברהם</div>
+                <div class="row-sub">14:30 · ברכיה · טלפון</div>
+              </div>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-family="alon">
+              <span class="dot-status"></span>
+              <div class="row-main">
+                <div class="row-name">שאלון "מה נשמע" — נועה אלון</div>
+                <div class="row-sub">16:00 · ברכיה</div>
+              </div>
+              <span class="chev">›</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabbar"></div>
+      </div>
+
+      <!-- RESIDENTS LIST -->
+      <div class="screen" data-screen="residents">
+        <div class="statusbar"><span>9:44</span><span>4G · 78%</span></div>
+        <div class="appbar">
+          <div class="title">תושבים</div>
+          <div class="sub">151 משפחות, 317 מבוגרים ו-89 ילדים</div>
+        </div>
+
+        <div class="content">
+          <div class="search">
+            <span class="ic">⌕</span>
+            <input placeholder="שם או יישוב" />
+          </div>
+
+          <div class="seg-group" data-residents-filter>
+            <div class="seg on" data-stage="all">הכל</div>
+            <div class="seg" data-stage="a">שלב א'</div>
+            <div class="seg" data-stage="b">שלב ב'</div>
+            <div class="seg" data-stage="c">שלב ג'</div>
+          </div>
+
+          <div class="card" data-residents-list>
+            <div class="row-item" data-nav="profile" data-stage="b" data-family="cohen">
+              <div class="row-main">
+                <div class="row-name">משפחת כהן</div>
+                <div class="row-sub">יד מרדכי · שלב ב' פעיל</div>
+              </div>
+              <span class="demo" aria-label="1 גבר, 1 אישה, 4 ילדים">
+                <span class="demo-group man"><span class="dot"></span></span>
+                <span class="demo-group woman"><span class="dot"></span></span>
+                <span class="demo-group child"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+              </span>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-stage="b" data-family="avraham">
+              <div class="row-main">
+                <div class="row-name">רחלי אברהם</div>
+                <div class="row-sub">ברכיה · שלב ב' פעיל</div>
+              </div>
+              <span class="demo" aria-label="1 גבר, 1 אישה, 2 ילדים">
+                <span class="demo-group man"><span class="dot"></span></span>
+                <span class="demo-group woman"><span class="dot"></span></span>
+                <span class="demo-group child"><span class="dot"></span><span class="dot"></span></span>
+              </span>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-stage="a" data-family="levi">
+              <div class="row-main">
+                <div class="row-name">משפחת לוי</div>
+                <div class="row-sub">יד מרדכי · שלב א'</div>
+              </div>
+              <span class="demo" aria-label="1 גבר, 1 אישה, 3 ילדים">
+                <span class="demo-group man"><span class="dot"></span></span>
+                <span class="demo-group woman"><span class="dot"></span></span>
+                <span class="demo-group child"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+              </span>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-stage="c" data-family="alon">
+              <div class="row-main">
+                <div class="row-name">נועה אלון</div>
+                <div class="row-sub">ברכיה · שלב ג'</div>
+              </div>
+              <span class="demo" aria-label="1 אישה, 1 ילד">
+                <span class="demo-group woman"><span class="dot"></span></span>
+                <span class="demo-group child"><span class="dot"></span></span>
+              </span>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-stage="b">
+              <div class="row-main">
+                <div class="row-name">משפחת פרץ</div>
+                <div class="row-sub">יד מרדכי · שלב ב'</div>
+              </div>
+              <span class="demo" aria-label="2 גברים, 1 אישה, 2 ילדים">
+                <span class="demo-group man"><span class="dot"></span><span class="dot"></span></span>
+                <span class="demo-group woman"><span class="dot"></span></span>
+                <span class="demo-group child"><span class="dot"></span><span class="dot"></span></span>
+              </span>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-stage="a">
+              <div class="row-main">
+                <div class="row-name">משפחת ביטון</div>
+                <div class="row-sub">יד מרדכי · שלב א'</div>
+              </div>
+              <span class="demo" aria-label="1 גבר, 1 אישה, 2 ילדים">
+                <span class="demo-group man"><span class="dot"></span></span>
+                <span class="demo-group woman"><span class="dot"></span></span>
+                <span class="demo-group child"><span class="dot"></span><span class="dot"></span></span>
+              </span>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-stage="a">
+              <div class="row-main">
+                <div class="row-name">משפחת גולן</div>
+                <div class="row-sub">ברכיה · שלב א'</div>
+              </div>
+              <span class="demo" aria-label="1 גבר, 1 אישה, 3 ילדים">
+                <span class="demo-group man"><span class="dot"></span></span>
+                <span class="demo-group woman"><span class="dot"></span></span>
+                <span class="demo-group child"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+              </span>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-stage="a">
+              <div class="row-main">
+                <div class="row-name">יעל מזרחי</div>
+                <div class="row-sub">ברכיה · שלב א'</div>
+              </div>
+              <span class="demo" aria-label="1 אישה, 2 ילדים">
+                <span class="demo-group woman"><span class="dot"></span></span>
+                <span class="demo-group child"><span class="dot"></span><span class="dot"></span></span>
+              </span>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-stage="b">
+              <div class="row-main">
+                <div class="row-name">משפחת דיין</div>
+                <div class="row-sub">יד מרדכי · שלב ב' פעיל</div>
+              </div>
+              <span class="demo" aria-label="1 גבר, 1 אישה, 1 ילד">
+                <span class="demo-group man"><span class="dot"></span></span>
+                <span class="demo-group woman"><span class="dot"></span></span>
+                <span class="demo-group child"><span class="dot"></span></span>
+              </span>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-stage="b">
+              <div class="row-main">
+                <div class="row-name">משפחת אוחיון</div>
+                <div class="row-sub">ברכיה · שלב ב' פעיל</div>
+              </div>
+              <span class="demo" aria-label="1 גבר, 1 אישה, 4 ילדים">
+                <span class="demo-group man"><span class="dot"></span></span>
+                <span class="demo-group woman"><span class="dot"></span></span>
+                <span class="demo-group child"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+              </span>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-stage="c">
+              <div class="row-main">
+                <div class="row-name">משפחת שפירא</div>
+                <div class="row-sub">יד מרדכי · שלב ג'</div>
+              </div>
+              <span class="demo" aria-label="1 גבר, 1 אישה, 2 ילדים">
+                <span class="demo-group man"><span class="dot"></span></span>
+                <span class="demo-group woman"><span class="dot"></span></span>
+                <span class="demo-group child"><span class="dot"></span><span class="dot"></span></span>
+              </span>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item" data-nav="profile" data-stage="c">
+              <div class="row-main">
+                <div class="row-name">משפחת נחום</div>
+                <div class="row-sub">ברכיה · שלב ג'</div>
+              </div>
+              <span class="demo" aria-label="2 גברים, 1 אישה, 1 ילד">
+                <span class="demo-group man"><span class="dot"></span><span class="dot"></span></span>
+                <span class="demo-group woman"><span class="dot"></span></span>
+                <span class="demo-group child"><span class="dot"></span></span>
+              </span>
+              <span class="chev">›</span>
+            </div>
+          </div>
+
+          <div class="empty-state" data-residents-empty hidden>
+            <div class="empty-title">אין תושבים בשלב זה</div>
+          </div>
+        </div>
+
+        <div class="tabbar"></div>
+      </div>
+
+      <!-- PROFILE (drill-down from residents) -->
+      <div class="screen" data-screen="profile">
+        <div class="statusbar"><span>9:45</span><span>4G · 78%</span></div>
+        <div class="appbar with-back">
+          <div class="back" data-nav="residents" role="button" aria-label="חזרה">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </div>
+          <div class="appbar-main">
+            <div class="title" data-slot="title">משפחת כהן</div>
+            <div class="sub" data-slot="sub">יד מרדכי · שלב ב' פעיל</div>
+          </div>
+        </div>
+
+        <div class="content">
+
+          <div class="members-wrap">
+            <button class="members-arrow start" type="button" aria-label="גלול ימינה" data-members-nav="start">‹</button>
+            <div class="members" aria-label="בני המשפחה" data-slot="members"></div>
+            <button class="members-arrow end" type="button" aria-label="גלול שמאלה" data-members-nav="end">›</button>
+          </div>
+
+          <div class="card card-pad">
+            <div class="card-title" style="margin: 0 0 6px;">סיכום אחרון</div>
+            <p data-slot="summary" style="margin:0; font-size: 13px; color: var(--ink-2); line-height: 1.55;"></p>
+          </div>
+
+          <div class="card-title">פעולות</div>
+          <div class="actions">
+            <button class="action" data-nav="questionnaire">
+              <span class="action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 14h6M9 17h4"/></svg>
+              </span>
+              <span class="action-main">
+                <span class="action-title">מילוי שאלון חדש</span>
+                <span class="action-sub">שלב א' / ב' / ג' לפי המצב</span>
+              </span>
+              <span class="chev">›</span>
+            </button>
+            <button class="action" data-toast="עדכון פרטי משפחה — דמו">
+              <span class="action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4v16h16v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+              </span>
+              <span class="action-main">
+                <span class="action-title">עדכון פרטי משפחה</span>
+                <span class="action-sub">הרכב, פרטי קשר, יישוב</span>
+              </span>
+              <span class="chev">›</span>
+            </button>
+          </div>
+
+          <div class="card-title">משימות פתוחות</div>
+          <div class="card" data-slot="tasks"></div>
+
+          <div class="card-title">מסמכים</div>
+          <div class="card" data-slot="documents"></div>
+
+          <div class="card-title">קו הזמן</div>
+          <div class="card" data-slot="timeline"></div>
+        </div>
+      </div>
+
+      <!-- DETAIL (shared: timeline event or open task) -->
+      <div class="screen" data-screen="detail">
+        <div class="statusbar"><span>9:46</span><span>4G · 78%</span></div>
+        <div class="appbar with-back">
+          <div class="back" data-nav="profile" role="button" aria-label="חזרה">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </div>
+          <div class="appbar-main">
+            <div class="title" data-slot="detail-title">—</div>
+            <div class="sub" data-slot="detail-sub">—</div>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="card card-pad">
+            <div class="detail-meta" data-slot="detail-meta"></div>
+            <p class="detail-body" data-slot="detail-body"></p>
+          </div>
+
+          <div class="card-title" data-slot="detail-extra-title" hidden></div>
+          <div class="card" data-slot="detail-extra" hidden></div>
+        </div>
+
+        <div class="footerbar" data-slot="detail-footer"></div>
+      </div>
+
+      <!-- QUESTIONNAIRE (sub-flow) -->
+      <div class="screen" data-screen="questionnaire">
+        <div class="statusbar"><span>9:47</span><span>4G · 78%</span></div>
+        <div class="appbar with-back">
+          <div class="back" data-nav="profile" role="button" aria-label="חזרה">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </div>
+          <div class="appbar-main">
+            <div class="title">שלב א' — חירום אקוטי</div>
+            <div class="sub">משפחת כהן</div>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="progress">
+            <div class="seg done"></div>
+            <div class="seg done"></div>
+            <div class="seg active"></div>
+            <div class="seg"></div>
+            <div class="seg"></div>
+          </div>
+          <div class="progress-label">3 מתוך 5 · צרכים דחופים</div>
+
+          <div class="q">
+            <div class="q-text">צרכים מיוחדים של ראש המשפחה</div>
+            <div class="q-help">ניתן לבחור יותר מאפשרות אחת</div>
+            <div class="chip-row" data-togglegroup="multi">
+              <div class="chip">בבית</div>
+              <div class="chip on">מפונה עם המשפחה</div>
+              <div class="chip">מפונה לבד</div>
+              <div class="chip">פצוע</div>
+              <div class="chip on">צורך רגשי</div>
+              <div class="chip">צורך כספי</div>
+              <div class="chip">מיצוי זכויות</div>
+              <div class="chip">שכול</div>
+              <div class="chip">אחר</div>
+            </div>
+          </div>
+
+          <div class="q">
+            <div class="q-text">דחיפות כללית</div>
+            <div class="chip-row" data-togglegroup="single">
+              <div class="chip">דחוף</div>
+              <div class="chip on">מיידי</div>
+              <div class="chip">לא דחוף</div>
+              <div class="chip">אין צורך בהמשך</div>
+            </div>
+          </div>
+
+          <div class="q">
+            <div class="q-text">הערה מילולית</div>
+            <textarea class="ta" rows="3">האם מעורערת רגשית, אבי מתפקד אך מבקש עזרה במימוש זכויות.</textarea>
+          </div>
+        </div>
+
+        <div class="footerbar">
+          <button class="btn ghost" data-nav="profile">השהה</button>
+          <button class="btn primary" data-nav="ai">הבא</button>
+        </div>
+      </div>
+
+      <!-- AI SUMMARY (sub-flow) -->
+      <div class="screen" data-screen="ai">
+        <div class="statusbar"><span>10:12</span><span>5G · 81%</span></div>
+        <div class="appbar with-back">
+          <div class="back" data-nav="questionnaire" role="button" aria-label="חזרה">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </div>
+          <div class="appbar-main">
+            <div class="title">תקציר + משימות</div>
+            <div class="sub">רחלי אברהם · שלב ב'</div>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="card card-pad">
+            <div class="card-title" style="margin:0 0 8px;">תקציר מוצע</div>
+            <textarea class="ta" rows="5">רחלי חזרה לפני שבוע. בעל שב לעבודה, רחלי עדיין לא. חוסר שינה ודאגה לילדים. צורך רגשי, התלבטות על פנייה לפסיכולוג. ביקשה שיחה בעוד שבוע.</textarea>
+          </div>
+
+          <div class="card-title">משימות מוצעות</div>
+          <div class="card">
+            <div class="row-item">
+              <span class="dot-status urgent"></span>
+              <div class="row-main">
+                <div class="row-name">תיאום פנייה לפסיכולוג</div>
+                <div class="row-sub">תוך 3 ימים</div>
+              </div>
+              <span class="tag">פעילה</span>
+            </div>
+            <div class="row-item">
+              <span class="dot-status"></span>
+              <div class="row-main">
+                <div class="row-name">שיחת המשך</div>
+                <div class="row-sub">3.5</div>
+              </div>
+              <span class="tag">פעילה</span>
+            </div>
+            <div class="row-item" style="opacity:.55;">
+              <span class="dot-status"></span>
+              <div class="row-main">
+                <div class="row-name">בדיקת זכאות לחופשת אבל</div>
+                <div class="row-sub">הוסרה</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-title">תגיות</div>
+          <div class="chip-row" data-togglegroup="multi" style="margin-bottom: 12px;">
+            <div class="chip on">צורך רגשי</div>
+            <div class="chip on">טרם חזרה לעבודה</div>
+            <div class="chip">פנייה לפסיכולוג</div>
+            <div class="chip">תמיכה משפחתית</div>
+          </div>
+        </div>
+
+        <div class="footerbar">
+          <button class="btn ghost" data-nav="home">אחר כך</button>
+          <button class="btn primary" data-nav="tasks">שמירה</button>
+        </div>
+      </div>
+
+      <!-- TASKS -->
+      <div class="screen" data-screen="tasks">
+        <div class="statusbar"><span>10:15</span><span>5G · 81%</span></div>
+        <div class="appbar">
+          <div class="title">משימות פתוחות</div>
+          <div class="sub" data-tasks-sub>9 פתוחות</div>
+        </div>
+
+        <div class="content">
+
+          <div data-group="urgent">
+            <div class="group-head">
+              <span class="group-dot urgent"></span>
+              <span class="group-name">דחוף</span>
+              <span class="group-count" data-group-count>3</span>
+            </div>
+            <div class="card">
+              <div class="row-item" data-nav="profile" data-urgency="urgent" data-village="yad">
+                <div class="row-main">
+                  <div class="row-name">מימוש זכויות — משפחת כהן</div>
+                  <div class="row-sub">היום 11:00 · יד מרדכי</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+              <div class="row-item" data-nav="profile" data-urgency="urgent" data-village="yad">
+                <div class="row-main">
+                  <div class="row-name">ביקור בית — משפחת לוי</div>
+                  <div class="row-sub">היום 17:00 · יד מרדכי</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+              <div class="row-item" data-nav="profile" data-urgency="urgent" data-village="brachia">
+                <div class="row-main">
+                  <div class="row-name">תיאום מרכז חוסן — נועה אלון</div>
+                  <div class="row-sub">מחר · ברכיה</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+            </div>
+          </div>
+
+          <div data-group="immediate">
+            <div class="group-head">
+              <span class="group-dot immediate"></span>
+              <span class="group-name">מיידי</span>
+              <span class="group-count" data-group-count>3</span>
+            </div>
+            <div class="card">
+              <div class="row-item" data-nav="ai" data-urgency="immediate" data-village="brachia">
+                <div class="row-main">
+                  <div class="row-name">שיחת המשך — רחלי אברהם</div>
+                  <div class="row-sub">היום 14:30 · ברכיה · טלפון</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+              <div class="row-item" data-nav="profile" data-urgency="immediate" data-village="brachia">
+                <div class="row-main">
+                  <div class="row-name">ביקור בית — משפחת אברהם</div>
+                  <div class="row-sub">מחר 16:00 · ברכיה</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+              <div class="row-item" data-nav="profile" data-urgency="immediate" data-village="yad">
+                <div class="row-main">
+                  <div class="row-name">תיאום עם יועצת חינוך</div>
+                  <div class="row-sub">השבוע · יד מרדכי</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+            </div>
+          </div>
+
+          <div data-group="normal">
+            <div class="group-head">
+              <span class="group-dot normal"></span>
+              <span class="group-name">לא דחוף</span>
+              <span class="group-count" data-group-count>3</span>
+            </div>
+            <div class="card">
+              <div class="row-item" data-nav="profile" data-urgency="normal" data-village="yad">
+                <div class="row-main">
+                  <div class="row-name">חזרה לבית הספר — בן 11 כהן</div>
+                  <div class="row-sub">מחר · יד מרדכי · יועצת ביה"ס</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+              <div class="row-item" data-nav="insights" data-urgency="normal" data-village="brachia">
+                <div class="row-main">
+                  <div class="row-name">"מה נשמע" — 18 משפחות</div>
+                  <div class="row-sub">השבוע · ברכיה</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+              <div class="row-item" data-nav="profile" data-urgency="normal" data-village="yad">
+                <div class="row-main">
+                  <div class="row-name">מעקב משפחת פרץ</div>
+                  <div class="row-sub">השבוע · יד מרדכי</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="tabbar"></div>
+      </div>
+
+      <!-- INSIGHTS -->
+      <div class="screen" data-screen="insights">
+        <div class="statusbar"><span>10:20</span><span>5G · 81%</span></div>
+        <div class="appbar">
+          <div class="title">תובנות</div>
+          <div class="sub" data-scope-sub>כל היישובים שלי · 151 משפחות</div>
+        </div>
+
+        <div class="content">
+
+          <div class="scope-dd" data-insights-scope>
+            <button class="scope-dd-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="scope-dd-val" data-scope-val>כל היישובים שלי</span>
+              <span class="scope-dd-caret">▾</span>
+            </button>
+            <ul class="scope-dd-menu" role="listbox">
+              <li data-scope="both" class="on" role="option">כל היישובים שלי</li>
+              <li data-scope="yad" role="option">יד מרדכי</li>
+              <li data-scope="brachia" role="option">ברכיה</li>
+            </ul>
+          </div>
+
+          <!-- ---------- BOTH VILLAGES ---------- -->
+          <div class="scope-view on" data-scope-view="both">
+
+            <div class="metric-label">משפחות לפי סיווג דחיפות</div>
+            <div class="metric-row">
+              <div class="metric accent" data-nav="tasks"><div class="v">9</div><div class="l">דחוף</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">28</div><div class="l">מיידי</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">114</div><div class="l">לא דחוף</div></div>
+            </div>
+
+            <!-- per-village split, visible only in combined -->
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 10px;">פילוח לפי יישוב</div>
+              <div class="split-row">
+                <div class="split-lbl">יד מרדכי</div>
+                <div class="split-track"><span class="split-bar" style="width:61.5%"></span></div>
+                <div class="split-v">93</div>
+              </div>
+              <div class="split-row">
+                <div class="split-lbl">ברכיה</div>
+                <div class="split-track"><span class="split-bar" style="width:38.5%"></span></div>
+                <div class="split-v">58</div>
+              </div>
+              <p class="micro">משקל הטיפול שלך מחולק בקירוב 60/40 בין היישובים.</p>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 10px;">צרכים נפוצים</div>
+              <div class="bar-row"><div class="lbl">צורך רגשי</div><div class="bar"><span style="width:82%"></span></div><div class="v">67</div></div>
+              <div class="bar-row"><div class="lbl">מיצוי זכויות</div><div class="bar"><span style="width:64%"></span></div><div class="v">52</div></div>
+              <div class="bar-row"><div class="lbl">לוגיסטי</div><div class="bar"><span style="width:48%"></span></div><div class="v">39</div></div>
+              <div class="bar-row"><div class="lbl">צרכים מיוחדים</div><div class="bar"><span style="width:33%"></span></div><div class="v">27</div></div>
+              <div class="bar-row"><div class="lbl">שכול</div><div class="bar"><span style="width:17%"></span></div><div class="v">14</div></div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 8px;">תמות עולות</div>
+              <p class="micro" style="margin-bottom: 10px;">דפוסים ששבו בשיחות האחרונות. זוהו ע"י AI, מסומנות בהתאם לעקביות וההיקף.</p>
+
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">מסגרות אחה"צ חסרות</div>
+                  <div class="theme-trend">↑ עולה</div>
+                </div>
+                <p class="theme-body">ב-10 משפחות עלה קושי שאין מענה לילדים אחרי הלימודים — בעיקר אצל הורים שחזרו לעבודה. 7 ביד מרדכי, 3 בברכיה.</p>
+              </div>
+
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">הורה אחד שלא חזר לעבודה</div>
+                  <div class="theme-trend">↑ עולה</div>
+                </div>
+                <p class="theme-body">דפוס חוזר שבו אחד ההורים חזר לעבודה והשני נותר בבית בלחץ רגשי. נצפה ב-14 שיחות (9 ביד מרדכי, 5 בברכיה).</p>
+              </div>
+
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">שינה ולחץ</div>
+                  <div class="theme-trend">יציב</div>
+                </div>
+                <p class="theme-body">הפרעות שינה ותחושת עומס מדווחות ב-18 משפחות. מיעוט פניות למרכז חוסן בפועל.</p>
+              </div>
+
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">חששות לילדים צעירים (0–6)</div>
+                  <div class="theme-trend">יציב</div>
+                </div>
+                <p class="theme-body">הורים מדווחים על רגרסיות, פחדים והתנהגות מוחצנת. נזכר ב-11 שיחות.</p>
+              </div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 8px;">פעולות מוצעות</div>
+              <p class="micro" style="margin-bottom: 12px;">המערכת מציעה פעולות על סמך הצרכים והתמות. לא נפתחת משימה עד לאישורך.</p>
+
+              <div class="suggestion">
+                <div class="sugg-head">
+                  <div class="sugg-title">קבוצת תמיכה רגשית משותפת</div>
+                  <span class="sugg-weight">67 משפחות</span>
+                </div>
+                <p class="sugg-why">צורך רגשי הוא הצורך הנפוץ ביותר (44% מהמשפחות). כדאי לשקול 2 קבוצות — אחת בכל יישוב — בתיאום עם מרכז חוסן.</p>
+                <div class="sugg-cta">
+                  <button class="btn-link">דחייה</button>
+                  <button class="btn-link primary">הוספה למשימות</button>
+                </div>
+              </div>
+
+              <div class="suggestion">
+                <div class="sugg-head">
+                  <div class="sugg-title">מפגש פתוח על מיצוי זכויות</div>
+                  <span class="sugg-weight">52 משפחות</span>
+                </div>
+                <p class="sugg-why">ביקוש גבוה לליווי בירוקרטי. הצעה: יועצ/ת זכויות במועצה, רוטציה בין היישובים.</p>
+                <div class="sugg-cta">
+                  <button class="btn-link">דחייה</button>
+                  <button class="btn-link primary">הוספה למשימות</button>
+                </div>
+              </div>
+
+              <div class="suggestion">
+                <div class="sugg-head">
+                  <div class="sugg-title">תיאום עם מתנ"ס אזורי — מסגרות אחה"צ</div>
+                  <span class="sugg-weight">10 משפחות</span>
+                </div>
+                <p class="sugg-why">תמה עולה ועקבית. מומלץ להעלות לשולחן העגול הקרוב של המועצה.</p>
+                <div class="sugg-cta">
+                  <button class="btn-link">דחייה</button>
+                  <button class="btn-link primary">הוספה למשימות</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ---------- YAD MORDECHAI ---------- -->
+          <div class="scope-view" data-scope-view="yad">
+
+            <div class="metric-label">משפחות לפי סיווג דחיפות</div>
+            <div class="metric-row">
+              <div class="metric accent" data-nav="tasks"><div class="v">7</div><div class="l">דחוף</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">22</div><div class="l">מיידי</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">64</div><div class="l">לא דחוף</div></div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 10px;">צרכים נפוצים</div>
+              <div class="bar-row"><div class="lbl">צורך רגשי</div><div class="bar"><span style="width:82%"></span></div><div class="v">47</div></div>
+              <div class="bar-row"><div class="lbl">מיצוי זכויות</div><div class="bar"><span style="width:62%"></span></div><div class="v">35</div></div>
+              <div class="bar-row"><div class="lbl">לוגיסטי</div><div class="bar"><span style="width:45%"></span></div><div class="v">26</div></div>
+              <div class="bar-row"><div class="lbl">צרכים מיוחדים</div><div class="bar"><span style="width:30%"></span></div><div class="v">17</div></div>
+              <div class="bar-row"><div class="lbl">שכול</div><div class="bar"><span style="width:18%"></span></div><div class="v">10</div></div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 8px;">תמות עולות</div>
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">מסגרות אחה"צ חסרות</div>
+                  <div class="theme-trend">↑ עולה</div>
+                </div>
+                <p class="theme-body">7 משפחות מדווחות על היעדר מענה לילדים בין סיום בי"ס לחזרת ההורה השני מהעבודה.</p>
+              </div>
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">הורה אחד שלא חזר לעבודה</div>
+                  <div class="theme-trend">↑ עולה</div>
+                </div>
+                <p class="theme-body">נצפה ב-9 שיחות — בעיקר אמהות לילדים צעירים שמתקשות לחזור לשגרת עבודה.</p>
+              </div>
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">שינה ולחץ</div>
+                  <div class="theme-trend">יציב</div>
+                </div>
+                <p class="theme-body">12 משפחות. רוב הפניות לא הגיעו עדיין למרכז חוסן.</p>
+              </div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 8px;">פעולות מוצעות · יד מרדכי</div>
+              <div class="suggestion">
+                <div class="sugg-head">
+                  <div class="sugg-title">קבוצת תמיכה רגשית מקומית</div>
+                  <span class="sugg-weight">47 משפחות</span>
+                </div>
+                <p class="sugg-why">ריכוז גבוה של צורך רגשי (50%). מומלץ לבחון קבוצה שבועית במבנה הקהילתי.</p>
+                <div class="sugg-cta">
+                  <button class="btn-link">דחייה</button>
+                  <button class="btn-link primary">הוספה למשימות</button>
+                </div>
+              </div>
+              <div class="suggestion">
+                <div class="sugg-head">
+                  <div class="sugg-title">פתרון מסגרת אחה"צ</div>
+                  <span class="sugg-weight">7 משפחות</span>
+                </div>
+                <p class="sugg-why">תמה דומיננטית ביישוב. הצעה: שיחת פתיחה עם מתנ"ס ומנהלת החינוך של המועצה.</p>
+                <div class="sugg-cta">
+                  <button class="btn-link">דחייה</button>
+                  <button class="btn-link primary">הוספה למשימות</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ---------- BRACHIA ---------- -->
+          <div class="scope-view" data-scope-view="brachia">
+
+            <div class="metric-label">משפחות לפי סיווג דחיפות</div>
+            <div class="metric-row">
+              <div class="metric accent" data-nav="tasks"><div class="v">2</div><div class="l">דחוף</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">6</div><div class="l">מיידי</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">50</div><div class="l">לא דחוף</div></div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 10px;">צרכים נפוצים</div>
+              <div class="bar-row"><div class="lbl">צורך רגשי</div><div class="bar"><span style="width:80%"></span></div><div class="v">20</div></div>
+              <div class="bar-row"><div class="lbl">מיצוי זכויות</div><div class="bar"><span style="width:68%"></span></div><div class="v">17</div></div>
+              <div class="bar-row"><div class="lbl">לוגיסטי</div><div class="bar"><span style="width:52%"></span></div><div class="v">13</div></div>
+              <div class="bar-row"><div class="lbl">צרכים מיוחדים</div><div class="bar"><span style="width:40%"></span></div><div class="v">10</div></div>
+              <div class="bar-row"><div class="lbl">שכול</div><div class="bar"><span style="width:16%"></span></div><div class="v">4</div></div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 8px;">תמות עולות</div>
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">מיצוי זכויות — עומס בירוקרטי</div>
+                  <div class="theme-trend">↑ עולה</div>
+                </div>
+                <p class="theme-body">17 משפחות (29%) מציינות קושי בבירוקרטיה — אחוז גבוה יחסית. חלק מהפניות חוזרות שוב ושוב.</p>
+              </div>
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">חששות לילדים צעירים</div>
+                  <div class="theme-trend">יציב</div>
+                </div>
+                <p class="theme-body">7 משפחות עם ילדים 0–6. דיווחי הורים על רגרסיות, פחדי לילה, דבקות.</p>
+              </div>
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">מסגרות אחה"צ חסרות</div>
+                  <div class="theme-trend">חדשה</div>
+                </div>
+                <p class="theme-body">3 משפחות מעלות זאת — תמה שנכנסה החודש, שווה מעקב.</p>
+              </div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 8px;">פעולות מוצעות · ברכיה</div>
+              <div class="suggestion">
+                <div class="sugg-head">
+                  <div class="sugg-title">יום פתוח למיצוי זכויות</div>
+                  <span class="sugg-weight">17 משפחות</span>
+                </div>
+                <p class="sugg-why">אחוז גבוה יותר מבמרדכי. מומלץ לרכז ליום מיקוד עם יועצ/ת זכויות.</p>
+                <div class="sugg-cta">
+                  <button class="btn-link">דחייה</button>
+                  <button class="btn-link primary">הוספה למשימות</button>
+                </div>
+              </div>
+              <div class="suggestion">
+                <div class="sugg-head">
+                  <div class="sugg-title">הדרכת הורים לגיל הרך</div>
+                  <span class="sugg-weight">7 משפחות</span>
+                </div>
+                <p class="sugg-why">חששות חוזרים על ילדים 0–6. הצעה: שיתוף פעולה עם טיפת חלב.</p>
+                <div class="sugg-cta">
+                  <button class="btn-link">דחייה</button>
+                  <button class="btn-link primary">הוספה למשימות</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="tabbar"></div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="screen" data-screen="settings">
+        <div class="statusbar"><span>10:22</span><span>5G · 81%</span></div>
+        <div class="appbar">
+          <div class="title">הגדרות</div>
+        </div>
+
+        <div class="content">
+
+          <div class="profile-card" data-nav="profileEdit" role="button" aria-label="עריכת פרופיל">
+            <div class="profile-avatar">ד</div>
+            <div class="profile-main">
+              <div class="profile-name" data-slot="me-name">דנה כהן</div>
+              <div class="profile-role" data-slot="me-role">עו"ס יישובית</div>
+            </div>
+            <span class="profile-edit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4v16h16v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+              ערוך
+            </span>
+          </div>
+
+          <div class="card-title">סנכרון ותצוגה</div>
+          <div class="card list-plain">
+            <div class="row-item">
+              <div class="row-main">
+                <div class="row-name">סנכרון אוטומטי</div>
+                <div class="row-sub">Wi-Fi בלבד</div>
+              </div>
+              <div class="toggle on" data-toggle></div>
+            </div>
+            <div class="row-item">
+              <div class="row-main">
+                <div class="row-name">שמור אופליין</div>
+                <div class="row-sub">תושבים פעילים</div>
+              </div>
+              <div class="toggle on" data-toggle></div>
+            </div>
+            <div class="row-item">
+              <div class="row-main">
+                <div class="row-name">גודל טקסט</div>
+                <div class="row-sub">רגיל</div>
+              </div>
+              <span class="chev">›</span>
+            </div>
+          </div>
+
+          <div class="card-title">AI ופרטיות</div>
+          <div class="card list-plain">
+            <div class="row-item">
+              <div class="row-main">
+                <div class="row-name">תקצירי AI</div>
+                <div class="row-sub">דורש אישור לפני שמירה</div>
+              </div>
+              <div class="toggle on" data-toggle></div>
+            </div>
+            <div class="row-item">
+              <div class="row-main">
+                <div class="row-name">מדיניות שיתוף מידע</div>
+              </div>
+              <span class="chev">›</span>
+            </div>
+          </div>
+
+          <div class="card-title">חשבון</div>
+          <div class="card list-plain">
+            <div class="row-item">
+              <div class="row-main"><div class="row-name">עזרה ותמיכה</div></div>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item">
+              <div class="row-main"><div class="row-name" style="color:var(--accent)">יציאה</div></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="tabbar"></div>
+      </div>
+
+      <!-- EDIT PROFILE (sub-flow from settings) -->
+      <div class="screen" data-screen="profileEdit">
+        <div class="statusbar"><span>10:23</span><span>5G · 81%</span></div>
+        <div class="appbar with-back">
+          <div class="back" data-nav="settings" role="button" aria-label="חזרה">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </div>
+          <div class="appbar-main">
+            <div class="title">עריכת פרופיל</div>
+          </div>
+        </div>
+
+        <div class="content">
+
+          <div class="avatar-edit">
+            <div class="profile-avatar lg" data-slot="me-avatar-lg">ד</div>
+            <button class="avatar-edit-btn" type="button" data-toast="החלפת תמונה — דמו">החלפת תמונה</button>
+          </div>
+
+          <div class="card-title">פרטים אישיים</div>
+          <div class="card">
+            <label class="field">
+              <span class="field-label">שם מלא</span>
+              <input class="field-input" type="text" value="דנה כהן" data-field="fullName" />
+            </label>
+            <label class="field">
+              <span class="field-label">טלפון</span>
+              <input class="field-input" type="tel" value="050-123-4567" data-field="phone" />
+            </label>
+            <label class="field">
+              <span class="field-label">אימייל</span>
+              <input class="field-input" type="email" value="dana.cohen@hof-ashkelon.co.il" data-field="email" />
+            </label>
+          </div>
+
+          <div class="card-title">תפקיד</div>
+          <div class="card">
+            <label class="field">
+              <span class="field-label">תפקיד</span>
+              <input class="field-input" type="text" value='עו"ס יישובית' data-field="role" />
+            </label>
+            <label class="field">
+              <span class="field-label">יישובים באחריותי</span>
+              <div class="chip-row" data-togglegroup="multi" style="margin-top: 4px;">
+                <div class="chip on">יד מרדכי</div>
+                <div class="chip on">ברכיה</div>
+                <div class="chip">זיקים</div>
+                <div class="chip">כרמיה</div>
+                <div class="chip">ניצנים</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="card-title">אבטחה</div>
+          <div class="card list-plain">
+            <div class="row-item" data-toast="החלפת סיסמה — דמו">
+              <div class="row-main">
+                <div class="row-name">החלפת סיסמה</div>
+              </div>
+              <span class="chev">›</span>
+            </div>
+            <div class="row-item">
+              <div class="row-main">
+                <div class="row-name">אימות דו-שלבי</div>
+                <div class="row-sub">דרך SMS</div>
+              </div>
+              <div class="toggle on" data-toggle></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footerbar">
+          <button class="btn primary" data-nav="settings" data-toast="הפרופיל נשמר">שמירה</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<footer class="page">
+  v0.3 · ללא נתונים אמיתיים · RTL
+</footer>
+
+<!-- shared tabbar template injected on load -->
+<template id="tabbarTpl">
+  <div class="t" data-nav="home"><span class="ic">⌂</span><span class="lbl">בית</span></div>
+  <div class="t" data-nav="residents"><span class="ic">◇</span><span class="lbl">תושבים</span></div>
+  <div class="t" data-nav="tasks"><span class="ic">☰</span><span class="lbl">משימות</span></div>
+  <div class="t" data-nav="insights"><span class="ic">⌃</span><span class="lbl">תובנות</span></div>
+  <div class="t" data-nav="settings"><span class="ic">◦</span><span class="lbl">הגדרות</span></div>
+</template>
+
+<script>
+(function () {
+  // Fill every empty tabbar with the same 5 tabs
+  const tpl = document.getElementById('tabbarTpl').innerHTML;
+  document.querySelectorAll('.tabbar').forEach(tb => { tb.innerHTML = tpl; });
+
+  // Mapping: which tab is "active" when a given screen is on
+  const SCREEN_TAB = {
+    home: 'home',
+    residents: 'residents',
+    profile: 'residents',
+    detail: 'residents',
+    questionnaire: 'residents',
+    ai: 'tasks',
+    tasks: 'tasks',
+    insights: 'insights',
+    settings: 'settings',
+    profileEdit: 'settings'
+  };
+
+  const screens = document.querySelectorAll('.screen[data-screen]');
+  const sideRows = document.querySelectorAll('.sidenav .row[data-nav]');
+
+  // -------- Family data (3 fully wired) --------
+  const FAMILIES = {
+    cohen: {
+      title: 'משפחת כהן',
+      sub: 'יד מרדכי · שלב ב' + "'" + ' פעיל',
+      members: [
+        { role: 'man',   name: 'אבי',     age: 44, initials: 'אב' },
+        { role: 'woman', name: 'שרה',     age: 41, initials: 'שר' },
+        { role: 'child', name: 'יונתן',   age: 14, initials: 'יו' },
+        { role: 'child', name: 'נועם',    age: 11, initials: 'נע' },
+        { role: 'child', name: 'מיכל',    age: 8,  initials: 'מי' },
+        { role: 'child', name: 'איתי',    age: 5,  initials: 'אי' }
+      ],
+      summary: 'חזרו לפני שבועיים ליד מרדכי. שני ילדים חזרו למסגרות, בן 11 עדיין לא. אבי מבקש מיצוי זכויות וסיוע לוגיסטי.',
+      timeline: [
+        { title: 'שלב ב' + "'" + ' — ביסוס תפקוד', sub: '26.4 · דנה כהן',
+          body: 'שיחה של 28 דקות עם אבי ושרה. שלושה ילדים חזרו למסגרות, בן 11 עדיין לא. אבי מבקש ליווי במיצוי זכויות — דמי אבטלה חלקיים וסיוע בשכר דירה. שרה בעיקר עסוקה בילדים, מעדיפה לא לפתוח שיחה רגשית בשלב הזה.' },
+        { title: 'זיהוי תמה — מסגרות אחה' + '"' + 'צ', sub: '19.4 · AI',
+          body: 'זיהוי אוטומטי של תמה חוזרת בשיחות: היעדר מסגרת אחה' + '"' + 'צ לילדים. נצפה גם אצל 7 משפחות נוספות ביישוב. מומלץ להעלות לשולחן עגול.' },
+        { title: 'שלב א' + "'" + ' — חירום אקוטי', sub: '8.4 · אביטל שרון',
+          body: 'הועבר אלי בהנדאוף. סיווג: מיידי. נמצאו במלון דן, אבי נראה מתפקד, האם מעורערת רגשית. צרכים דחופים: ציוד בסיסי, תרופות לילד הצעיר.' }
+      ],
+      tasks: [
+        { urgent: true,  name: 'תיאום מימוש זכויות', sub: 'היום 11:00',
+          body: 'ליצור קשר עם עובדת ביטוח לאומי ומתאמת מיצוי זכויות במועצה. להציג את מצב ההכנסות של אבי (חופשה ללא תשלום) ואפשרות לדמי אבטלה חלקיים. ביקור בית מתואם לשעה 11:00.',
+          tagList: ['מיצוי זכויות', 'ביטוח לאומי'] },
+        { urgent: false, name: 'חזרה לבית הספר — בן 11', sub: 'מחר',
+          body: 'נועם (11) לא חזר עדיין לבית הספר. לתאם עם יועצת בית הספר חזרה מדורגת, אולי עם ליווי של פסיכולוג חינוכי.',
+          tagList: ['חינוך', 'נפשי'] }
+      ],
+      documents: [
+        { name: 'טופס בקשה לדמי אבטלה', type: 'PDF', sub: '28.4 · העלתה דנה' },
+        { name: 'אישור מפונים מלון דן', type: 'PDF', sub: '10.4 · התקבל מהלשכה' },
+        { name: 'הפניה לבית הספר — נועם',  type: 'DOCX', sub: '19.4 · דנה' }
+      ]
+    },
+    avraham: {
+      title: 'רחלי אברהם',
+      sub: 'ברכיה · שלב ב' + "'" + ' פעיל',
+      members: [
+        { role: 'man',   name: 'יוסי',    age: 39, initials: 'יו' },
+        { role: 'woman', name: 'רחלי',    age: 37, initials: 'רח' },
+        { role: 'child', name: 'שירה',    age: 9,  initials: 'שי' },
+        { role: 'child', name: 'דניאל',   age: 6,  initials: 'דנ' }
+      ],
+      summary: 'רחלי חזרה לפני שבוע מהמלון. יוסי שב לעבודה, רחלי עדיין לא. חוסר שינה ודאגה לילדים, מתלבטת על פנייה לפסיכולוג.',
+      timeline: [
+        { title: 'שיחת המשך — עם רחלי',  sub: '24.4 · דנה כהן',
+          body: 'שיחה טלפונית של 23 דקות. רחלי דיווחה שיוסי שב לעבודה אבל היא עדיין לא. חוסר שינה וקושי להתמקד. מערכת תמיכה משפחתית זמינה — אחות גרה ביישוב. ביקשה שיחה נוספת בעוד שבוע.' },
+        { title: 'זיהוי תמה — חזרה חלקית לעבודה', sub: '22.4 · AI',
+          body: 'דפוס חוזר בשיחות של רחלי ו-8 משפחות נוספות: אחד ההורים חזר לעבודה והשני נותר בבית בלחץ רגשי. מומלץ לבחון קבוצת תמיכה ליוצאים במצב דומה.' },
+        { title: 'שלב ב' + "'" + ' — ביסוס תפקוד', sub: '15.4 · דנה כהן',
+          body: 'ביקור בית ביישוב. רחלי ויוסי שניהם נוכחים. הילדים חזרו לגנים, אבל ניכרים סימני חרדה אצל דניאל (6). רחלי מבקשת ליווי רגשי.' },
+        { title: 'שלב א' + "'" + ' — חירום אקוטי', sub: '9.4 · אביטל שרון',
+          body: 'נמצאו במלון המלכים בנתניה. אב משפחה יוצא מילואים. סיווג: מיידי. צרכים עיקריים: עזרה רגשית למשפחה וציוד ילדים.' }
+      ],
+      tasks: [
+        { urgent: false, name: 'תיאום פנייה לפסיכולוג דרך מרכז חוסן', sub: 'תוך 3 ימים',
+          body: 'רחלי מתלבטת אם לפנות לפסיכולוגית. לתאם שיחת היכרות ראשונה במרכז חוסן בקיבוץ יד מרדכי. חשוב להזכיר שהתקציב נסגר חודש-חודשיים מראש.',
+          tagList: ['רגשי', 'מרכז חוסן'] },
+        { urgent: false, name: 'שיחת המשך', sub: '3.5 · טלפון',
+          body: 'שיחה טלפונית מתואמת. לבדוק אם הצליחה ליצור קשר עם הפסיכולוגית, ומה שלום הילדים.',
+          tagList: ['מעקב'] }
+      ],
+      documents: [
+        { name: 'הסכמה לשיתוף מידע עם מרכז חוסן', type: 'PDF', sub: '22.4 · חתמה רחלי' },
+        { name: 'סיכום ביקור בית', type: 'DOCX', sub: '15.4 · דנה' }
+      ]
+    },
+    alon: {
+      title: 'נועה אלון',
+      sub: 'ברכיה · שלב ג' + "'",
+      members: [
+        { role: 'woman', name: 'נועה',    age: 34, initials: 'נו' },
+        { role: 'child', name: 'עידו',    age: 7,  initials: 'עי' }
+      ],
+      summary: 'אם חד-הורית, חזרה מוקדם יחסית. בעלה לשעבר היה בן משפחה של קורבן. נועה ביקשה ליווי רגשי מזדמן ומסגרת אחה' + '"' + 'צ לעידו.',
+      timeline: [
+        { title: 'שאלון "מה נשמע"', sub: '27.4 · דנה כהן',
+          body: 'מענה קצר לשאלון Reaching out. נועה מדווחת שהיא "בסדר", אך עוד מתקשה לישון. עידו חזר לבית הספר אך חסר לו מסגרת אחה' + '"' + 'צ. אין בקשות נוספות כרגע.' },
+        { title: 'זיהוי תמה — שכול במשפחה מורחבת', sub: '14.4 · AI',
+          body: 'תמה שזוהתה מכמה שיחות של נועה: דוד של עידו (אחיו של הגרוש) נפל ב-7.10. נועה ועידו לא היו קרובים אליו, אבל עידו מזכיר אותו לעיתים. שווה מעקב.' },
+        { title: 'שלב ב' + "'" + ' — ביסוס תפקוד', sub: '2.4 · דנה כהן',
+          body: 'ביקור בית בברכיה. נועה פתוחה לשיתוף פעולה. עידו בבית הספר, פעם-פעמיים בשבוע דחיית הגעה. נועה ביקשה: חיבור לקבוצת תמיכה לנשים חד-הוריות ביישוב.' },
+        { title: 'שלב א' + "'" + ' — חירום אקוטי', sub: '8.10.25 · אביטל שרון',
+          body: 'נתפסו בבית. נועה מתפקדת, עידו שקט מאוד. סיווג: מיידי. הועברו לאגף הסעות מיד למחרת.' }
+      ],
+      tasks: [
+        { urgent: false, name: 'בירור מסגרת אחה' + '"' + 'צ לעידו', sub: 'השבוע',
+          body: 'לבדוק מול המתנ' + '"' + 'ס האזורי ומועדונית הילדים בברכיה אפשרויות לעידו (7). עדיפות: פעמיים-שלוש בשבוע.',
+          tagList: ['חינוך', 'לוגיסטי'] },
+        { urgent: false, name: 'חיבור לקבוצת תמיכה לנשים', sub: 'בשבועיים הקרובים',
+          body: 'נועה ביקשה חיבור לקבוצה לנשים במצב דומה. לוודא שהקבוצה של מרכז חוסן ברכיה מתאימה, ולתאם שיחת היכרות.',
+          tagList: ['רגשי', 'קהילתי'] }
+      ],
+      documents: [
+        { name: 'תעודת זהות + ספח', type: 'JPG', sub: '10.10.25 · סריקה' },
+        { name: 'אישור מצב חד-הורי', type: 'PDF', sub: '2.4 · מוסד לביטוח לאומי' },
+        { name: 'הפניה למסגרת אחה' + '"' + 'צ', type: 'DOCX', sub: '27.4 · דנה' },
+        { name: 'טופס הסכמה — קבוצת תמיכה', type: 'PDF', sub: '27.4 · טיוטה' }
+      ]
+    }
+  };
+
+  let currentFamilyKey = 'cohen';
+
+  function renderProfile(key) {
+    const f = FAMILIES[key] || FAMILIES.cohen;
+    currentFamilyKey = FAMILIES[key] ? key : 'cohen';
+    const scr = document.querySelector('.screen[data-screen="profile"]');
+    if (!scr) return;
+
+    scr.querySelector('[data-slot="title"]').textContent = f.title;
+    scr.querySelector('[data-slot="sub"]').textContent = f.sub;
+    scr.querySelector('[data-slot="summary"]').textContent = f.summary;
+
+    const membersEl = scr.querySelector('[data-slot="members"]');
+    membersEl.innerHTML = f.members.map(m => `
+      <div class="member">
+        <div class="member-avatar ${m.role}" role="img" aria-label="${m.role === 'man' ? 'גבר' : m.role === 'woman' ? 'אישה' : 'ילד'}"></div>
+        <div class="member-name">${m.name}</div>
+        <div class="member-age">${m.age}</div>
+      </div>
+    `).join('');
+    updateMembersArrows();
+
+    const tlEl = scr.querySelector('[data-slot="timeline"]');
+    tlEl.innerHTML = f.timeline.map((t, i) => `
+      <div class="row-item" data-nav="detail" data-detail-kind="timeline" data-detail-index="${i}">
+        <div class="row-main">
+          <div class="row-name">${t.title}</div>
+          <div class="row-sub">${t.sub}</div>
+        </div>
+        <span class="chev">›</span>
+      </div>
+    `).join('');
+
+    const tsEl = scr.querySelector('[data-slot="tasks"]');
+    tsEl.innerHTML = f.tasks.map((t, i) => `
+      <div class="row-item" data-nav="detail" data-detail-kind="task" data-detail-index="${i}">
+        <span class="dot-status ${t.urgent ? 'urgent' : ''}"></span>
+        <div class="row-main">
+          <div class="row-name">${t.name}</div>
+          <div class="row-sub">${t.sub}</div>
+        </div>
+        <span class="chev">›</span>
+      </div>
+    `).join('');
+
+    const docsEl = scr.querySelector('[data-slot="documents"]');
+    const docs = f.documents || [];
+    docsEl.innerHTML = docs.map(d => `
+      <div class="row-item" data-toast="פתיחת מסמך — דמו">
+        <span class="doc-badge">${d.type}</span>
+        <div class="row-main">
+          <div class="row-name">${d.name}</div>
+          <div class="row-sub">${d.sub}</div>
+        </div>
+        <span class="chev">›</span>
+      </div>
+    `).join('') + `
+      <div class="row-item doc-add" data-toast="העלאת מסמך — דמו">
+        <span class="doc-badge add" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 21h14"/></svg>
+        </span>
+        <div class="row-main">
+          <div class="row-name">העלאת מסמך חדש</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderDetail(kind, index) {
+    const f = FAMILIES[currentFamilyKey] || FAMILIES.cohen;
+    const src = kind === 'task' ? f.tasks[index] : f.timeline[index];
+    if (!src) return;
+
+    const scr = document.querySelector('.screen[data-screen="detail"]');
+    const title = scr.querySelector('[data-slot="detail-title"]');
+    const sub   = scr.querySelector('[data-slot="detail-sub"]');
+    const meta  = scr.querySelector('[data-slot="detail-meta"]');
+    const body  = scr.querySelector('[data-slot="detail-body"]');
+    const extraTitle = scr.querySelector('[data-slot="detail-extra-title"]');
+    const extra = scr.querySelector('[data-slot="detail-extra"]');
+    const footer = scr.querySelector('[data-slot="detail-footer"]');
+
+    title.textContent = src.title || src.name;
+    sub.textContent = f.title;
+
+    // badge + meta
+    let badge = '';
+    if (kind === 'task' && src.urgent) badge = '<span class="detail-badge urgent">דחוף</span>';
+    if (kind === 'timeline' && /AI/.test(src.sub || '')) badge = '<span class="detail-badge ai">✨ זיהוי AI</span>';
+
+    meta.innerHTML = badge + (src.sub ? `<span class="meta-item">${src.sub}</span>` : '');
+
+    body.textContent = src.body || '';
+
+    // Extra: tasks get their tag list. Timeline items get open tasks (none for now).
+    if (kind === 'task' && src.tagList && src.tagList.length) {
+      extraTitle.hidden = false;
+      extra.hidden = false;
+      extraTitle.textContent = 'תגיות';
+      extra.classList.remove('card');
+      extra.className = 'chip-row';
+      extra.innerHTML = src.tagList.map(t => `<span class="chip on">${t}</span>`).join('');
+    } else {
+      extraTitle.hidden = true;
+      extra.hidden = true;
+      extra.className = 'card';
+      extra.innerHTML = '';
+    }
+
+    // Footer actions differ per kind
+    if (kind === 'task') {
+      footer.hidden = false;
+      footer.innerHTML =
+        '<button class="btn primary" data-toast="המשימה סומנה כהושלמה">סמן כהושלמה</button>';
+    } else {
+      footer.hidden = true;
+      footer.innerHTML = '';
+    }
+  }
+
+  // --- members carousel arrows ---
+  function updateMembersArrows() {
+    const wrap = document.querySelector('.members-wrap');
+    if (!wrap) return;
+    const list = wrap.querySelector('.members');
+    const startBtn = wrap.querySelector('[data-members-nav="start"]');
+    const endBtn = wrap.querySelector('[data-members-nav="end"]');
+
+    const overflow = list.scrollWidth - list.clientWidth > 1;
+    wrap.classList.toggle('scrollable', overflow);
+    if (!overflow) return;
+
+    // RTL scrolling semantics: in RTL with scrollLeft, leftmost = most-negative (or positive depending on browser).
+    // Using scroll distance magnitudes keeps it simple.
+    const atStart = Math.abs(list.scrollLeft) < 4;
+    const atEnd   = Math.abs(Math.abs(list.scrollLeft) - (list.scrollWidth - list.clientWidth)) < 4;
+    startBtn.disabled = atStart;
+    endBtn.disabled   = atEnd;
+  }
+
+  // Prime default profile
+  renderProfile('cohen');
+
+  function refreshTasksCounts() {
+    const tasks = document.querySelector('.screen[data-screen="tasks"]');
+    if (!tasks) return;
+    const sub = tasks.querySelector('[data-tasks-sub]');
+    let total = 0;
+    tasks.querySelectorAll('[data-group]').forEach(g => {
+      const rows = g.querySelectorAll('.row-item').length;
+      const countEl = g.querySelector('[data-group-count]');
+      if (countEl) countEl.textContent = rows;
+      total += rows;
+    });
+    if (sub) sub.textContent = total + ' פתוחות';
+  }
+
+  function go(name) {
+    if (!document.querySelector(`.screen[data-screen="${name}"]`)) return;
+    screens.forEach(s => s.classList.toggle('on', s.dataset.screen === name));
+
+    const activeTab = SCREEN_TAB[name] || name;
+    // highlight in side nav
+    sideRows.forEach(r => r.classList.toggle('on', r.dataset.nav === activeTab));
+    // highlight in bottom tab bar of the visible screen
+    const visible = document.querySelector('.screen.on');
+    if (visible) {
+      visible.querySelectorAll('.tabbar .t').forEach(t => {
+        t.classList.toggle('on', t.dataset.nav === activeTab);
+      });
+      const c = visible.querySelector('.content');
+      if (c) c.scrollTop = 0;
+    }
+
+    if (history.replaceState) history.replaceState(null, '', '#' + name);
+  }
+
+  document.addEventListener('click', (e) => {
+    // members carousel arrows
+    const arrow = e.target.closest('[data-members-nav]');
+    if (arrow) {
+      const list = document.querySelector('.members-wrap .members');
+      if (list) {
+        const step = 140; // ~2 avatar widths
+        // In RTL, scrollLeft goes positive toward start (right).
+        // In LTR, scrollLeft goes positive toward end (right).
+        const isRTL = document.documentElement.getAttribute('dir') !== 'ltr';
+        const toStart = arrow.dataset.membersNav === 'start';
+        const sign = isRTL ? (toStart ? 1 : -1) : (toStart ? -1 : 1);
+        list.scrollBy({ left: sign * step, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    // toast-only trigger (no nav)
+    const toastTrigger = e.target.closest('[data-toast]:not([data-nav])');
+    if (toastTrigger) {
+      showToast(toastTrigger.dataset.toast);
+      return;
+    }
+
+    const nav = e.target.closest('[data-nav]');
+    if (nav) {
+      if (nav.dataset.family) renderProfile(nav.dataset.family);
+      if (nav.dataset.detailKind) renderDetail(nav.dataset.detailKind, parseInt(nav.dataset.detailIndex, 10) || 0);
+      if (nav.dataset.toast) showToast(nav.dataset.toast);
+      // Persist edited profile on save
+      if (nav.dataset.nav === 'settings') syncProfileFromEdit();
+      go(nav.dataset.nav);
+      return;
+    }
+
+    const chip = e.target.closest('.chip');
+    if (chip && chip.parentElement.dataset.togglegroup) {
+      const mode = chip.parentElement.dataset.togglegroup;
+      if (mode === 'single') {
+        chip.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+      }
+      chip.classList.toggle('on');
+      return;
+    }
+
+    const seg = e.target.closest('.seg-group .seg');
+    if (seg) {
+      seg.parentElement.querySelectorAll('.seg').forEach(s => s.classList.remove('on'));
+      seg.classList.add('on');
+
+      // Residents stage filter
+      const filterGroup = seg.closest('[data-residents-filter]');
+      if (filterGroup) {
+        const stage = seg.dataset.stage;
+        const host = filterGroup.closest('.screen');
+        const rows = host.querySelectorAll('[data-residents-list] .row-item');
+        let matched = 0;
+        rows.forEach(r => {
+          const show = stage === 'all' || r.dataset.stage === stage;
+          r.style.display = show ? '' : 'none';
+          if (show) matched++;
+        });
+        const empty = host.querySelector('[data-residents-empty]');
+        if (empty) empty.hidden = matched > 0;
+      }
+      return;
+    }
+
+    // Insights scope dropdown
+    const ddBtn = e.target.closest('.scope-dd-btn');
+    if (ddBtn) {
+      const dd = ddBtn.closest('.scope-dd');
+      const willOpen = !dd.classList.contains('open');
+      // close any other open dropdowns
+      document.querySelectorAll('.scope-dd.open').forEach(o => o.classList.remove('open'));
+      dd.classList.toggle('open', willOpen);
+      ddBtn.setAttribute('aria-expanded', String(willOpen));
+      return;
+    }
+    const ddOpt = e.target.closest('.scope-dd-menu li');
+    if (ddOpt) {
+      const dd = ddOpt.closest('.scope-dd');
+      const scope = ddOpt.dataset.scope;
+      const host = dd.closest('.screen');
+
+      dd.querySelectorAll('li').forEach(li => li.classList.toggle('on', li === ddOpt));
+      dd.querySelector('[data-scope-val]').textContent = ddOpt.textContent.trim();
+      dd.classList.remove('open');
+      dd.querySelector('.scope-dd-btn').setAttribute('aria-expanded', 'false');
+
+      host.querySelectorAll('[data-scope-view]').forEach(v => {
+        v.classList.toggle('on', v.dataset.scopeView === scope);
+      });
+      const sub = host.querySelector('[data-scope-sub]');
+      if (sub) {
+        const map = {
+          both: 'כל היישובים שלי · 151 משפחות',
+          yad: 'יד מרדכי · 93 משפחות',
+          brachia: 'ברכיה · 58 משפחות'
+        };
+        sub.textContent = map[scope] || sub.textContent;
+      }
+      const c = host.querySelector('.content');
+      if (c) c.scrollTop = 0;
+      return;
+    }
+    // click outside closes dropdowns
+    if (!e.target.closest('.scope-dd')) {
+      document.querySelectorAll('.scope-dd.open').forEach(o => {
+        o.classList.remove('open');
+        const b = o.querySelector('.scope-dd-btn');
+        if (b) b.setAttribute('aria-expanded','false');
+      });
+    }
+
+    const tg = e.target.closest('[data-toggle]');
+    if (tg) { tg.classList.toggle('on'); return;}
+
+    // Accept / dismiss suggestion
+    const link = e.target.closest('.btn-link');
+    if (link) {
+      const sugg = link.closest('.suggestion');
+      if (!sugg) return;
+      const isPrimary = link.classList.contains('primary');
+      sugg.style.transition = 'opacity 160ms';
+      if (isPrimary) {
+        sugg.style.opacity = '.55';
+        sugg.querySelector('.sugg-cta').innerHTML =
+          '<button class="btn-link done">✓ נוספה למשימות</button>';
+      } else {
+        sugg.style.opacity = '.35';
+        sugg.querySelector('.sugg-cta').innerHTML =
+          '<button class="btn-link done">הוסרה</button>';
+      }
+      return;
+    }
+  });
+
+  // Initial group-count calc for tasks screen
+  refreshTasksCounts();
+
+  function syncProfileFromEdit() {
+    const editScr = document.querySelector('.screen[data-screen="profileEdit"]');
+    const setScr = document.querySelector('.screen[data-screen="settings"]');
+    if (!editScr || !setScr) return;
+    const nameInput = editScr.querySelector('[data-field="fullName"]');
+    const roleInput = editScr.querySelector('[data-field="role"]');
+    const nameEl = setScr.querySelector('[data-slot="me-name"]');
+    const roleEl = setScr.querySelector('[data-slot="me-role"]');
+    if (nameInput && nameEl) nameEl.textContent = nameInput.value;
+    if (roleInput && roleEl) roleEl.textContent = roleInput.value;
+    // keep avatar initials in sync (first letter of first name)
+    const av = setScr.querySelector('.profile-avatar');
+    const avLg = editScr.querySelector('[data-slot="me-avatar-lg"]');
+    if (nameInput && av)   av.textContent   = (nameInput.value.trim()[0] || 'ד');
+    if (nameInput && avLg) avLg.textContent = (nameInput.value.trim()[0] || 'ד');
+  }
+
+  // toast
+  const toastEl = document.createElement('div');
+  toastEl.className = 'toast';
+  document.body.appendChild(toastEl);
+  function showToast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('on');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toastEl.classList.remove('on'), 1800);
+  }
+
+  // recompute carousel arrows when profile shows or window resizes
+  const memList = document.querySelector('.members-wrap .members');
+  if (memList) memList.addEventListener('scroll', updateMembersArrows, { passive: true });
+  window.addEventListener('resize', updateMembersArrows);
+
+  // -------- Language switcher (presentation only) --------
+  // Hebrew → English dictionary. Exact full-string match on text nodes and on
+  // placeholder/aria-label/title attributes. Caches the Hebrew original so we
+  // can toggle back without reloading.
+  const DICT_HE_EN = {
+    // Branding
+    'מיפוי חברתי': 'Social Mapping',
+    'מועצה אזורית חוף אשקלון': 'Hof Ashkelon Regional Council',
+
+    // Bottom tabs
+    'בית': 'Home',
+    'תושבים': 'Residents',
+    'משימות': 'Tasks',
+    'תובנות': 'Insights',
+    'הגדרות': 'Settings',
+
+    // Home
+    'פעולות מהירות': 'Quick actions',
+    'פתיחת תיק חדש': 'Open new case',
+    'שאלון שלב א\' — חירום אקוטי': 'Stage A questionnaire — acute emergency',
+    'תושב חדש': 'New resident',
+    'הוספה לרשימת תושבים': 'Add to residents list',
+    'העלאת מסמכים': 'Upload documents',
+    'סריקות, טפסים, אישורים': 'Scans, forms, approvals',
+    'המשימות שלי היום': 'My tasks today',
+    'מימוש זכויות — משפחת כהן': 'Benefits realization — Cohen family',
+    '11:00 · יד מרדכי': '11:00 · Yad Mordechai',
+    'שיחת המשך — רחלי אברהם': 'Follow-up call — Rachel Avraham',
+    '14:30 · ברכיה · טלפון': '14:30 · Brachia · phone',
+    'שאלון "מה נשמע" — נועה אלון': '"How are you" questionnaire — Noa Alon',
+    '16:00 · ברכיה': '16:00 · Brachia',
+
+    // Residents
+    '93 משפחות, 195 מבוגרים ו-48 ילדים': '93 families, 195 adults and 48 children',
+    'שם או יישוב': 'Name or village',
+    'הכל': 'All',
+    'שלב א\'': 'Stage A',
+    'שלב ב\'': 'Stage B',
+    'שלב ג\'': 'Stage C',
+    'משפחת כהן': 'Cohen family',
+    'יד מרדכי · שלב ב\' פעיל': 'Yad Mordechai · Stage B active',
+    'רחלי אברהם': 'Rachel Avraham',
+    'ברכיה · שלב ב\' פעיל': 'Brachia · Stage B active',
+    'משפחת לוי': 'Levi family',
+    'יד מרדכי · שלב א\'': 'Yad Mordechai · Stage A',
+    'נועה אלון': 'Noa Alon',
+    'ברכיה · שלב ג\'': 'Brachia · Stage C',
+    'משפחת פרץ': 'Peretz family',
+    'יד מרדכי · שלב ב\'': 'Yad Mordechai · Stage B',
+    'משפחת ביטון': 'Biton family',
+    'משפחת גולן': 'Golan family',
+    'ברכיה · שלב א\'': 'Brachia · Stage A',
+    'יעל מזרחי': 'Yael Mizrahi',
+    'משפחת דיין': 'Dayan family',
+    'משפחת אוחיון': 'Ohayon family',
+    'משפחת שפירא': 'Shapira family',
+    'יד מרדכי · שלב ג\'': 'Yad Mordechai · Stage C',
+    'משפחת נחום': 'Nahum family',
+    'אין תושבים בשלב זה': 'No residents at this stage',
+
+    // Profile
+    'סיכום אחרון': 'Latest summary',
+    'פעולות': 'Actions',
+    'מילוי שאלון חדש': 'Fill new questionnaire',
+    'שלב א\' / ב\' / ג\' לפי המצב': 'Stage A / B / C as needed',
+    'עדכון פרטי משפחה': 'Update family details',
+    'הרכב, פרטי קשר, יישוב': 'Composition, contact details, village',
+    'משימות פתוחות': 'Open tasks',
+    'מסמכים': 'Documents',
+    'קו הזמן': 'Timeline',
+    'העלאת מסמך חדש': 'Upload new document',
+    'בני המשפחה': 'Family members',
+
+    // Cohen family data
+    'חזרו לפני שבועיים ליד מרדכי. שני ילדים חזרו למסגרות, בן 11 עדיין לא. אבי מבקש מיצוי זכויות וסיוע לוגיסטי.':
+      'Returned to Yad Mordechai two weeks ago. Two children are back in school, the 11-year-old isn\'t. Avi is asking for help claiming benefits and logistical support.',
+    'אבי': 'Avi',
+    'שרה': 'Sarah',
+    'יונתן': 'Yonatan',
+    'נועם': 'Noam',
+    'מיכל': 'Michal',
+    'איתי': 'Itay',
+    'שלב ב\' — ביסוס תפקוד': 'Stage B — stabilizing function',
+    '26.4 · דנה כהן': '26.4 · Dana Cohen',
+    'זיהוי תמה — מסגרות אחה"צ': 'Theme detected — after-school care',
+    '19.4 · AI': '19.4 · AI',
+    'שלב א\' — חירום אקוטי': 'Stage A — acute emergency',
+    '8.4 · אביטל שרון': '8.4 · Avital Sharon',
+    'תיאום מימוש זכויות': 'Schedule benefits realization',
+    'היום 11:00': 'Today 11:00',
+    'חזרה לבית הספר — בן 11': 'Return to school — 11-year-old',
+    'מחר': 'Tomorrow',
+    'טופס בקשה לדמי אבטלה': 'Unemployment benefits application form',
+    '28.4 · העלתה דנה': '28.4 · Uploaded by Dana',
+    'אישור מפונים מלון דן': 'Dan Hotel evacuees certificate',
+    '10.4 · התקבל מהלשכה': '10.4 · Received from the office',
+    'הפניה לבית הספר — נועם': 'School referral — Noam',
+    '19.4 · דנה': '19.4 · Dana',
+
+    // Avraham family data
+    'ברכיה · שלב ב\'': 'Brachia · Stage B',
+    'רחלי חזרה לפני שבוע מהמלון. יוסי שב לעבודה, רחלי עדיין לא. חוסר שינה ודאגה לילדים, מתלבטת על פנייה לפסיכולוג.':
+      'Rachel came back from the hotel a week ago. Yossi is back at work, Rachel isn\'t. Sleep deprivation and worry about the children, unsure whether to seek a psychologist.',
+    'יוסי': 'Yossi',
+    'רחלי': 'Rachel',
+    'שירה': 'Shira',
+    'דניאל': 'Daniel',
+    'שיחת המשך — עם רחלי': 'Follow-up call — with Rachel',
+    '24.4 · דנה כהן': '24.4 · Dana Cohen',
+    'זיהוי תמה — חזרה חלקית לעבודה': 'Theme detected — partial return to work',
+    '22.4 · AI': '22.4 · AI',
+    '15.4 · דנה כהן': '15.4 · Dana Cohen',
+    '9.4 · אביטל שרון': '9.4 · Avital Sharon',
+    'תיאום פנייה לפסיכולוג דרך מרכז חוסן': 'Schedule psychologist referral via Resilience Center',
+    'תוך 3 ימים': 'Within 3 days',
+    'שיחת המשך': 'Follow-up call',
+    '3.5 · טלפון': '3.5 · phone',
+    'הסכמה לשיתוף מידע עם מרכז חוסן': 'Information-sharing consent — Resilience Center',
+    '22.4 · חתמה רחלי': '22.4 · Signed by Rachel',
+    'סיכום ביקור בית': 'Home visit summary',
+    '15.4 · דנה': '15.4 · Dana',
+
+    // Alon family data
+    'אם חד-הורית, חזרה מוקדם יחסית. בעלה לשעבר היה בן משפחה של קורבן. נועה ביקשה ליווי רגשי מזדמן ומסגרת אחה"צ לעידו.':
+      'Single mother, returned relatively early. Her ex-husband\'s brother was a casualty. Noa asked for occasional emotional support and after-school care for Ido.',
+    'נועה': 'Noa',
+    'עידו': 'Ido',
+    'שאלון "מה נשמע"': '"How are you" questionnaire',
+    '27.4 · דנה כהן': '27.4 · Dana Cohen',
+    'זיהוי תמה — שכול במשפחה מורחבת': 'Theme detected — bereavement in extended family',
+    '14.4 · AI': '14.4 · AI',
+    '2.4 · דנה כהן': '2.4 · Dana Cohen',
+    '8.10.25 · אביטל שרון': '8.10.25 · Avital Sharon',
+    'בירור מסגרת אחה"צ לעידו': 'Clarify after-school care for Ido',
+    'השבוע': 'This week',
+    'חיבור לקבוצת תמיכה לנשים': 'Connect to women\'s support group',
+    'בשבועיים הקרובים': 'In the next two weeks',
+    'תעודת זהות + ספח': 'ID + appendix',
+    '10.10.25 · סריקה': '10.10.25 · Scan',
+    'אישור מצב חד-הורי': 'Single-parent status certificate',
+    '2.4 · מוסד לביטוח לאומי': '2.4 · National Insurance Institute',
+    'הפניה למסגרת אחה"צ': 'Referral to after-school program',
+    '27.4 · דנה': '27.4 · Dana',
+    'טופס הסכמה — קבוצת תמיכה': 'Consent form — support group',
+    '27.4 · טיוטה': '27.4 · Draft',
+
+    // Tasks screen
+    'משימות פתוחות ': 'Open tasks ',
+    'משימות פתוחות': 'Open tasks',
+    '9 פתוחות': '9 open',
+    'דחוף': 'Urgent',
+    'מיידי': 'Immediate',
+    'לא דחוף': 'Not urgent',
+    // Villages + time tokens (used as split pieces and standalone)
+    'יד מרדכי': 'Yad Mordechai',
+    'ברכיה': 'Brachia',
+    'היום': 'Today',
+    'מחר': 'Tomorrow',
+    'השבוע': 'This week',
+    'טלפון': 'phone',
+    'יועצת ביה"ס': 'school counselor',
+    // Open-tasks screen — combined subtitles and full row names
+    'היום 11:00': 'Today 11:00',
+    'היום 17:00': 'Today 17:00',
+    'היום 14:30': 'Today 14:30',
+    'מחר 16:00': 'Tomorrow 16:00',
+    'ביקור בית — משפחת לוי': 'Home visit — Levi family',
+    'תיאום מרכז חוסן — נועה אלון': 'Coordinate Resilience Center — Noa Alon',
+    'ביקור בית — משפחת אברהם': 'Home visit — Avraham family',
+    'תיאום עם יועצת חינוך': 'Coordinate with education counselor',
+    'חזרה לבית הספר — בן 11 כהן': 'Return to school — Cohen\'s 11-year-old',
+    'מעקב משפחת פרץ': 'Peretz family follow-up',
+    '"מה נשמע" — 18 משפחות': '"How are you" — 18 families',
+    'מחר · יד מרדכי · יועצת ביה"ס': 'Tomorrow · Yad Mordechai · school counselor',
+    // Insights per-village headings
+    'פעולות מוצעות · יד מרדכי': 'Suggested actions · Yad Mordechai',
+    'פעולות מוצעות · ברכיה': 'Suggested actions · Brachia',
+    '47 משפחות': '47 families',
+    '7 משפחות': '7 families',
+    '17 משפחות': '17 families',
+    'קבוצת תמיכה רגשית מקומית': 'Local emotional support group',
+    'ריכוז גבוה של צורך רגשי (50%). מומלץ לבחון קבוצה שבועית במבנה הקהילתי.':
+      'High concentration of emotional need (50%). Consider a weekly group at the community building.',
+    'פתרון מסגרת אחה"צ': 'After-school care solution',
+    'תמה דומיננטית ביישוב. הצעה: שיחת פתיחה עם מתנ"ס ומנהלת החינוך של המועצה.':
+      'Dominant theme in the village. Suggestion: opening conversation with the community center and the council\'s head of education.',
+    'יום פתוח למיצוי זכויות': 'Benefits realization open day',
+    'אחוז גבוה יותר מבמרדכי. מומלץ לרכז ליום מיקוד עם יועצ/ת זכויות.':
+      'Higher rate than in Yad Mordechai. Recommended to arrange a focus day with a benefits advisor.',
+    'הדרכת הורים לגיל הרך': 'Parenting workshop for early childhood',
+    'חששות חוזרים על ילדים 0–6. הצעה: שיתוף פעולה עם טיפת חלב.':
+      'Recurring concerns about children 0–6. Suggestion: collaboration with Tipat Halav.',
+    '12 משפחות. רוב הפניות לא הגיעו עדיין למרכז חוסן.':
+      '12 families. Most referrals haven\'t reached the Resilience Center yet.',
+    '7 משפחות מדווחות על היעדר מענה לילדים בין סיום בי"ס לחזרת ההורה השני מהעבודה.':
+      '7 families report no solution for children between school ending and the second parent\'s return from work.',
+    'נצפה ב-9 שיחות — בעיקר אמהות לילדים צעירים שמתקשות לחזור לשגרת עבודה.':
+      'Seen in 9 conversations — mainly mothers of young children struggling to return to a work routine.',
+    '17 משפחות (29%) מציינות קושי בבירוקרטיה — אחוז גבוה יחסית. חלק מהפניות חוזרות שוב ושוב.':
+      '17 families (29%) mention bureaucratic difficulty — a relatively high rate. Some requests recur repeatedly.',
+    '7 משפחות עם ילדים 0–6. דיווחי הורים על רגרסיות, פחדי לילה, דבקות.':
+      '7 families with children 0–6. Parents report regressions, night-fears, clinginess.',
+    '3 משפחות מעלות זאת — תמה שנכנסה החודש, שווה מעקב.':
+      '3 families raise this — a theme that emerged this month, worth monitoring.',
+    'מיצוי זכויות — עומס בירוקרטי': 'Benefits realization — bureaucratic overload',
+    '3 דחופות': '3 urgent',
+    // Profile subtitle variants used in many families
+    'יד מרדכי · שלב ב\' פעיל': 'Yad Mordechai · Stage B active',
+    'ברכיה · שלב ב\' פעיל': 'Brachia · Stage B active',
+    'יד מרדכי · שלב א\'': 'Yad Mordechai · Stage A',
+    'ברכיה · שלב א\'': 'Brachia · Stage A',
+    'ברכיה · שלב ג\'': 'Brachia · Stage C',
+    'יד מרדכי · שלב ב\'': 'Yad Mordechai · Stage B',
+    'יד מרדכי · שלב ג\'': 'Yad Mordechai · Stage C',
+    // Profile action subtitles (home screen tasks)
+    '11:00 · יד מרדכי': '11:00 · Yad Mordechai',
+    '14:30 · ברכיה · טלפון': '14:30 · Brachia · phone',
+    '16:00 · ברכיה': '16:00 · Brachia',
+
+    // Insights
+    'כל היישובים שלי': 'All my villages',
+    'כל היישובים שלי · 151 משפחות': 'All my villages · 151 families',
+    'יד מרדכי · 93 משפחות': 'Yad Mordechai · 93 families',
+    'ברכיה · 58 משפחות': 'Brachia · 58 families',
+    'משפחות לפי סיווג דחיפות': 'Families by urgency classification',
+    'פילוח לפי יישוב': 'Breakdown by village',
+    'ברכיה': 'Brachia',
+    'משקל הטיפול שלך מחולק בקירוב 60/40 בין היישובים.': 'Your caseload is split roughly 60/40 between the two villages.',
+    'צרכים נפוצים': 'Common needs',
+    'צורך רגשי': 'Emotional need',
+    'מיצוי זכויות': 'Benefits realization',
+    'לוגיסטי': 'Logistical',
+    'צרכים מיוחדים': 'Special needs',
+    'שכול': 'Bereavement',
+    'תמות עולות': 'Emerging themes',
+    'דפוסים ששבו בשיחות האחרונות. זוהו ע"י AI, מסומנות בהתאם לעקביות וההיקף.':
+      'Patterns recurring in recent conversations. Detected by AI, marked by consistency and scope.',
+    'מסגרות אחה"צ חסרות': 'Missing after-school care',
+    '↑ עולה': '↑ rising',
+    'יציב': 'stable',
+    'חדשה': 'new',
+    'ב-10 משפחות עלה קושי שאין מענה לילדים אחרי הלימודים — בעיקר אצל הורים שחזרו לעבודה. 7 ביד מרדכי, 3 בברכיה.':
+      'In 10 families there\'s no solution for children after school — mostly with parents who returned to work. 7 in Yad Mordechai, 3 in Brachia.',
+    'הורה אחד שלא חזר לעבודה': 'One parent not back at work',
+    'דפוס חוזר שבו אחד ההורים חזר לעבודה והשני נותר בבית בלחץ רגשי. נצפה ב-14 שיחות (9 ביד מרדכי, 5 בברכיה).':
+      'A recurring pattern where one parent returned to work and the other stayed home under emotional strain. Seen in 14 conversations (9 in Yad Mordechai, 5 in Brachia).',
+    'שינה ולחץ': 'Sleep and stress',
+    'הפרעות שינה ותחושת עומס מדווחות ב-18 משפחות. מיעוט פניות למרכז חוסן בפועל.':
+      'Sleep disturbance and overwhelm reported by 18 families. Few actual referrals to the Resilience Center.',
+    'חששות לילדים צעירים (0–6)': 'Concerns for young children (0–6)',
+    'הורים מדווחים על רגרסיות, פחדים והתנהגות מוחצנת. נזכר ב-11 שיחות.':
+      'Parents report regressions, fears, and acting-out behavior. Mentioned in 11 conversations.',
+    'פעולות מוצעות': 'Suggested actions',
+    'המערכת מציעה פעולות על סמך הצרכים והתמות. לא נפתחת משימה עד לאישורך.':
+      'The system suggests actions based on needs and themes. No task is created until you approve.',
+    'קבוצת תמיכה רגשית משותפת': 'Joint emotional support group',
+    '67 משפחות': '67 families',
+    'צורך רגשי הוא הצורך הנפוץ ביותר (44% מהמשפחות). כדאי לשקול 2 קבוצות — אחת בכל יישוב — בתיאום עם מרכז חוסן.':
+      'Emotional need is the most common (44% of families). Consider 2 groups — one per village — in coordination with the Resilience Center.',
+    'דחייה': 'Dismiss',
+    'הוספה למשימות': 'Add to tasks',
+    'מפגש פתוח על מיצוי זכויות': 'Open meeting on benefits realization',
+    '52 משפחות': '52 families',
+    'ביקוש גבוה לליווי בירוקרטי. הצעה: יועצ/ת זכויות במועצה, רוטציה בין היישובים.':
+      'High demand for bureaucratic support. Proposal: council benefits advisor, rotating between villages.',
+    'תיאום עם מתנ"ס אזורי — מסגרות אחה"צ': 'Coordinate with community center — after-school care',
+    '10 משפחות': '10 families',
+    'תמה עולה ועקבית. מומלץ להעלות לשולחן העגול הקרוב של המועצה.':
+      'Rising and consistent theme. Recommended to raise at the next council round-table.',
+
+    // Settings
+    'דנה כהן': 'Dana Cohen',
+    'עו"ס יישובית': 'Village social worker',
+    'ערוך': 'Edit',
+    'סנכרון ותצוגה': 'Sync and display',
+    'סנכרון אוטומטי': 'Auto sync',
+    'Wi-Fi בלבד': 'Wi-Fi only',
+    'שמור אופליין': 'Save offline',
+    'תושבים פעילים': 'Active residents',
+    'גודל טקסט': 'Text size',
+    'רגיל': 'Regular',
+    'AI ופרטיות': 'AI and privacy',
+    'תקצירי AI': 'AI summaries',
+    'דורש אישור לפני שמירה': 'Requires approval before saving',
+    'מדיניות שיתוף מידע': 'Information-sharing policy',
+    'חשבון': 'Account',
+    'עזרה ותמיכה': 'Help and support',
+    'יציאה': 'Sign out',
+
+    // Edit profile
+    'עריכת פרופיל': 'Edit profile',
+    'החלפת תמונה': 'Change photo',
+    'פרטים אישיים': 'Personal details',
+    'שם מלא': 'Full name',
+    'טלפון': 'Phone',
+    'אימייל': 'Email',
+    'תפקיד': 'Role',
+    'יישובים באחריותי': 'My villages',
+    'זיקים': 'Zikim',
+    'כרמיה': 'Karmiya',
+    'ניצנים': 'Nitzanim',
+    'אבטחה': 'Security',
+    'החלפת סיסמה': 'Change password',
+    'אימות דו-שלבי': 'Two-factor authentication',
+    'דרך SMS': 'via SMS',
+    'שמירה': 'Save',
+
+    // Questionnaire
+    'שלב א\' — חירום אקוטי': 'Stage A — acute emergency',
+    '3 מתוך 5 · צרכים דחופים': '3 of 5 · urgent needs',
+    'צרכים מיוחדים של ראש המשפחה': 'Special needs of the head of household',
+    'ניתן לבחור יותר מאפשרות אחת': 'You may choose more than one',
+    'בבית': 'At home',
+    'מפונה עם המשפחה': 'Evacuated with family',
+    'מפונה לבד': 'Evacuated alone',
+    'פצוע': 'Injured',
+    'צורך כספי': 'Financial need',
+    'אחר': 'Other',
+    'דחיפות כללית': 'Overall urgency',
+    'אין צורך בהמשך': 'No follow-up needed',
+    'הערה מילולית': 'Free-text note',
+    'השהה': 'Pause',
+    'הבא': 'Next',
+
+    // AI summary
+    'תקציר + משימות': 'Summary + tasks',
+    'רחלי אברהם · שלב ב\'': 'Rachel Avraham · Stage B',
+    'תקציר מוצע': 'Proposed summary',
+    'משימות מוצעות': 'Suggested tasks',
+    'פעילה': 'Active',
+    'בדיקת זכאות לחופשת אבל': 'Check eligibility for bereavement leave',
+    'הוסרה': 'Removed',
+    'תגיות': 'Tags',
+    'רגשי': 'Emotional',
+    'טרם חזרה לעבודה': 'Hasn\'t returned to work',
+    'פנייה לפסיכולוג': 'Psychologist referral',
+    'תמיכה משפחתית': 'Family support',
+    'אחר כך': 'Later',
+
+    // Detail
+    'המשימה סומנה כהושלמה': 'Task marked as complete',
+    'סמן כהושלמה': 'Mark as complete',
+    '✨ זיהוי AI': '✨ AI detected',
+
+    // Toasts / demo stubs
+    'פתיחת מסמך — דמו': 'Open document — demo',
+    'העלאת מסמך — דמו': 'Upload document — demo',
+    'עדכון פרטי משפחה — דמו': 'Update family details — demo',
+    'העלאת מסמכים — דמו': 'Upload documents — demo',
+    'החלפת תמונה — דמו': 'Change photo — demo',
+    'החלפת סיסמה — דמו': 'Change password — demo',
+    'הפרופיל נשמר': 'Profile saved',
+
+    // Chips on tasks details
+    'ביטוח לאומי': 'National Insurance',
+    'חינוך': 'Education',
+    'נפשי': 'Mental health',
+    'מרכז חוסן': 'Resilience Center',
+    'מעקב': 'Follow-up',
+    'לוגיסטי ': 'Logistical ',
+    'קהילתי': 'Community',
+
+    // Task full bodies
+    'ליצור קשר עם עובדת ביטוח לאומי ומתאמת מיצוי זכויות במועצה. להציג את מצב ההכנסות של אבי (חופשה ללא תשלום) ואפשרות לדמי אבטלה חלקיים. ביקור בית מתואם לשעה 11:00.':
+      'Contact the National Insurance caseworker and the council benefits coordinator. Present Avi\'s income situation (unpaid leave) and the option for partial unemployment benefits. Home visit scheduled for 11:00.',
+    'נועם (11) לא חזר עדיין לבית הספר. לתאם עם יועצת בית הספר חזרה מדורגת, אולי עם ליווי של פסיכולוג חינוכי.':
+      'Noam (11) has not returned to school yet. Coordinate with the school counselor for a gradual return, possibly with support from an educational psychologist.',
+    'רחלי מתלבטת אם לפנות לפסיכולוגית. לתאם שיחת היכרות ראשונה במרכז חוסן בקיבוץ יד מרדכי. חשוב להזכיר שהתקציב נסגר חודש-חודשיים מראש.':
+      'Rachel is unsure whether to reach out to a psychologist. Schedule an intro session at the Resilience Center in Kibbutz Yad Mordechai. Note the budget closes 1–2 months in advance.',
+    'שיחה טלפונית מתואמת. לבדוק אם הצליחה ליצור קשר עם הפסיכולוגית, ומה שלום הילדים.':
+      'Scheduled phone call. Check whether she managed to reach the psychologist, and how the children are doing.',
+    'לבדוק מול המתנ"ס האזורי ומועדונית הילדים בברכיה אפשרויות לעידו (7). עדיפות: פעמיים-שלוש בשבוע.':
+      'Check options for Ido (7) with the regional community center and Brachia after-school club. Preferred: 2–3 times a week.',
+    'נועה ביקשה חיבור לקבוצה לנשים במצב דומה. לוודא שהקבוצה של מרכז חוסן ברכיה מתאימה, ולתאם שיחת היכרות.':
+      'Noa asked to be connected to a group for women in a similar situation. Confirm the Brachia Resilience Center group is a fit and schedule an intro session.',
+
+    // Timeline bodies
+    'שיחה של 28 דקות עם אבי ושרה. שלושה ילדים חזרו למסגרות, בן 11 עדיין לא. אבי מבקש ליווי במיצוי זכויות — דמי אבטלה חלקיים וסיוע בשכר דירה. שרה בעיקר עסוקה בילדים, מעדיפה לא לפתוח שיחה רגשית בשלב הזה.':
+      '28-minute conversation with Avi and Sarah. Three children are back in school, the 11-year-old isn\'t. Avi is asking for help with benefits — partial unemployment and rent assistance. Sarah is mainly focused on the children and prefers not to open an emotional conversation yet.',
+    'זיהוי אוטומטי של תמה חוזרת בשיחות: היעדר מסגרת אחה"צ לילדים. נצפה גם אצל 7 משפחות נוספות ביישוב. מומלץ להעלות לשולחן עגול.':
+      'Automatic detection of a recurring theme: lack of after-school care for children. Also seen in 7 other families in the village. Recommended for a round-table discussion.',
+    'הועבר אלי בהנדאוף. סיווג: מיידי. נמצאו במלון דן, אבי נראה מתפקד, האם מעורערת רגשית. צרכים דחופים: ציוד בסיסי, תרופות לילד הצעיר.':
+      'Handed over to me. Classification: immediate. Found at the Dan Hotel — Avi appears to be functioning, the mother is emotionally shaken. Urgent needs: basic supplies, medicine for the youngest child.',
+    'שיחה טלפונית של 23 דקות. רחלי דיווחה שיוסי שב לעבודה אבל היא עדיין לא. חוסר שינה וקושי להתמקד. מערכת תמיכה משפחתית זמינה — אחות גרה ביישוב. ביקשה שיחה נוספת בעוד שבוע.':
+      '23-minute phone call. Rachel reported that Yossi is back at work but she isn\'t. Sleep deprivation and difficulty focusing. Family support available — her sister lives in the village. Asked for another call in a week.',
+    'דפוס חוזר בשיחות של רחלי ו-8 משפחות נוספות: אחד ההורים חזר לעבודה והשני נותר בבית בלחץ רגשי. מומלץ לבחון קבוצת תמיכה ליוצאים במצב דומה.':
+      'Recurring pattern in Rachel\'s and 8 other families\' conversations: one parent returned to work, the other stays home under emotional strain. Recommend considering a support group for people in similar situations.',
+    'ביקור בית ביישוב. רחלי ויוסי שניהם נוכחים. הילדים חזרו לגנים, אבל ניכרים סימני חרדה אצל דניאל (6). רחלי מבקשת ליווי רגשי.':
+      'Home visit. Rachel and Yossi both present. The children are back in preschool, but Daniel (6) shows signs of anxiety. Rachel is asking for emotional support.',
+    'נמצאו במלון המלכים בנתניה. אב משפחה יוצא מילואים. סיווג: מיידי. צרכים עיקריים: עזרה רגשית למשפחה וציוד ילדים.':
+      'Found at the Kings Hotel in Netanya. Father just out of reserve duty. Classification: immediate. Main needs: emotional support for the family and children\'s supplies.',
+    'מענה קצר לשאלון Reaching out. נועה מדווחת שהיא "בסדר", אך עוד מתקשה לישון. עידו חזר לבית הספר אך חסר לו מסגרת אחה"צ. אין בקשות נוספות כרגע.':
+      'Brief response to the Reaching out questionnaire. Noa reports she is "okay" but still struggles to sleep. Ido is back at school but lacks after-school care. No additional requests at the moment.',
+    'תמה שזוהתה מכמה שיחות של נועה: דוד של עידו (אחיו של הגרוש) נפל ב-7.10. נועה ועידו לא היו קרובים אליו, אבל עידו מזכיר אותו לעיתים. שווה מעקב.':
+      'Theme detected across several of Noa\'s conversations: Ido\'s uncle (her ex-husband\'s brother) was killed on 7.10. Noa and Ido weren\'t close with him, but Ido mentions him occasionally. Worth monitoring.',
+    'ביקור בית בברכיה. נועה פתוחה לשיתוף פעולה. עידו בבית הספר, פעם-פעמיים בשבוע דחיית הגעה. נועה ביקשה: חיבור לקבוצת תמיכה לנשים חד-הוריות ביישוב.':
+      'Home visit in Brachia. Noa is open to collaboration. Ido is in school; once or twice a week he delays going. Noa asked to be connected to a support group for single mothers in the village.',
+    'נתפסו בבית. נועה מתפקדת, עידו שקט מאוד. סיווג: מיידי. הועברו לאגף הסעות מיד למחרת.':
+      'Found at home. Noa is functioning, Ido is very quiet. Classification: immediate. Transferred to the transport division the next day.'
+  };
+
+  // Text-attributes we also translate
+  const TRANSLATABLE_ATTRS = ['placeholder', 'aria-label', 'title'];
+
+  // Collect every current Hebrew string on first language switch,
+  // so we can restore exactly.
+  const originalHebrew = new WeakMap();
+
+  function collectTextNodes(root) {
+    const nodes = [];
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(n) {
+        if (!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        // Skip script/style
+        const p = n.parentElement;
+        if (!p) return NodeFilter.FILTER_REJECT;
+        const tag = p.tagName;
+        if (tag === 'SCRIPT' || tag === 'STYLE') return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    let n; while ((n = walker.nextNode())) nodes.push(n);
+    return nodes;
+  }
+
+  window.__translate = translateText;
+
+  // Translate a string. Try whole-string match first; if not found,
+  // split on common separators and translate each piece. Pieces with
+  // no translation are left as-is (so punctuation and numerics pass through).
+  function translateString(s) {
+    if (DICT_HE_EN[s]) return DICT_HE_EN[s];
+    // Split preserving delimiters
+    const parts = s.split(/(\s+·\s+|\s+—\s+|\s+-\s+|\s+,\s+)/);
+    if (parts.length === 1) return s; // no split worked
+    let changed = false;
+    const out = parts.map(p => {
+      if (!p) return p;
+      const key = p.trim();
+      if (!key) return p;
+      if (DICT_HE_EN[key]) { changed = true; return p.replace(key, DICT_HE_EN[key]); }
+      return p;
+    });
+    return changed ? out.join('') : s;
+  }
+
+  function translateText(lang) {
+    // Text nodes
+    collectTextNodes(document.body).forEach(node => {
+      if (!originalHebrew.has(node)) originalHebrew.set(node, node.nodeValue);
+      const original = originalHebrew.get(node);
+      const originalTrim = original.trim();
+      if (!originalTrim) return;
+      if (lang === 'en') {
+        const translated = translateString(originalTrim);
+        const leading = original.match(/^\s*/)[0];
+        const trailing = original.match(/\s*$/)[0];
+        node.nodeValue = leading + translated + trailing;
+      } else {
+        node.nodeValue = original;
+      }
+    });
+    // Translatable attributes
+    document.body.querySelectorAll('[placeholder],[aria-label],[title]').forEach(el => {
+      TRANSLATABLE_ATTRS.forEach(attr => {
+        const v = el.getAttribute(attr);
+        if (!v) return;
+        const key = '__orig_' + attr;
+        if (!el.dataset[key]) el.dataset[key] = v;
+        const orig = el.dataset[key];
+        if (lang === 'en') {
+          el.setAttribute(attr, translateString(orig.trim()));
+        } else {
+          el.setAttribute(attr, orig);
+        }
+      });
+    });
+    // Translate inputs' values (edit-profile)
+    document.body.querySelectorAll('input[type="text"],input[type="tel"],input[type="email"]').forEach(inp => {
+      if (!inp.dataset.__origVal) inp.dataset.__origVal = inp.value;
+      if (lang === 'en') {
+        inp.value = translateString(inp.dataset.__origVal.trim());
+      } else {
+        inp.value = inp.dataset.__origVal;
+      }
+    });
+    // Document direction — set on <html>, <body>, and apply body class for CSS
+    const dir = lang === 'en' ? 'ltr' : 'rtl';
+    document.documentElement.setAttribute('dir', dir);
+    document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'he');
+    document.body.setAttribute('dir', dir);
+    document.body.classList.toggle('lang-en', lang === 'en');
+    document.body.classList.toggle('lang-he', lang !== 'en');
+  }
+
+  let currentLang = 'he';
+  document.body.classList.add('lang-he');
+
+  // Monkey-patch dynamic renderers to re-translate after they run
+  const _renderProfile = renderProfile;
+  renderProfile = function (key) {
+    _renderProfile(key);
+    if (currentLang === 'en') translateText('en');
+  };
+  const _renderDetail = renderDetail;
+  renderDetail = function (kind, index) {
+    _renderDetail(kind, index);
+    if (currentLang === 'en') translateText('en');
+  };
+
+  // Hook up the sidebar rows
+  document.querySelectorAll('[data-lang]').forEach(row => {
+    row.addEventListener('click', () => {
+      const lang = row.dataset.lang;
+      if (lang === currentLang) return;
+      currentLang = lang;
+      document.querySelectorAll('.lang-row').forEach(r => r.classList.toggle('on', r.dataset.lang === lang));
+      translateText(lang);
+    });
+  });
+
+  const hash = (location.hash || '').replace('#','');
+  go(SCREEN_TAB[hash] ? hash : 'home');
+})();
+</script>
+
+</body>
+</html>

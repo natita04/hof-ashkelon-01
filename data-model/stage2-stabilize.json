@@ -1,0 +1,77 @@
+{
+  "code": "STAGE_2_STABILIZE",
+  "stage": "2",
+  "title_he": "שאלון שלב ב' — ביסוס תפקוד",
+  "description_he": "שבוע לאחר האירוע ומעלה. עבור משפחות שאובחנו כצריכות המשך התערבות יזומה. שאלון זה מתועד גם כפנייה ב-EPR. החלטה על פתיחת תיק לקוח תתקבל תוך 3 חודשים.",
+  "groups": [
+    { "key": "opening", "label_he": "פתיחה ותיאום ציפיות", "order": 1 },
+    { "key": "identification", "label_he": "פרטי זיהוי", "order": 2 },
+    { "key": "kids_frameworks", "label_he": "ילדים ומסגרות", "order": 3 },
+    { "key": "employment", "label_he": "תעסוקה", "order": 4 },
+    { "key": "support_network", "label_he": "מערכות תמיכה", "order": 5 },
+    { "key": "routines", "label_he": "שגרות תפקודיות", "order": 6 },
+    { "key": "family_dynamics", "label_he": "דינמיקה משפחתית", "order": 7 },
+    { "key": "emotional", "label_he": "צרכים רגשיים", "order": 8 },
+    { "key": "rights", "label_he": "מיצוי זכויות", "order": 9 },
+    { "key": "finance", "label_he": "מצב כלכלי", "order": 10 },
+    { "key": "worker_summary", "label_he": "סיכום העו\"ס", "order": 11 }
+  ],
+  "questions": [
+    { "id": "q_date", "group": "identification", "order": 10, "label_he": "תאריך", "type": "date", "required": true, "category": "functional_routine" },
+    { "id": "q_first_name", "group": "identification", "order": 20, "label_he": "שם פרטי של ראש המשפחה", "type": "open_text", "required": true, "category": "functional_routine" },
+    { "id": "q_last_name", "group": "identification", "order": 30, "label_he": "שם משפחה", "type": "open_text", "required": true, "category": "functional_routine" },
+    { "id": "q_national_id", "group": "identification", "order": 40, "label_he": "ת.ז.", "type": "open_text", "required": false, "category": "functional_routine" },
+    { "id": "q_phone", "group": "identification", "order": 50, "label_he": "טלפון", "type": "phone", "required": true, "category": "functional_routine" },
+    { "id": "q_village", "group": "identification", "order": 60, "label_he": "יישוב", "type": "single_choice", "required": true, "category": "community", "options_from_taxonomy": "VILLAGE_LIST" },
+    { "id": "q_current_address", "group": "identification", "order": 70, "label_he": "כתובת נוכחית", "type": "open_text", "required": true, "category": "functional_routine" },
+    { "id": "q_partner_first_name", "group": "identification", "order": 80, "label_he": "שם פרטי בן/בת זוג", "type": "open_text", "required": false, "category": "community" },
+
+    { "id": "q_kids_returned_to_frameworks", "group": "kids_frameworks", "order": 100, "label_he": "האם הילדים חזרו למסגרות?", "type": "single_choice", "required": true, "category": "functional_routine", "options": [{"label_he":"כן","value":"yes"},{"label_he":"לא","value":"no"},{"label_he":"חלקי","value":"partial"}] },
+    { "id": "q_which_kids_didnt_return", "group": "kids_frameworks", "order": 110, "label_he": "מי לא חזר ולמה?", "type": "open_text", "required": false, "category": "functional_routine", "conditional_on": { "question_id": "q_kids_returned_to_frameworks", "op": "in", "values": ["no", "partial"] } },
+    { "id": "q_kids_leisure_frameworks", "group": "kids_frameworks", "order": 120, "label_he": "האם יש לילדים מסגרות פנאי?", "type": "single_choice", "required": false, "category": "functional_routine", "options": [{"label_he":"כן","value":"yes"},{"label_he":"לא","value":"no"}] },
+
+    { "id": "q_head_back_to_work", "group": "employment", "order": 200, "label_he": "האם חזרת לעבודה?", "type": "single_choice", "required": true, "category": "material", "options": [{"label_he":"כן","value":"yes"},{"label_he":"לא","value":"no"}] },
+    { "id": "q_partner_back_to_work", "group": "employment", "order": 210, "label_he": "האם בן/בת הזוג חזר/ה לעבודה?", "type": "single_choice", "required": false, "category": "material", "options": [{"label_he":"כן","value":"yes"},{"label_he":"לא","value":"no"}] },
+    { "id": "q_employment_status", "group": "employment", "order": 220, "label_he": "השכלה ומצב תעסוקה כעת, מקורות הכנסה, גובה הכנסה", "type": "open_text", "required": false, "category": "material" },
+
+    { "id": "q_family_support", "group": "support_network", "order": 300, "label_he": "מערכות תמיכה משפחתיות", "type": "open_text", "required": false, "category": "community" },
+    { "id": "q_community_support", "group": "support_network", "order": 310, "label_he": "מערכות תמיכה בקהילה", "type": "open_text", "required": false, "category": "community" },
+
+    { "id": "q_functional_routines", "group": "routines", "order": 400, "label_he": "שגרות תפקודיות — האם בני המשפחה חזרו לשגרות יומיום? אילו שגרות מקיימים?", "type": "open_text", "required": false, "category": "functional_routine" },
+
+    { "id": "q_family_protection_need", "group": "family_dynamics", "order": 500, "label_he": "יחסי המשפחה וצורך במוגנות", "type": "open_text", "required": false, "category": "emotional" },
+
+    { "id": "q_emotional_need", "group": "emotional", "order": 600, "label_he": "האם יש צורך בטיפול רגשי? למי, סביב איזה צורך?", "type": "open_text", "required": false, "category": "emotional" },
+
+    { "id": "q_rights_received", "group": "rights", "order": 700, "label_he": "האם יש זכויות (הטבות/הנחות) שאתם מקבלים? האם ניסיתם למצות זכות מסוימת ולא הצלחתם?", "type": "open_text", "required": false, "category": "rights" },
+    {
+      "id": "q_rights_potential_areas",
+      "group": "rights",
+      "order": 710,
+      "label_he": "באילו מצבי חיים ותחומים ייתכן ויש אפשרות למיצוי זכויות?",
+      "type": "multi_choice",
+      "required": false,
+      "category": "rights",
+      "options": [
+        { "label_he": "מצב בריאותי — נכות", "value": "health_disability" },
+        { "label_he": "הנחות נלוות לקצבאות ביטוח לאומי", "value": "bituach_leumi_related" },
+        { "label_he": "משפחה בראשות הורה עצמאי", "value": "single_parent" },
+        { "label_he": "דיור", "value": "housing" },
+        { "label_he": "משפחה — גירושים, משמורת, מעמד", "value": "family_status_legal" },
+        { "label_he": "עבודה ואבטלה", "value": "employment_unemployment" },
+        { "label_he": "חינוך", "value": "education" },
+        { "label_he": "סיוע משפטי", "value": "legal_aid" }
+      ]
+    },
+
+    { "id": "q_finance", "group": "finance", "order": 800, "label_he": "מצב כלכלי — עבודה, הכנסות, הוצאות, חובות. (תזכורת לעו\"ס: יש לציין סודיות)", "type": "open_text", "required": false, "category": "material" },
+
+    { "id": "q_worker_summary", "group": "worker_summary", "order": 900, "label_he": "באילו נושאים נדרשת מעורבות העו\"ס או המלווה? באילו תחומים מקבל השירות יפעל בעצמו? הערכת אינטנסיביות נדרשת.", "type": "open_text", "required": true, "category": "functional_routine" },
+    { "id": "q_worker_tasks", "group": "worker_summary", "order": 910, "label_he": "משימות לעו\"ס", "type": "open_text", "required": false, "category": "functional_routine" }
+  ],
+  "outputs": {
+    "creates_service_request_in_epr": true,
+    "auto_generates_tasks_from": "q_worker_tasks",
+    "feeds_dashboards": ["village_recovery_trends", "themes_by_category"]
+  }
+}

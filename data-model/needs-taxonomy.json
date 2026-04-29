@@ -1,0 +1,57 @@
+{
+  "NEEDS_TAXONOMY": {
+    "description_he": "רשימת צרכים מיוחדים ודחופים — מוזנים כאפשרויות בחירה מרובה בשאלוני הפונים",
+    "options": [
+      { "label_he": "בבית", "value": "at_home", "category": "functional_routine" },
+      { "label_he": "מפונה עם המשפחה", "value": "evacuated_with_family", "category": "functional_routine" },
+      { "label_he": "מפונה לבד", "value": "evacuated_alone", "category": "functional_routine" },
+      { "label_he": "פצוע", "value": "injured", "category": "special_needs" },
+      { "label_he": "צורך כספי", "value": "financial_need", "category": "material" },
+      { "label_he": "צורך לוגיסטי", "value": "logistical_need", "category": "material" },
+      { "label_he": "צורך רגשי", "value": "emotional_need", "category": "emotional" },
+      { "label_he": "מיצוי זכויות", "value": "rights_exhaustion", "category": "rights" },
+      { "label_he": "שכול", "value": "bereavement", "category": "bereavement" },
+      { "label_he": "צרכים מיוחדים", "value": "special_needs", "category": "special_needs" },
+      { "label_he": "בן משפחה בשירות בטחוני", "value": "security_service_family", "category": "security_service_family" },
+      { "label_he": "מחלה כרונית", "value": "chronic_illness", "category": "special_needs" },
+      { "label_he": "קושי בתקשורת או שפה", "value": "language_barrier", "category": "special_needs" },
+      { "label_he": "אחר", "value": "other", "category": "other" }
+    ]
+  },
+  "VILLAGE_LIST_HOF_ASHKELON": {
+    "description_he": "רשימת יישובי המועצה האזורית חוף אשקלון — להזנה ראשונית, לעדכון על ידי המועצה",
+    "options": [
+      { "label_he": "אשקלון (עיר סמוכה)", "value": "ashkelon_city" },
+      { "label_he": "בית שקמה", "value": "beit_shikma" },
+      { "label_he": "ברכיה", "value": "berekhya" },
+      { "label_he": "בת הדר", "value": "bat_hadar" },
+      { "label_he": "גיאה", "value": "gea" },
+      { "label_he": "הודיה", "value": "hodaya" },
+      { "label_he": "זיקים", "value": "zikim" },
+      { "label_he": "יד מרדכי", "value": "yad_mordechai" },
+      { "label_he": "כוכב מיכאל", "value": "kokhav_mikhael" },
+      { "label_he": "כפר סילבר", "value": "kfar_silver" },
+      { "label_he": "מבקיעים", "value": "mavki'im" },
+      { "label_he": "מטקה", "value": "matzke" },
+      { "label_he": "משען", "value": "mishan" },
+      { "label_he": "ניצנים", "value": "nitzanim" },
+      { "label_he": "ניר ישראל", "value": "nir_yisrael" },
+      { "label_he": "ניצן", "value": "nitzan" },
+      { "label_he": "תלמי יפה", "value": "talmei_yafe" }
+    ],
+    "note": "יש לאשר ולעדכן את הרשימה מול המועצה האזורית לפני עלייה לאוויר."
+  },
+  "CRISIS_TYPES": {
+    "description_he": "סיווג אירועי חירום — משפיע על איזה שאלון נפתח ועל הצגת תמונת המצב",
+    "options": [
+      { "label_he": "ירי טילים / רקטות", "value": "missile_rocket_fire" },
+      { "label_he": "פיגוע / חדירה", "value": "attack_infiltration" },
+      { "label_he": "שריפה", "value": "fire" },
+      { "label_he": "הצפה / מזג אוויר קיצוני", "value": "flood_extreme_weather" },
+      { "label_he": "רעידת אדמה", "value": "earthquake" },
+      { "label_he": "חומ\"ס", "value": "hazardous_materials" },
+      { "label_he": "משבר אישי / משפחתי", "value": "personal_family_crisis" },
+      { "label_he": "אחר", "value": "other" }
+    ]
+  }
+}
