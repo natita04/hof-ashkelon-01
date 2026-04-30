@@ -297,6 +297,153 @@
   .action-title { font-size: 15px; font-weight: 700; line-height: 1.25; }
   .action-sub   { font-size: 12.5px; color: var(--ink-3); line-height: 1.4; }
 
+  /* mode toggle */
+  .mode-toggle {
+    display: flex;
+    background: var(--line-2);
+    border-radius: 999px;
+    padding: 3px;
+    margin-bottom: 16px;
+  }
+  .mode-btn {
+    flex: 1; padding: 9px 0;
+    border: 0; border-radius: 999px;
+    font-family: inherit; font-size: 14px; font-weight: 700;
+    cursor: pointer; background: transparent; color: var(--ink-3);
+    transition: background 150ms, color 150ms;
+  }
+  .mode-btn.on {
+    background: var(--surface); color: var(--ink);
+    box-shadow: 0 1px 5px rgba(0,0,0,.13);
+  }
+  .mode-btn.emergency.on {
+    background: var(--danger); color: #fff;
+  }
+
+  /* workers picker */
+  .workers-picker {
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .workers-search {
+    border: 0; border-bottom: 1px solid var(--line);
+    padding: 10px 14px; width: 100%;
+    font-family: inherit; font-size: 14px;
+    background: var(--surface); color: var(--ink);
+    outline: none;
+  }
+  .workers-list { max-height: 180px; overflow-y: auto; }
+  .worker-row {
+    display: flex; align-items: center;
+    padding: 10px 14px; gap: 10px; cursor: pointer;
+    border-bottom: 1px solid var(--line-2);
+    font-size: 14px; font-weight: 500; color: var(--ink);
+    user-select: none;
+  }
+  .worker-row:last-child { border-bottom: 0; }
+  .worker-row:hover { background: var(--bg-2); }
+  .worker-row.selected { background: var(--brand-soft); }
+  .worker-check {
+    width: 20px; height: 20px; border-radius: 6px;
+    border: 1.5px solid var(--line); background: var(--surface);
+    display: grid; place-items: center; flex-shrink: 0;
+    transition: background 120ms, border-color 120ms;
+  }
+  .worker-row.selected .worker-check {
+    background: var(--brand); border-color: var(--brand); color: #fff;
+    font-size: 12px; font-weight: 800;
+  }
+  .workers-footer {
+    padding: 8px 14px; font-size: 12px; color: var(--ink-3);
+    border-top: 1px solid var(--line-2); background: var(--bg-2);
+  }
+
+  /* event detail compact info */
+  .ed-meta {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding: 10px 16px; background: var(--surface);
+    border-radius: var(--r-s); margin-bottom: 12px;
+    border: 1px solid var(--line);
+  }
+  .ed-meta-item {
+    display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 80px;
+  }
+  .ed-meta-label { font-size: 11px; color: var(--ink-3); font-weight: 600; }
+  .ed-meta-val { font-size: 13px; font-weight: 700; color: var(--ink); }
+
+  /* close-event confirmation overlay */
+  .confirm-overlay {
+    position: absolute; inset: 0; z-index: 50;
+    background: rgba(15,15,16,.45);
+    display: flex; align-items: flex-end;
+    opacity: 0; pointer-events: none;
+    transition: opacity 180ms;
+  }
+  .confirm-overlay.open { opacity: 1; pointer-events: all; }
+  .confirm-sheet {
+    width: 100%; background: var(--surface);
+    border-radius: var(--r-l) var(--r-l) 0 0;
+    padding: 24px 20px 32px;
+    transform: translateY(100%); transition: transform 220ms ease-out;
+  }
+  .confirm-overlay.open .confirm-sheet { transform: translateY(0); }
+  .confirm-sheet h3 { margin: 0 0 6px; font-size: 17px; font-weight: 800; }
+  .confirm-sheet p  { margin: 0 0 20px; font-size: 14px; color: var(--ink-2); line-height:1.5; }
+  .confirm-btns { display: flex; flex-direction: column; gap: 10px; }
+
+  /* event task type tags */
+  .et-type { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; }
+  .et-type-רפואי   { background:#fde8e8; color:#c0392b; }
+  .et-type-לוגיסטי { background:var(--brand-soft); color:var(--brand); }
+  .et-type-סיעודי  { background:#ede8fe; color:#7c3aed; }
+  .et-type-נפשי    { background:#d1fae5; color:#059669; }
+  .et-type-מינהלי  { background:var(--line); color:var(--ink-2); }
+  .et-type-אחר     { background:var(--line); color:var(--ink-3); }
+  .dot-status.soon { background: var(--accent); }
+
+  /* event detail description */
+  .ed-desc-block {
+    font-size:13px; color:var(--ink-2); line-height:1.6;
+    padding:8px 12px; background:var(--surface);
+    border:1px solid var(--line); border-radius:var(--r-s);
+    margin-bottom:12px; white-space:pre-wrap;
+  }
+
+  /* emergency tasks by event */
+  .event-group { margin-bottom: 14px; }
+  .event-group-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 6px; padding: 0 2px;
+  }
+  .event-group-name {
+    font-size: 13px; font-weight: 800; color: var(--ink);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .event-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--danger); flex-shrink: 0;
+  }
+  .event-count {
+    font-size: 12px; font-weight: 600; color: var(--ink-3);
+  }
+
+  /* emergency primary CTA */
+  .action-hero {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 20px 18px;
+    background: var(--danger); color: #fff;
+    border: 0; border-radius: var(--r-m);
+    cursor: pointer; font-family: inherit;
+    font-size: 18px; font-weight: 800; letter-spacing: -.2px;
+    margin-bottom: 10px;
+    transition: background 120ms, transform 80ms;
+  }
+  .action-hero:hover  { background: #cf4a22; }
+  .action-hero:active { transform: scale(.99); }
+  .action-hero svg { width: 26px; height: 26px; flex-shrink: 0; }
+
   /* tiny tag */
   .tag {
     display:inline-flex; align-items:center;
@@ -935,7 +1082,7 @@
 <body>
 
 <header class="page">
-  <h1>מערכת מיפוי חברתי — אב טיפוס</h1>
+  <h1>מערכת שירותים חברתיים — אב טיפוס</h1>
   <div class="sub">Hof Ashkelon · v0.3 · ניווט בחמישה טאבים</div>
 </header>
 
@@ -964,15 +1111,22 @@
         <div class="brandbar">
           <img class="brandbar-logo" src="assets/council-logo.png" alt="לוגו מועצה אזורית חוף אשקלון" />
           <div class="brandbar-text">
-            <div class="brandbar-app">מיפוי חברתי</div>
+            <div class="brandbar-app">שירותים חברתיים</div>
             <div class="brandbar-council">מועצה אזורית חוף אשקלון</div>
           </div>
         </div>
 
         <div class="content">
 
+          <div class="mode-toggle">
+            <button class="mode-btn on" id="modeRoutine" onclick="setHomeMode('routine')">שגרה</button>
+            <button class="mode-btn emergency" id="modeEmergency" onclick="setHomeMode('emergency')">חירום</button>
+          </div>
+
           <div class="card-title" style="margin-top: 4px;">פעולות מהירות</div>
-          <div class="actions">
+
+          <!-- routine actions -->
+          <div class="actions" id="actionsRoutine">
             <button class="action" data-nav="questionnaire">
               <span class="action-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M12 13v6M9 16h6"/></svg>
@@ -1005,31 +1159,124 @@
             </button>
           </div>
 
-          <div class="card-title">המשימות שלי היום</div>
-          <div class="card">
-            <div class="row-item" data-nav="profile" data-family="cohen">
-              <span class="dot-status urgent"></span>
-              <div class="row-main">
-                <div class="row-name">מימוש זכויות — משפחת כהן</div>
-                <div class="row-sub">11:00 · יד מרדכי</div>
-              </div>
-              <span class="chev">›</span>
+          <!-- emergency actions -->
+          <div id="actionsEmergency" style="display:none;">
+            <button class="action-hero" data-nav="newEvent">פתיחת אירוע</button>
+            <div class="actions">
+              <button class="action" data-toast="אירועים פתוחים — דמו">
+                <span class="action-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </span>
+                <span class="action-main">
+                  <span class="action-title">אירועים פתוחים</span>
+                  <span class="action-sub">טיפול פעיל, ממתין למענה</span>
+                </span>
+                <span class="chev">›</span>
+              </button>
+              <button class="action" data-toast="אירועים סגורים — דמו">
+                <span class="action-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>
+                </span>
+                <span class="action-main">
+                  <span class="action-title">אירועים סגורים</span>
+                  <span class="action-sub">הושלמו, בוטלו</span>
+                </span>
+                <span class="chev">›</span>
+              </button>
             </div>
-            <div class="row-item" data-nav="profile" data-family="avraham">
-              <span class="dot-status"></span>
-              <div class="row-main">
-                <div class="row-name">שיחת המשך — רחלי אברהם</div>
-                <div class="row-sub">14:30 · ברכיה · טלפון</div>
+          </div>
+
+          <!-- routine: my tasks today -->
+          <div id="tasksRoutine">
+            <div class="card-title">המשימות שלי היום</div>
+            <div class="card">
+              <div class="row-item" data-nav="profile" data-family="cohen">
+                <span class="dot-status urgent"></span>
+                <div class="row-main">
+                  <div class="row-name">מימוש זכויות — משפחת כהן</div>
+                  <div class="row-sub">11:00 · יד מרדכי</div>
+                </div>
+                <span class="chev">›</span>
               </div>
-              <span class="chev">›</span>
+              <div class="row-item" data-nav="profile" data-family="avraham">
+                <span class="dot-status"></span>
+                <div class="row-main">
+                  <div class="row-name">שיחת המשך — רחלי אברהם</div>
+                  <div class="row-sub">14:30 · ברכיה · טלפון</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+              <div class="row-item" data-nav="profile" data-family="alon">
+                <span class="dot-status"></span>
+                <div class="row-main">
+                  <div class="row-name">שאלון "מה נשמע" — נועה אלון</div>
+                  <div class="row-sub">16:00 · ברכיה</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
             </div>
-            <div class="row-item" data-nav="profile" data-family="alon">
-              <span class="dot-status"></span>
-              <div class="row-main">
-                <div class="row-name">שאלון "מה נשמע" — נועה אלון</div>
-                <div class="row-sub">16:00 · ברכיה</div>
+          </div>
+
+          <!-- emergency: tasks by event -->
+          <div id="tasksEmergency" style="display:none; margin-top: 20px;">
+            <div class="card-title">משימות לפי אירוע</div>
+
+            <div class="event-group">
+              <div class="event-group-header">
+                <span class="event-group-name"><span class="event-dot"></span>241107 · רכס</span>
+                <span class="event-count">5 משימות</span>
               </div>
-              <span class="chev">›</span>
+              <div class="card">
+                <div class="row-item" data-toast="סיוע נפשי — דמו">
+                  <span class="dot-status urgent"></span>
+                  <div class="row-main">
+                    <div class="row-name">סיוע נפשי — 3 משפחות</div>
+                    <div class="row-sub">דחוף · ממתין לשיבוץ</div>
+                  </div>
+                  <span class="chev">›</span>
+                </div>
+                <div class="row-item" data-toast="מגורים זמניים — דמו">
+                  <span class="dot-status"></span>
+                  <div class="row-main">
+                    <div class="row-name">מגורים זמניים — משפחות דגן, לוי</div>
+                    <div class="row-sub">בטיפול · ניר גלים</div>
+                  </div>
+                  <span class="chev">›</span>
+                </div>
+                <div class="row-item" data-toast="תיק זכויות — דמו">
+                  <span class="dot-status"></span>
+                  <div class="row-main">
+                    <div class="row-name">פתיחת תיק זכויות — 7 נפשות</div>
+                    <div class="row-sub">ממתין · טרם הוקצה</div>
+                  </div>
+                  <span class="chev">›</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="event-group">
+              <div class="event-group-header">
+                <span class="event-group-name"><span class="event-dot"></span>241203 · ניר גלים</span>
+                <span class="event-count">3 משימות</span>
+              </div>
+              <div class="card">
+                <div class="row-item" data-toast="בדיקה רפואית — דמו">
+                  <span class="dot-status urgent"></span>
+                  <div class="row-main">
+                    <div class="row-name">בדיקת מצב רפואי — 5 נפשות</div>
+                    <div class="row-sub">דחוף · תיאום עם מד"א</div>
+                  </div>
+                  <span class="chev">›</span>
+                </div>
+                <div class="row-item" data-toast="הסעות — דמו">
+                  <span class="dot-status"></span>
+                  <div class="row-main">
+                    <div class="row-name">תיאום הסעות — אגמון</div>
+                    <div class="row-sub">בטיפול · מחר 08:00</div>
+                  </div>
+                  <span class="chev">›</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1270,14 +1517,42 @@
             </button>
           </div>
 
-          <div class="card-title">משימות פתוחות</div>
-          <div class="card" data-slot="tasks"></div>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+            <div class="card-title" style="margin:0;">משימות פתוחות</div>
+            <button class="btn-link primary" type="button" data-nav="newTask"
+                    style="font-size:13px; display:flex; align-items:center; gap:4px; padding:6px 10px; border-radius:var(--r-s);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              הוסף משימה
+            </button>
+          </div>
+          <div class="card" data-slot="tasks" style="margin-bottom:14px;"></div>
 
           <div class="card-title">מסמכים</div>
           <div class="card" data-slot="documents"></div>
 
-          <div class="card-title">קו הזמן</div>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-top:14px; margin-bottom:6px;">
+            <div class="card-title" style="margin:0;">היסטוריית טיפול</div>
+            <button class="btn-link primary" type="button" id="addUpdateBtn"
+                    style="font-size:13px; display:flex; align-items:center; gap:4px; padding:6px 10px; border-radius:var(--r-s);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              הוסף עדכון
+            </button>
+          </div>
           <div class="card" data-slot="timeline"></div>
+
+          <!-- add-update bottom sheet -->
+          <div class="confirm-overlay" id="addUpdateOverlay">
+            <div class="confirm-sheet">
+              <h3>הוספת עדכון</h3>
+              <textarea id="updateText" class="ta" rows="5"
+                        placeholder="תיאור הפעולה, שיחה, ביקור, הערה…"
+                        style="width:100%; margin-bottom:14px; resize:none;"></textarea>
+              <div class="confirm-btns">
+                <button class="btn primary" type="button" id="saveUpdateBtn">שמירה</button>
+                <button class="btn ghost" type="button" id="cancelUpdateBtn">ביטול</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -2246,6 +2521,215 @@
         </div>
       </div>
 
+      <!-- NEW EVENT FORM -->
+      <div class="screen" data-screen="newEvent">
+        <div class="statusbar"><span>9:46</span><span>4G · 78%</span></div>
+        <div class="appbar with-back">
+          <div class="back" role="button" aria-label="חזרה" data-nav="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </div>
+          <div class="appbar-main">
+            <div class="title">פתיחת אירוע חדש</div>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="q">
+            <div class="q-text">סוג האירוע</div>
+            <div class="chip-row" id="eventTypeChips">
+              <div class="chip" data-etype="הצפה">הצפה</div>
+              <div class="chip" data-etype="שריפה">שריפה</div>
+              <div class="chip" data-etype="פינוי">פינוי</div>
+              <div class="chip" data-etype="טילים">טילים</div>
+              <div class="chip" data-etype="אחר">אחר</div>
+            </div>
+          </div>
+
+          <div class="q" id="customNameWrap" hidden>
+            <div class="q-text">שם האירוע</div>
+            <input class="field-input" type="text" id="newEventCustomName" placeholder="שם אירוע חופשי…" />
+          </div>
+
+          <div class="q">
+            <div class="q-text">מיקום — יישוב</div>
+            <select class="field-input" id="newEventVillage" style="appearance:auto;">
+              <option value="">— בחר יישוב —</option>
+              <option>ניצן</option><option>ניצנים</option><option>גבעת ברנר</option>
+              <option>ברכיה</option><option>כפר מנחם</option><option>אגמון</option>
+              <option>ניר גלים</option><option>יד מרדכי</option><option>נחל עוז</option>
+              <option>כרם שלום</option><option>זיקים</option><option>אחר / מחוץ ליישוב</option>
+            </select>
+          </div>
+
+          <div class="q">
+            <div class="q-text">מיקום — פירוט נוסף (רשות)</div>
+            <input class="field-input" type="text" id="newEventLocation" placeholder="כתובת, נקודת ציון, שם אתר…" />
+          </div>
+
+          <div class="q">
+            <div class="q-text">תיאור האירוע</div>
+            <div class="note-field">
+              <textarea class="ta" rows="4" id="newEventDesc"
+                        placeholder="מה קרה, מה מצב השטח, מה נדרש כרגע"></textarea>
+              <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="q">
+            <div class="q-text">עוסיות מורשות לטיפול</div>
+            <div class="chip-row" style="margin-bottom:10px;">
+              <div class="chip on" id="allWorkersChip" onclick="setWorkersMode('all')">כל העוסיות</div>
+              <div class="chip" id="specificWorkersChip" onclick="setWorkersMode('specific')">בחר ספציפיות</div>
+            </div>
+            <div id="workersPickerWrap" hidden>
+              <div class="workers-picker">
+                <input class="workers-search" id="workerSearch" type="text" placeholder="חיפוש שם עוסית…" oninput="filterWorkers(this.value)" />
+                <div class="workers-list" id="workersList"></div>
+              </div>
+              <div class="workers-footer" id="workersCount">0 עוסיות נבחרו</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footerbar">
+          <button class="btn ghost" type="button" data-nav="home">ביטול</button>
+          <button class="btn primary" type="button" id="openEventBtn" style="background:var(--danger);">פתיחת אירוע</button>
+        </div>
+      </div>
+
+      <!-- EVENT DETAIL (open event) -->
+      <div class="screen" data-screen="eventDetail" style="position:relative;">
+        <div class="statusbar"><span>9:47</span><span>4G · 78%</span></div>
+        <div class="appbar with-back">
+          <div class="back" role="button" aria-label="חזרה" data-nav="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </div>
+          <div class="appbar-main">
+            <div class="title" id="edTitle">אירוע</div>
+            <div class="sub" id="edSub" style="font-size:11px;"></div>
+          </div>
+          <button id="closeEventBtn" type="button"
+                  style="flex-shrink:0; padding:6px 12px; border-radius:999px; border:0; background:var(--danger); color:#fff; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer;">
+            סגור אירוע
+          </button>
+        </div>
+
+        <div class="content">
+          <!-- compact meta -->
+          <div class="ed-meta">
+            <div class="ed-meta-item">
+              <span class="ed-meta-label">קוד</span>
+              <span class="ed-meta-val" id="edCode" style="direction:ltr; display:inline-block;"></span>
+            </div>
+            <div class="ed-meta-item">
+              <span class="ed-meta-label">מיקום</span>
+              <span class="ed-meta-val" id="edLocation"></span>
+            </div>
+            <div class="ed-meta-item" style="flex-basis:100%;">
+              <span class="ed-meta-label">עוסיות</span>
+              <span class="ed-meta-val" id="edWorkers"></span>
+            </div>
+          </div>
+
+          <!-- description -->
+          <div id="edDesc" class="ed-desc-block"></div>
+
+          <!-- tasks -->
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <div class="card-title" style="margin:0;">משימות</div>
+            <button class="btn-link primary" type="button" id="addEventTaskBtn"
+                    style="font-size:13px; display:flex; align-items:center; gap:4px; padding:6px 10px; border-radius:var(--r-s);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              הוסף
+            </button>
+          </div>
+          <div class="card" id="edTasksList">
+            <div style="padding:20px; text-align:center; color:var(--ink-3); font-size:14px;">אין משימות עדיין</div>
+          </div>
+        </div>
+
+        <div class="footerbar" style="padding-top:8px;">
+          <button class="btn ghost" type="button" data-nav="home" style="flex:1;">חזרה לבית</button>
+        </div>
+
+        <!-- close confirmation sheet -->
+        <div class="confirm-overlay" id="closeConfirm">
+          <div class="confirm-sheet">
+            <h3>סגירת אירוע</h3>
+            <p>האם לסגור את האירוע? פעולה זו תשנה את הסטטוס לסגור ולא ניתן יהיה להוסיף משימות חדשות.</p>
+            <div class="confirm-btns">
+              <button class="btn primary" type="button" id="confirmCloseBtn" style="background:var(--danger);">כן, סגור אירוע</button>
+              <button class="btn ghost" type="button" id="cancelCloseBtn">ביטול</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEW EVENT TASK -->
+      <div class="screen" data-screen="newEventTask">
+        <div class="statusbar"><span>9:48</span><span>4G · 78%</span></div>
+        <div class="appbar with-back">
+          <div class="back" role="button" aria-label="חזרה" data-nav="eventDetail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </div>
+          <div class="appbar-main">
+            <div class="title">משימה חדשה לאירוע</div>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="q">
+            <div class="q-text">שם המשימה</div>
+            <input class="field-input" type="text" id="ntName" placeholder="לדוגמה: פינוי דיירים, סיוע נפשי…" />
+          </div>
+
+          <div class="q">
+            <div class="q-text">סוג משימה</div>
+            <div class="chip-row chips-stacked" data-togglegroup="single" id="ntTypeChips">
+              <div class="chip" data-nttype="רפואי">רפואי</div>
+              <div class="chip" data-nttype="לוגיסטי">לוגיסטי</div>
+              <div class="chip" data-nttype="סיעודי">סיעודי</div>
+              <div class="chip" data-nttype="נפשי">נפשי</div>
+              <div class="chip" data-nttype="מינהלי">מינהלי</div>
+              <div class="chip" data-nttype="אחר">אחר</div>
+            </div>
+          </div>
+
+          <div class="q">
+            <div class="q-text">תיאור / מלל חופשי</div>
+            <div class="note-field">
+              <textarea class="ta" rows="4" id="ntDesc" placeholder="פרטים, הנחיות לביצוע, אנשי קשר…"></textarea>
+              <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="q">
+            <div class="q-text">דחיפות</div>
+            <div class="chip-row" data-togglegroup="single" id="ntUrgencyChips">
+              <div class="chip" data-nturgency="דחוף">דחוף</div>
+              <div class="chip on" data-nturgency="מיידי">מיידי</div>
+              <div class="chip" data-nturgency="לא דחוף">לא דחוף</div>
+            </div>
+          </div>
+
+          <div class="q">
+            <div class="q-text">אחראית</div>
+            <select class="field-input" id="ntAssignee" style="appearance:auto;">
+              <option value="">— לא הוקצה —</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="footerbar">
+          <button class="btn ghost" type="button" data-nav="eventDetail">ביטול</button>
+          <button class="btn primary" type="button" id="saveEventTaskBtn">שמירה</button>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -2283,7 +2767,10 @@
     settings: 'settings',
     profileEdit: 'settings',
     newResident: 'residents',
-    newTask: 'tasks'
+    newTask: 'tasks',
+    newEvent: 'home',
+    eventDetail: 'home',
+    newEventTask: 'home'
   };
 
   const screens = document.querySelectorAll('.screen[data-screen]');
@@ -2394,10 +2881,14 @@
   };
 
   let currentFamilyKey = 'cohen';
+  window.currentFamilyKey = currentFamilyKey;
+  window.FAMILIES = FAMILIES;
 
   function renderProfile(key) {
     const f = FAMILIES[key] || FAMILIES.cohen;
     currentFamilyKey = FAMILIES[key] ? key : 'cohen';
+    window.currentFamilyKey = currentFamilyKey;
+    window.renderProfile = renderProfile;
     const scr = document.querySelector('.screen[data-screen="profile"]');
     if (!scr) return;
 
@@ -2550,7 +3041,7 @@
     if (sub) sub.textContent = total + ' פתוחות';
   }
 
-  function go(name) {
+  window.go = function go(name) {
     if (!document.querySelector(`.screen[data-screen="${name}"]`)) return;
     screens.forEach(s => s.classList.toggle('on', s.dataset.screen === name));
 
@@ -3450,7 +3941,7 @@
   // can toggle back without reloading.
   const DICT_HE_EN = {
     // Branding
-    'מיפוי חברתי': 'Social Mapping',
+    'שירותים חברתיים': 'Social Services',
     'מועצה אזורית חוף אשקלון': 'Hof Ashkelon Regional Council',
 
     // Bottom tabs
@@ -3624,7 +4115,7 @@
     '1 אישה, 2 ילדים': '1 woman, 2 children',
     // Outer page masthead (only visible in the desktop wrapper, not the phone itself)
     'CRCC — אב טיפוס · חוף אשקלון': 'CRCC — Prototype · Hof Ashkelon',
-    'מערכת מיפוי חברתי — אב טיפוס': 'Social Mapping System — Prototype',
+    'מערכת שירותים חברתיים — אב טיפוס': 'Social Services System — Prototype',
     'Hof Ashkelon · v0.3 · ניווט בחמישה טאבים': 'Hof Ashkelon · v0.3 · 5-tab navigation',
     'v0.3 · ללא נתונים אמיתיים · RTL': 'v0.3 · no real data · RTL',
     // Language switcher sidebar
@@ -4018,6 +4509,257 @@
   const hash = (location.hash || '').replace('#','');
   go(SCREEN_TAB[hash] ? hash : 'home');
 })();
+
+// ---- Event form ----
+(function () {
+  const WORKERS = [
+    'רחל כהן','מרים לוי','דנה ברק','שרה גולדברג','נועה אברהם',
+    'יעל שמש','אורית כץ','תמר פרידמן','ליאת גרין','חנה סגל',
+    'מיכל דביר','ריבה נחמן','רותם בן-דוד','אביגיל זיו','גלית מזרחי',
+    'שושנה ויס','אלה שפירא','נילי בורג','הדר כהן','פנינה אלון',
+    'עדי שטרן','טלי רוזן','שני פרץ','יפית כנעני','דינה עמר',
+    'עמית ברגר','ורד צור','איילת הלוי','מוריה נוי','גיא לבנה'
+  ];
+
+  const PREDEFINED = {
+    'הצפה':  [
+      { name:'פינוי דיירים',          type:'לוגיסטי', urgency:'דחוף'   },
+      { name:'בדיקת תשתיות',          type:'מינהלי',  urgency:'מיידי'  },
+      { name:'מציאת מגורים זמניים',   type:'לוגיסטי', urgency:'דחוף'   },
+      { name:'תיאום עם כיבוי אש',     type:'מינהלי',  urgency:'מיידי'  },
+      { name:'סיוע נפשי',             type:'נפשי',    urgency:'לא דחוף'},
+    ],
+    'שריפה': [
+      { name:'פינוי דיירים',          type:'לוגיסטי', urgency:'דחוף'   },
+      { name:'טיפול רפואי ראשוני',    type:'רפואי',   urgency:'דחוף'   },
+      { name:'מציאת מגורים זמניים',   type:'לוגיסטי', urgency:'דחוף'   },
+      { name:'תיאום עם כיבוי אש',     type:'מינהלי',  urgency:'מיידי'  },
+      { name:'סיוע נפשי',             type:'נפשי',    urgency:'לא דחוף'},
+      { name:'בדיקת נזקים',           type:'מינהלי',  urgency:'מיידי'  },
+    ],
+    'פינוי':  [
+      { name:'רישום מפונים',           type:'מינהלי',  urgency:'מיידי'  },
+      { name:'מציאת מגורים זמניים',   type:'לוגיסטי', urgency:'דחוף'   },
+      { name:'תיאום הסעות',            type:'לוגיסטי', urgency:'מיידי'  },
+      { name:'בדיקת מצב רפואי',        type:'רפואי',   urgency:'מיידי'  },
+      { name:'חלוקת ציוד בסיסי',       type:'לוגיסטי', urgency:'לא דחוף'},
+    ],
+    'טילים':  [
+      { name:'בדיקת נפגעים',           type:'רפואי',   urgency:'דחוף'   },
+      { name:'פינוי לממ"דים',          type:'לוגיסטי', urgency:'דחוף'   },
+      { name:'תיאום עם מד"א',          type:'רפואי',   urgency:'מיידי'  },
+      { name:'סיוע נפשי',              type:'נפשי',    urgency:'מיידי'  },
+      { name:'איתור נעדרים',           type:'מינהלי',  urgency:'דחוף'   },
+    ],
+  };
+
+  const selectedWorkers = new Set();
+  let eventTasks = [];
+
+  // ---------- workers picker ----------
+  function buildWorkersList(filter) {
+    const list = document.getElementById('workersList');
+    list.innerHTML = '';
+    WORKERS.filter(w => !filter || w.includes(filter)).forEach(w => {
+      const row = document.createElement('div');
+      row.className = 'worker-row' + (selectedWorkers.has(w) ? ' selected' : '');
+      row.innerHTML = `<div class="worker-check">${selectedWorkers.has(w) ? '✓' : ''}</div><span>${w}</span>`;
+      row.addEventListener('click', () => {
+        selectedWorkers.has(w) ? selectedWorkers.delete(w) : selectedWorkers.add(w);
+        buildWorkersList(document.getElementById('workerSearch').value);
+        updateWorkersCount();
+      });
+      list.appendChild(row);
+    });
+  }
+  function updateWorkersCount() {
+    const n = selectedWorkers.size;
+    document.getElementById('workersCount').textContent = n === 0 ? '0 עוסיות נבחרו' : `${n} עוסיות נבחרו`;
+  }
+  window.setWorkersMode = function(mode) {
+    const isAll = mode === 'all';
+    document.getElementById('allWorkersChip').classList.toggle('on', isAll);
+    document.getElementById('specificWorkersChip').classList.toggle('on', !isAll);
+    document.getElementById('workersPickerWrap').hidden = isAll;
+    if (!isAll) buildWorkersList('');
+  };
+  window.filterWorkers = function(val) { buildWorkersList(val); };
+
+  // ---------- event type chips ----------
+  document.getElementById('eventTypeChips').addEventListener('click', e => {
+    const chip = e.target.closest('[data-etype]');
+    if (!chip) return;
+    document.querySelectorAll('#eventTypeChips .chip').forEach(c => c.classList.remove('on'));
+    chip.classList.add('on');
+    document.getElementById('customNameWrap').hidden = chip.dataset.etype !== 'אחר';
+  });
+
+  // ---------- populate assignee select ----------
+  function populateAssignee() {
+    const sel = document.getElementById('ntAssignee');
+    sel.innerHTML = '<option value="">— לא הוקצה —</option>';
+    WORKERS.forEach(w => { const o = document.createElement('option'); o.value = o.textContent = w; sel.appendChild(o); });
+  }
+  populateAssignee();
+
+  // ---------- reset form on open ----------
+  const newEvScr = document.querySelector('.screen[data-screen="newEvent"]');
+  if (newEvScr) new MutationObserver(() => {
+    if (newEvScr.classList.contains('on')) {
+      document.querySelectorAll('#eventTypeChips .chip').forEach(c => c.classList.remove('on'));
+      document.getElementById('customNameWrap').hidden = true;
+      document.getElementById('newEventCustomName').value = '';
+      document.getElementById('newEventVillage').value = '';
+      document.getElementById('newEventLocation').value = '';
+      document.getElementById('newEventDesc').value = '';
+      selectedWorkers.clear();
+      setWorkersMode('all');
+    }
+  }).observe(newEvScr, { attributes: true, attributeFilter: ['class'] });
+
+  // ---------- open event ----------
+  function genCode() { return String(Math.floor(100000 + Math.random() * 900000)); }
+
+  document.getElementById('openEventBtn').addEventListener('click', () => {
+    const typeChip = document.querySelector('#eventTypeChips .chip.on');
+    const eventType = typeChip ? typeChip.dataset.etype : '';
+    const name = eventType === 'אחר'
+      ? (document.getElementById('newEventCustomName').value.trim() || 'אחר')
+      : (eventType || 'אירוע ללא שם');
+    const village  = document.getElementById('newEventVillage').value;
+    const extra    = document.getElementById('newEventLocation').value.trim();
+    const desc     = document.getElementById('newEventDesc').value.trim();
+    const location = [village, extra].filter(Boolean).join(' · ') || 'מיקום לא צוין';
+    const allWorkers = document.getElementById('allWorkersChip').classList.contains('on');
+    const workersLabel = allWorkers ? 'כל העוסיות'
+      : (selectedWorkers.size === 0 ? 'לא נבחרו' : [...selectedWorkers].join(', '));
+    const code = genCode();
+
+    document.getElementById('edCode').textContent     = code;
+    document.getElementById('edTitle').textContent    = name;
+    document.getElementById('edSub').textContent      = code + ' · ' + location;
+    document.getElementById('edLocation').textContent = location;
+    document.getElementById('edDesc').textContent     = desc || '—';
+    document.getElementById('edWorkers').textContent  = workersLabel;
+
+    const closeBtn = document.getElementById('closeEventBtn');
+    closeBtn.disabled = false;
+    closeBtn.style.background = 'var(--danger)';
+    closeBtn.textContent = 'סגור אירוע';
+
+    // pre-defined tasks
+    eventTasks = (PREDEFINED[eventType] || []).map(t => ({ ...t, assignee: '' }));
+    renderEventTasks();
+
+    go('eventDetail');
+  });
+
+  // ---------- render tasks ----------
+  function renderEventTasks() {
+    const list = document.getElementById('edTasksList');
+    if (eventTasks.length === 0) {
+      list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--ink-3);font-size:14px;">אין משימות עדיין</div>';
+      return;
+    }
+    list.innerHTML = eventTasks.map((t, i) => {
+      const dotCls = t.urgency === 'דחוף' ? 'urgent' : t.urgency === 'מיידי' ? 'soon' : '';
+      return `<div class="row-item" data-toast="משימה — דמו">
+        <span class="dot-status ${dotCls}"></span>
+        <div class="row-main">
+          <div class="row-name">${t.name}</div>
+          <div class="row-sub" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <span class="et-type et-type-${t.type}">${t.type}</span>
+            <span>${t.urgency}</span>
+            <span>·</span><span>${t.assignee || 'לא הוקצה'}</span>
+          </div>
+        </div>
+        <span class="chev">›</span>
+      </div>`;
+    }).join('');
+  }
+
+  // ---------- add task button ----------
+  document.getElementById('addEventTaskBtn')?.addEventListener('click', () => {
+      // reset task form
+      document.getElementById('ntName').value = '';
+      document.getElementById('ntDesc').value = '';
+      document.getElementById('ntAssignee').value = '';
+      document.querySelectorAll('#ntTypeChips .chip').forEach(c => c.classList.remove('on'));
+      document.querySelectorAll('#ntUrgencyChips .chip').forEach(c => c.classList.remove('on'));
+      document.querySelector('#ntUrgencyChips [data-nturgency="מיידי"]').classList.add('on');
+      go('newEventTask');
+    });
+
+  // ---------- save task ----------
+  document.getElementById('saveEventTaskBtn').addEventListener('click', () => {
+    const name     = document.getElementById('ntName').value.trim();
+    const typeChip = document.querySelector('#ntTypeChips .chip.on');
+    const urgChip  = document.querySelector('#ntUrgencyChips .chip.on');
+    const assignee = document.getElementById('ntAssignee').value;
+    if (!name) return;
+    eventTasks.push({
+      name,
+      type:    typeChip ? typeChip.dataset.nttype : 'אחר',
+      urgency: urgChip  ? urgChip.dataset.nturgency : 'מיידי',
+      assignee,
+    });
+    renderEventTasks();
+    go('eventDetail');
+  });
+
+  // ---------- close confirmation ----------
+  const overlay    = document.getElementById('closeConfirm');
+  document.getElementById('closeEventBtn').addEventListener('click', function() {
+    if (this.disabled) return;
+    overlay.classList.add('open');
+  });
+  document.getElementById('cancelCloseBtn').addEventListener('click',  () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+  document.getElementById('confirmCloseBtn').addEventListener('click', () => {
+    overlay.classList.remove('open');
+    const btn = document.getElementById('closeEventBtn');
+    btn.textContent = 'סגור'; btn.style.background = 'var(--ink-3)'; btn.disabled = true;
+  });
+})();
+
+// ---- Add update (profile timeline) ----
+(function () {
+  const overlay   = document.getElementById('addUpdateOverlay');
+  const saveBtn   = document.getElementById('saveUpdateBtn');
+  const cancelBtn = document.getElementById('cancelUpdateBtn');
+  const addBtn    = document.getElementById('addUpdateBtn');
+
+  addBtn.addEventListener('click', () => {
+    document.getElementById('updateText').value = '';
+    overlay.classList.add('open');
+  });
+  cancelBtn.addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+
+  saveBtn.addEventListener('click', () => {
+    const text = document.getElementById('updateText').value.trim();
+    if (!text) return;
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric', year: '2-digit' });
+    const key = window.currentFamilyKey || 'cohen';
+    const f = window.FAMILIES && window.FAMILIES[key];
+    if (f) {
+      f.timeline.unshift({ title: text, sub: dateStr + ' · עדכון ידני' });
+      if (window.renderProfile) window.renderProfile(key);
+    }
+    overlay.classList.remove('open');
+  });
+})();
+
+function setHomeMode(mode) {
+  const isEmergency = mode === 'emergency';
+  document.getElementById('modeRoutine').classList.toggle('on', !isEmergency);
+  document.getElementById('modeEmergency').classList.toggle('on', isEmergency);
+  document.getElementById('actionsRoutine').style.display = isEmergency ? 'none' : '';
+  document.getElementById('actionsEmergency').style.display = isEmergency ? '' : 'none';
+  document.getElementById('tasksRoutine').style.display = isEmergency ? 'none' : '';
+  document.getElementById('tasksEmergency').style.display = isEmergency ? '' : 'none';
+}
 </script>
 
 </body>
