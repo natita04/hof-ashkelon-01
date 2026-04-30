@@ -36,7 +36,7 @@
   html, body {
     margin: 0; padding: 0;
     font-family: "Heebo", -apple-system, "Segoe UI", sans-serif;
-    background: #ede4d1; /* slightly deeper than the phone's canvas */
+    background: #ffffff; /* white — lets the phone mockup stand out */
     color: var(--ink);
     -webkit-font-smoothing: antialiased;
   }
@@ -164,11 +164,28 @@
   }
   .appbar.with-back {
     display: grid;
-    grid-template-columns: 40px 1fr;
+    grid-template-columns: 40px 1fr auto;
     align-items: center;
     column-gap: 12px;
     padding-top: 12px;
   }
+  .appbar.appbar-split {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .appbar.appbar-split .appbar-main { flex: 1; min-width: 0; }
+  .appbar-action {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px; border-radius: 999px;
+    background: var(--ink); color: #fff;
+    border: 0;
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .appbar-action:hover { background: #1a1a20; }
+  .appbar-action svg { width: 14px; height: 14px; display: block; }
   .appbar .title { font-size: 22px; font-weight: 800; letter-spacing: -.3px;}
   .appbar .sub { font-size: 13px; color: var(--ink-3); margin-top: 3px; font-weight: 500;}
   .appbar.with-back .appbar-main { min-width: 0;}
@@ -338,6 +355,9 @@
   .q-help { font-size: 12px; color: var(--ink-3); margin-top: -4px; margin-bottom: 10px;}
 
   .chip-row { display:flex; gap: 8px; flex-wrap: wrap;}
+  /* Stacked variant: one chip per row, full-width */
+  .chip-row.chips-stacked { flex-direction: column; }
+  .chip-row.chips-stacked .chip { text-align: center; }
   .chip {
     padding: 9px 14px; border-radius: 999px;
     background: var(--surface); color: var(--ink-2);
@@ -363,8 +383,8 @@
     display:flex; gap: 10px;
   }
   .footerbar .btn { padding: 14px 18px;}
-  .footerbar .ghost { flex: 0 0 auto;}
-  .footerbar .primary { flex: 1;}
+  .footerbar .ghost { flex: 1; }
+  .footerbar .primary { flex: 1; }
 
   /* insights support */
   .scope-view { display: none; }
@@ -424,6 +444,126 @@
     margin: 0 2px 8px;
     font-weight: 700;
   }
+
+  /* Case-open (פתיחת תיק) multi-step flow */
+  .case-save-btn {
+    background: transparent; border: 0;
+    padding: 8px 14px; border-radius: 999px;
+    font-family: inherit; font-size: 14px; font-weight: 700;
+    color: var(--brand); cursor: pointer;
+    justify-self: end;
+  }
+  .case-save-btn:hover { background: var(--brand-soft);}
+  .case-save-btn:disabled { color: var(--ink-3); cursor: not-allowed; background: transparent;}
+
+  .case-step[hidden] { display: none; }
+  .case-summary-row {
+    display: flex; justify-content: space-between; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line-2);
+    font-size: 14px;
+  }
+  .case-summary-row:last-child { border-bottom: 0; }
+  .case-summary-row .lbl {
+    color: var(--ink-3); font-weight: 600; flex: 0 0 auto;
+  }
+  .case-summary-row .val {
+    color: var(--ink); font-weight: 600; text-align: end; flex: 1;
+    min-width: 0; word-break: break-word;
+  }
+  .case-summary-row .val.muted { color: var(--ink-3); font-weight: 500; font-style: italic; }
+
+  /* progress seg states for case-open */
+  .progress .seg.done { background: var(--brand);}
+  .progress .seg.active { background: var(--brand);}
+
+  [data-case-resident-list] .row-item.sel {
+    background: var(--brand-soft);
+  }
+  [data-case-resident-list] .row-item.sel .chev { color: var(--brand); }
+
+  /* Family members editor (step 2) */
+  .members-edit {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-bottom: 12px;
+  }
+  .member-edit {
+    background: var(--bg-2);
+    border-radius: var(--r-m);
+    padding: 12px 14px;
+    display: grid;
+    grid-template-columns: 1fr 64px auto;
+    grid-template-areas:
+      "name age remove"
+      "gender gender remove";
+    gap: 8px;
+    align-items: center;
+  }
+  .member-edit > [data-member-field="name"]   { grid-area: name; }
+  .member-edit > [data-member-field="age"]    { grid-area: age; }
+  .member-edit > .member-remove               { grid-area: remove; }
+  .member-edit > .member-gender               { grid-area: gender; }
+  .member-edit input {
+    background: var(--surface);
+    border: 0; border-radius: var(--r-s);
+    padding: 10px 12px;
+    font-family: inherit; font-size: 14px;
+    outline: none; width: 100%;
+    min-width: 0;
+  }
+  .member-edit input[type="number"]::-webkit-inner-spin-button,
+  .member-edit input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .member-gender {
+    display: flex; background: var(--surface);
+    border-radius: var(--r-s); padding: 3px; gap: 2px;
+  }
+  .member-gender label {
+    flex: 1; text-align: center;
+    padding: 7px 4px; font-size: 12px; font-weight: 700;
+    color: var(--ink-3); border-radius: 6px;
+    cursor: pointer; user-select: none;
+  }
+  .member-gender input { position: absolute; opacity: 0; pointer-events: none; }
+  .member-gender input:checked + label { background: var(--ink); color: #fff; }
+  .member-remove {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: transparent; border: 0;
+    color: var(--ink-3); font-size: 20px; line-height: 1;
+    cursor: pointer;
+    display: grid; place-items: center;
+  }
+  .member-remove:hover { background: var(--surface); color: var(--danger);}
+  .member-add-btn {
+    width: 100%;
+    background: transparent;
+    border: 2px dashed var(--line);
+    color: var(--ink-2);
+    padding: 14px;
+    border-radius: var(--r-m);
+    font-family: inherit; font-size: 14px; font-weight: 700;
+    cursor: pointer;
+    transition: border-color 120ms, background 120ms;
+  }
+  .member-add-btn:hover { border-color: var(--ink-3); background: var(--bg-2);}
+
+  /* Voice-dictation icon inside note textarea */
+  .note-field {
+    position: relative;
+  }
+  .note-field .ta {
+    padding-inline-end: 48px;
+  }
+  .mic-btn {
+    position: absolute;
+    top: 10px; inset-inline-end: 10px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--surface); border: 0;
+    color: var(--ink-2); cursor: pointer;
+    display: grid; place-items: center;
+    box-shadow: 0 1px 2px rgba(20,15,5,.06);
+  }
+  .mic-btn:hover { color: var(--brand);}
+  .mic-btn svg { width: 16px; height: 16px; display: block; }
 
   .empty-state {
     padding: 32px 16px; text-align: center;
@@ -839,17 +979,17 @@
               </span>
               <span class="action-main">
                 <span class="action-title">פתיחת תיק חדש</span>
-                <span class="action-sub">שאלון שלב א' — חירום אקוטי</span>
+                <span class="action-sub">שאלון שלב א'</span>
               </span>
               <span class="chev">›</span>
             </button>
-            <button class="action" data-nav="residents">
+            <button class="action" data-nav="newTask">
               <span class="action-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="3"/><path d="M9 3v4M15 3v4M4 11h16M9 15h6M9 18h4"/></svg>
               </span>
               <span class="action-main">
-                <span class="action-title">תושב חדש</span>
-                <span class="action-sub">הוספה לרשימת תושבים</span>
+                <span class="action-title">משימה חדשה</span>
+                <span class="action-sub">משפחה, סוג, תיאור</span>
               </span>
               <span class="chev">›</span>
             </button>
@@ -900,9 +1040,18 @@
       <!-- RESIDENTS LIST -->
       <div class="screen" data-screen="residents">
         <div class="statusbar"><span>9:44</span><span>4G · 78%</span></div>
-        <div class="appbar">
-          <div class="title">תושבים</div>
-          <div class="sub">151 משפחות, 317 מבוגרים ו-89 ילדים</div>
+        <div class="appbar appbar-split">
+          <div class="appbar-main">
+            <div class="title">תושבים</div>
+            <div class="sub">151 משפחות, 317 מבוגרים ו-89 ילדים</div>
+          </div>
+          <button class="appbar-action" type="button" data-nav="newResident">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span>תושב חדש</span>
+          </button>
         </div>
 
         <div class="content">
@@ -1159,63 +1308,153 @@
       </div>
 
       <!-- QUESTIONNAIRE (sub-flow) -->
+      <!-- CASE OPEN — multi-step, state-driven -->
       <div class="screen" data-screen="questionnaire">
         <div class="statusbar"><span>9:47</span><span>4G · 78%</span></div>
         <div class="appbar with-back">
-          <div class="back" data-nav="profile" role="button" aria-label="חזרה">
+          <div class="back" role="button" aria-label="חזרה" data-case-exit>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </div>
           <div class="appbar-main">
-            <div class="title">שלב א' — חירום אקוטי</div>
-            <div class="sub">משפחת כהן</div>
+            <div class="title">שלב א'</div>
+            <div class="sub" data-case-title>בחירת תושב/ת</div>
           </div>
+          <button class="case-save-btn" type="button" data-case-save>שמירה</button>
         </div>
 
         <div class="content">
-          <div class="progress">
-            <div class="seg done"></div>
-            <div class="seg done"></div>
-            <div class="seg active"></div>
-            <div class="seg"></div>
-            <div class="seg"></div>
-          </div>
-          <div class="progress-label">3 מתוך 5 · צרכים דחופים</div>
 
-          <div class="q">
-            <div class="q-text">צרכים מיוחדים של ראש המשפחה</div>
-            <div class="q-help">ניתן לבחור יותר מאפשרות אחת</div>
-            <div class="chip-row" data-togglegroup="multi">
-              <div class="chip">בבית</div>
-              <div class="chip on">מפונה עם המשפחה</div>
-              <div class="chip">מפונה לבד</div>
-              <div class="chip">פצוע</div>
-              <div class="chip on">צורך רגשי</div>
-              <div class="chip">צורך כספי</div>
-              <div class="chip">מיצוי זכויות</div>
-              <div class="chip">שכול</div>
-              <div class="chip">אחר</div>
+          <div class="progress" data-case-progress>
+            <div class="seg" data-step-seg="1"></div>
+            <div class="seg" data-step-seg="2"></div>
+            <div class="seg" data-step-seg="3"></div>
+            <div class="seg" data-step-seg="4"></div>
+            <div class="seg" data-step-seg="5"></div>
+            <div class="seg" data-step-seg="6"></div>
+            <div class="seg" data-step-seg="7"></div>
+          </div>
+          <div class="progress-label" data-case-step-label>1 מתוך 7 · בחירת תושב/ת</div>
+
+          <!-- STEP 1: pick resident -->
+          <div class="case-step" data-step="1">
+            <div class="search">
+              <span class="ic">⌕</span>
+              <input placeholder="שם או יישוב" data-case-resident-search />
+            </div>
+            <div class="card" data-case-resident-list>
+              <!-- rendered by JS -->
             </div>
           </div>
 
-          <div class="q">
-            <div class="q-text">דחיפות כללית</div>
-            <div class="chip-row" data-togglegroup="single">
-              <div class="chip">דחוף</div>
-              <div class="chip on">מיידי</div>
-              <div class="chip">לא דחוף</div>
-              <div class="chip">אין צורך בהמשך</div>
+          <!-- STEP 2: family members -->
+          <div class="case-step" data-step="2" hidden>
+            <div class="q-help" style="margin: 0 0 10px;">הוסיפו או עדכנו את בני המשפחה. שם, גיל ומין.</div>
+            <div class="members-edit" data-case-members>
+              <!-- rendered by JS -->
+            </div>
+            <button class="member-add-btn" type="button" data-case-add-member>+ הוסף בן/ת משפחה</button>
+          </div>
+
+          <!-- STEP 3: initial classification -->
+          <div class="case-step" data-step="3" hidden>
+            <div class="q">
+              <div class="q-text">סוג האירוע</div>
+              <div class="chip-row" data-togglegroup="single" data-case-field="eventType">
+                <div class="chip">טילים</div>
+                <div class="chip">חדירת כוחות</div>
+                <div class="chip">פציעה / נפילה</div>
+                <div class="chip">שכול</div>
+                <div class="chip">אחר</div>
+              </div>
+            </div>
+            <div class="q">
+              <div class="q-text">האם זהו אירוע חדש או המשך מטיפול קיים?</div>
+              <div class="chip-row" data-togglegroup="single" data-case-field="newOrExisting">
+                <div class="chip">אירוע חדש</div>
+                <div class="chip">המשך טיפול</div>
+              </div>
+            </div>
+            <div class="q">
+              <div class="q-text">תאריך האירוע</div>
+              <input class="field-input" type="date" data-case-field="eventDate"
+                     style="background:var(--surface); border-radius:var(--r-s); padding:12px 14px; width:100%;" />
             </div>
           </div>
 
-          <div class="q">
-            <div class="q-text">הערה מילולית</div>
-            <textarea class="ta" rows="3">האם מעורערת רגשית, אבי מתפקד אך מבקש עזרה במימוש זכויות.</textarea>
+          <!-- STEP 4: needs -->
+          <div class="case-step" data-step="4" hidden>
+            <div class="q">
+              <div class="q-text">מצב ראש המשפחה / ראש משק הבית</div>
+              <div class="q-help">ניתן לבחור יותר מאפשרות אחת</div>
+              <div class="chip-row" data-togglegroup="multi" data-case-field="status">
+                <div class="chip">בבית</div>
+                <div class="chip">מפונה עם המשפחה</div>
+                <div class="chip">מפונה לבד</div>
+                <div class="chip">פצוע</div>
+                <div class="chip">בשירות מילואים</div>
+                <div class="chip">שכול</div>
+              </div>
+            </div>
+            <div class="q">
+              <div class="q-text">צרכים דחופים</div>
+              <div class="q-help">ניתן לבחור יותר מאפשרות אחת</div>
+              <div class="chip-row" data-togglegroup="multi" data-case-field="needs">
+                <div class="chip">רגשי</div>
+                <div class="chip">כספי</div>
+                <div class="chip">לוגיסטי</div>
+                <div class="chip">מיצוי זכויות</div>
+                <div class="chip">רפואי</div>
+                <div class="chip">חינוכי (ילדים)</div>
+                <div class="chip">משפטי</div>
+                <div class="chip">אחר</div>
+              </div>
+            </div>
           </div>
+
+          <!-- STEP 5: urgency -->
+          <div class="case-step" data-step="5" hidden>
+            <div class="q">
+              <div class="q-text">הערכת העו"ס — דחיפות כללית</div>
+              <div class="q-help">קריטריון לטריאז' יישובי</div>
+              <div class="chip-row chips-stacked" data-togglegroup="single" data-case-field="urgency">
+                <div class="chip">דחוף — קשר תוך 24 שעות</div>
+                <div class="chip">מיידי — קשר תוך 3 ימים</div>
+                <div class="chip">לא דחוף — שבוע ומעלה</div>
+                <div class="chip">אין צורך בהמשך טיפול</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 6: note -->
+          <div class="case-step" data-step="6" hidden>
+            <div class="q">
+              <div class="q-text">הערה מילולית</div>
+              <div class="note-field">
+                <textarea class="ta" rows="6" data-case-field="note"
+                          placeholder="למשל: יכולת התארגנות, דחיפות קשר, פרטים נוספים"></textarea>
+                <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="3" width="6" height="12" rx="3"/>
+                    <path d="M5 11a7 7 0 0 0 14 0"/>
+                    <path d="M12 18v3"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 7: review -->
+          <div class="case-step" data-step="7" hidden>
+            <div class="card card-pad" data-case-summary>
+              <!-- rendered by JS: read-only recap of all fields -->
+            </div>
+          </div>
+
         </div>
 
-        <div class="footerbar">
-          <button class="btn ghost" data-nav="profile">השהה</button>
-          <button class="btn primary" data-nav="ai">הבא</button>
+        <div class="footerbar" data-case-footer>
+          <button class="btn ghost" type="button" data-case-back hidden>הקודם</button>
+          <button class="btn primary" type="button" data-case-next>הבא</button>
         </div>
       </div>
 
@@ -1283,9 +1522,15 @@
       <!-- TASKS -->
       <div class="screen" data-screen="tasks">
         <div class="statusbar"><span>10:15</span><span>5G · 81%</span></div>
-        <div class="appbar">
-          <div class="title">משימות פתוחות</div>
-          <div class="sub" data-tasks-sub>9 פתוחות</div>
+        <div class="appbar appbar-split">
+          <div class="appbar-main">
+            <div class="title">משימות פתוחות</div>
+            <div class="sub" data-tasks-sub>9 פתוחות</div>
+          </div>
+          <button class="appbar-action" type="button" data-nav="newTask">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            משימה חדשה
+          </button>
         </div>
 
         <div class="content">
@@ -1830,6 +2075,177 @@
         </div>
       </div>
 
+      <!-- NEW RESIDENT — open a brand-new resident record -->
+      <div class="screen" data-screen="newResident">
+        <div class="statusbar"><span>9:45</span><span>4G · 78%</span></div>
+        <div class="appbar with-back">
+          <div class="back" role="button" aria-label="חזרה" data-nav="residents">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </div>
+          <div class="appbar-main">
+            <div class="title">תושב חדש</div>
+            <div class="sub" data-nr-step-label>1 מתוך 3 · פרטים</div>
+          </div>
+          <button class="case-save-btn" type="button" data-nr-save>שמירה</button>
+        </div>
+
+        <div class="content">
+
+          <div class="progress">
+            <div class="seg" data-nr-seg="1"></div>
+            <div class="seg" data-nr-seg="2"></div>
+            <div class="seg" data-nr-seg="3"></div>
+          </div>
+
+          <!-- STEP 1: details -->
+          <div class="nr-step" data-nr-step="1">
+            <div class="card">
+              <label class="field">
+                <span class="field-label">שם פרטי של ראש המשפחה</span>
+                <input class="field-input" type="text" data-nr-field="firstName" placeholder="למשל: מיכאל" />
+              </label>
+              <label class="field">
+                <span class="field-label">שם משפחה</span>
+                <input class="field-input" type="text" data-nr-field="lastName" placeholder="למשל: רז" />
+              </label>
+              <label class="field">
+                <span class="field-label">יישוב</span>
+                <div class="chip-row" data-togglegroup="single" data-nr-field="village">
+                  <div class="chip">יד מרדכי</div>
+                  <div class="chip">ברכיה</div>
+                  <div class="chip">זיקים</div>
+                  <div class="chip">כרמיה</div>
+                  <div class="chip">ניצנים</div>
+                </div>
+              </label>
+              <label class="field">
+                <span class="field-label">טלפון</span>
+                <input class="field-input" type="tel" data-nr-field="phone" placeholder="05_-_______" />
+              </label>
+            </div>
+          </div>
+
+          <!-- STEP 2: family composition -->
+          <div class="nr-step" data-nr-step="2" hidden>
+            <div class="q-help" style="margin: 0 0 10px;">הוסיפו את בני המשפחה. שם, גיל ומין.</div>
+            <div class="members-edit" data-nr-members>
+              <!-- rendered by JS -->
+            </div>
+            <button class="member-add-btn" type="button" data-nr-add-member>+ הוסף בן/ת משפחה</button>
+          </div>
+
+          <!-- STEP 3: free-text history -->
+          <div class="nr-step" data-nr-step="3" hidden>
+            <div class="q">
+              <div class="q-text">היסטוריה וסיפור המשפחה</div>
+              <div class="q-help">מה חשוב לדעת על המשפחה לפני תחילת טיפול</div>
+              <div class="note-field">
+                <textarea class="ta" rows="8" data-nr-field="history"
+                          placeholder="למשל: מוכרים בקהילה מ-2020, חזרו מהמלון בינואר, האם בריאה אך בעלה פצוע, שני ילדים במסגרות..."></textarea>
+                <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="3" width="6" height="12" rx="3"/>
+                    <path d="M5 11a7 7 0 0 0 14 0"/>
+                    <path d="M12 18v3"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footerbar" data-nr-footer>
+          <button class="btn ghost" type="button" data-nr-back hidden>הקודם</button>
+          <button class="btn primary" type="button" data-nr-next>הבא</button>
+        </div>
+      </div>
+
+      <!-- NEW TASK — create a task for a resident/family -->
+      <div class="screen" data-screen="newTask">
+        <div class="statusbar"><span>9:46</span><span>4G · 78%</span></div>
+        <div class="appbar with-back">
+          <div class="back" role="button" aria-label="חזרה" data-nav="tasks">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </div>
+          <div class="appbar-main">
+            <div class="title">משימה חדשה</div>
+            <div class="sub" data-nt-step-label>1 מתוך 3 · בחירת משפחה</div>
+          </div>
+          <button class="case-save-btn" type="button" data-nt-save>שמירה</button>
+        </div>
+
+        <div class="content">
+
+          <div class="progress">
+            <div class="seg" data-nt-seg="1"></div>
+            <div class="seg" data-nt-seg="2"></div>
+            <div class="seg" data-nt-seg="3"></div>
+          </div>
+
+          <!-- STEP 1: pick resident / family -->
+          <div class="nt-step" data-nt-step="1">
+            <div class="search">
+              <span class="ic">⌕</span>
+              <input placeholder="שם או יישוב" data-nt-search />
+            </div>
+            <div class="card" data-nt-resident-list></div>
+          </div>
+
+          <!-- STEP 2: task type -->
+          <div class="nt-step" data-nt-step="2" hidden>
+            <div class="q">
+              <div class="q-text">סוג המשימה</div>
+              <div class="chip-row chips-stacked" data-togglegroup="single" data-nt-field="type">
+                <div class="chip">ביקור בית</div>
+                <div class="chip">שיחה טלפונית</div>
+                <div class="chip">תיאום שירות (זכויות / חוסן / חינוך)</div>
+                <div class="chip">מסמך / טופס</div>
+                <div class="chip">מעקב כללי</div>
+                <div class="chip">אחר</div>
+              </div>
+            </div>
+            <div class="q">
+              <div class="q-text">דחיפות</div>
+              <div class="chip-row" data-togglegroup="single" data-nt-field="urgency">
+                <div class="chip">דחוף</div>
+                <div class="chip">מיידי</div>
+                <div class="chip">לא דחוף</div>
+              </div>
+            </div>
+            <div class="q">
+              <div class="q-text">תאריך יעד</div>
+              <input class="field-input" type="date" data-nt-field="dueDate"
+                     style="background:var(--surface); border-radius:var(--r-s); padding:12px 14px; width:100%;" />
+            </div>
+          </div>
+
+          <!-- STEP 3: description -->
+          <div class="nt-step" data-nt-step="3" hidden>
+            <div class="q">
+              <div class="q-text">תיאור המשימה</div>
+              <div class="note-field">
+                <textarea class="ta" rows="8" data-nt-field="description"
+                          placeholder="מה צריך לעשות, מה חשוב לדעת לפני הביצוע, עם מי לתאם"></textarea>
+                <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="3" width="6" height="12" rx="3"/>
+                    <path d="M5 11a7 7 0 0 0 14 0"/>
+                    <path d="M12 18v3"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footerbar" data-nt-footer>
+          <button class="btn ghost" type="button" data-nt-back hidden>הקודם</button>
+          <button class="btn primary" type="button" data-nt-next>הבא</button>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1865,7 +2281,9 @@
     tasks: 'tasks',
     insights: 'insights',
     settings: 'settings',
-    profileEdit: 'settings'
+    profileEdit: 'settings',
+    newResident: 'residents',
+    newTask: 'tasks'
   };
 
   const screens = document.querySelectorAll('.screen[data-screen]');
@@ -2326,6 +2744,706 @@
   if (memList) memList.addEventListener('scroll', updateMembersArrows, { passive: true });
   window.addEventListener('resize', updateMembersArrows);
 
+  // -------- Case-open (פתיחת תיק) state machine --------
+  const CASE_STEPS = [
+    { id: 1, title: 'בחירת תושב/ת' },
+    { id: 2, title: 'בני המשפחה' },
+    { id: 3, title: 'סיווג ראשוני' },
+    { id: 4, title: 'צרכים דחופים' },
+    { id: 5, title: 'דחיפות' },
+    { id: 6, title: 'הערה מילולית' },
+    { id: 7, title: 'סיכום ואישור' }
+  ];
+
+  // Residents who exist in the record but don't yet have an active case.
+  // These are candidates for a fresh Stage-A case-opening flow.
+  // Only surname + village — details are collected in the next steps.
+  // Each resident has a known starter set of household members (from the
+  // welfare record). Step 2 pre-populates from this, and the social worker
+  // can add / edit / remove.
+  const CASE_RESIDENTS = [
+    { key: 'raz_mv',       name: 'רז מיכאל וורד',    village: 'יד מרדכי',
+      members: [{ name: 'מיכאל', gender: 'man' }, { name: 'וורד', gender: 'woman' }] },
+    { key: 'raz_ronit',    name: 'רז רונית',          village: 'יד מרדכי',
+      members: [{ name: 'רונית', gender: 'woman' }] },
+    { key: 'raz_rachel',   name: 'רז רחלי',           village: 'ברכיה',
+      members: [{ name: 'רחלי', gender: 'woman' }] },
+    { key: 'bar_oy',       name: 'בר אורי ויעל',      village: 'יד מרדכי',
+      members: [{ name: 'אורי', gender: 'man' }, { name: 'יעל', gender: 'woman' }] },
+    { key: 'segev_dana',   name: 'שגב דנה',           village: 'ברכיה',
+      members: [{ name: 'דנה', gender: 'woman' }] },
+    { key: 'hadad_enr',    name: 'חדד ענר ורינת',     village: 'ברכיה',
+      members: [{ name: 'ענר', gender: 'man' }, { name: 'רינת', gender: 'woman' }] },
+    { key: 'amar_liat',    name: 'עמר ליאת',          village: 'יד מרדכי',
+      members: [{ name: 'ליאת', gender: 'woman' }] },
+    { key: 'gabay_ts',     name: 'גבאי תמר ושי',      village: 'ברכיה',
+      members: [{ name: 'תמר', gender: 'woman' }, { name: 'שי', gender: 'man' }] },
+    { key: 'yosef_talia',  name: 'יוסף טליה',         village: 'יד מרדכי',
+      members: [{ name: 'טליה', gender: 'woman' }] },
+    { key: 'elbaz_gy',     name: 'אלבז גיל ויעל',     village: 'ברכיה',
+      members: [{ name: 'גיל', gender: 'man' }, { name: 'יעל', gender: 'woman' }] },
+    { key: 'shemer_yonat', name: 'שמר יונת',          village: 'ברכיה',
+      members: [{ name: 'יונת', gender: 'woman' }] },
+    { key: 'azoulay_dl',   name: 'אזולאי דוד ולאה',   village: 'יד מרדכי',
+      members: [{ name: 'דוד', gender: 'man' }, { name: 'לאה', gender: 'woman' }] }
+  ];
+
+  const caseState = {
+    step: 1,
+    residentKey: null,
+    residentName: null,
+    residentVillage: null,
+    fields: {
+      members: [],
+      eventType: null,
+      newOrExisting: null,
+      eventDate: null,
+      status: [],
+      needs: [],
+      urgency: null,
+      note: ''
+    }
+  };
+
+  function todayISO() {
+    const d = new Date();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${m}-${day}`;
+  }
+
+  function caseReset() {
+    caseState.step = 1;
+    caseState.residentKey = null;
+    caseState.residentName = null;
+    caseState.residentVillage = null;
+    caseState.fields = {
+      members: [],
+      eventType: null, newOrExisting: null, eventDate: todayISO(),
+      status: [], needs: [], urgency: null, note: ''
+    };
+
+    const scr = document.querySelector('.screen[data-screen="questionnaire"]');
+    if (!scr) return;
+    // Clear all chip selections (only within case-open steps, not global)
+    scr.querySelectorAll('.case-step .chip.on').forEach(c => c.classList.remove('on'));
+    // Clear textarea; prefill date to today
+    scr.querySelectorAll('[data-case-field="note"]').forEach(t => t.value = '');
+    scr.querySelectorAll('[data-case-field="eventDate"]').forEach(t => t.value = todayISO());
+    scr.querySelectorAll('[data-case-resident-search]').forEach(i => i.value = '');
+    scr.querySelectorAll('[data-case-resident-list] .row-item.sel').forEach(r => r.classList.remove('sel'));
+  }
+
+  function caseRenderMembers() {
+    const scr = document.querySelector('.screen[data-screen="questionnaire"]');
+    const host = scr.querySelector('[data-case-members]');
+    if (!host) return;
+    const members = caseState.fields.members;
+    if (!members.length) {
+      host.innerHTML = `
+        <div style="text-align:center; padding: 24px 12px; color: var(--ink-3); font-size: 13px;">
+          עדיין לא נוספו בני משפחה
+        </div>
+      `;
+      return;
+    }
+    host.innerHTML = members.map((m, i) => `
+      <div class="member-edit" data-member-row="${i}">
+        <input type="text" placeholder="שם" value="${m.name || ''}" data-member-field="name" />
+        <input type="number" placeholder="גיל" value="${m.age ?? ''}" min="0" max="120" data-member-field="age" />
+        <div class="member-gender">
+          <input type="radio" id="g${i}-m" name="g${i}" ${m.gender === 'man' ? 'checked' : ''} data-member-field="gender" data-val="man" />
+          <label for="g${i}-m">גבר</label>
+          <input type="radio" id="g${i}-w" name="g${i}" ${m.gender === 'woman' ? 'checked' : ''} data-member-field="gender" data-val="woman" />
+          <label for="g${i}-w">אישה</label>
+          <input type="radio" id="g${i}-c" name="g${i}" ${m.gender === 'child' ? 'checked' : ''} data-member-field="gender" data-val="child" />
+          <label for="g${i}-c">ילד/ה</label>
+        </div>
+        <button type="button" class="member-remove" aria-label="הסרה" data-member-remove="${i}">×</button>
+      </div>
+    `).join('');
+  }
+
+  function caseRenderResidents(filter) {
+    const scr = document.querySelector('.screen[data-screen="questionnaire"]');
+    const list = scr.querySelector('[data-case-resident-list]');
+    if (!list) return;
+    const q = (filter || '').trim().toLowerCase();
+    const matches = CASE_RESIDENTS.filter(r => {
+      if (!q) return true;
+      return r.name.toLowerCase().includes(q) || r.village.toLowerCase().includes(q);
+    });
+    list.innerHTML = matches.map(r => `
+      <div class="row-item" data-case-pick="${r.key}">
+        <div class="row-main">
+          <div class="row-name">${r.name}</div>
+          <div class="row-sub">${r.village}</div>
+        </div>
+        <span class="chev">›</span>
+      </div>
+    `).join('') || '<div class="empty-state"><div class="empty-title">אין תושבים תואמים</div></div>';
+  }
+
+  function caseRenderSummary() {
+    const scr = document.querySelector('.screen[data-screen="questionnaire"]');
+    const el = scr.querySelector('[data-case-summary]');
+    if (!el) return;
+    const f = caseState.fields;
+    const membersSummary = f.members
+      .filter(m => m.name || m.age || m.gender)
+      .map(m => {
+        const g = m.gender === 'man' ? 'גבר' : m.gender === 'woman' ? 'אישה' : m.gender === 'child' ? 'ילד/ה' : '';
+        return [m.name || '—', m.age ? m.age + '' : null, g].filter(Boolean).join(' · ');
+      })
+      .join('; ');
+    const rows = [
+      ['תושב/ת',          caseState.residentName ? `${caseState.residentName} · ${caseState.residentVillage}` : null],
+      ['בני המשפחה',      membersSummary],
+      ['סוג האירוע',      f.eventType],
+      ['חדש / המשך',      f.newOrExisting],
+      ['תאריך האירוע',    f.eventDate],
+      ['מצב ראש המשפחה',  f.status.length ? f.status.join(', ') : null],
+      ['צרכים',           f.needs.length ? f.needs.join(', ') : null],
+      ['דחיפות',          f.urgency],
+      ['הערה',            f.note]
+    ];
+    el.innerHTML = rows.map(([lbl, val]) => `
+      <div class="case-summary-row">
+        <div class="lbl">${lbl}</div>
+        <div class="val ${val ? '' : 'muted'}">${val || '— לא צוין —'}</div>
+      </div>
+    `).join('');
+  }
+
+  function caseRenderStep() {
+    const scr = document.querySelector('.screen[data-screen="questionnaire"]');
+    if (!scr) return;
+    const step = caseState.step;
+
+    // Show/hide step panels
+    scr.querySelectorAll('.case-step').forEach(el => {
+      el.hidden = parseInt(el.dataset.step, 10) !== step;
+    });
+    // Progress segments
+    scr.querySelectorAll('[data-step-seg]').forEach(seg => {
+      const n = parseInt(seg.dataset.stepSeg, 10);
+      seg.classList.toggle('done', n < step);
+      seg.classList.toggle('active', n === step);
+    });
+    // Label and subtitle
+    const meta = CASE_STEPS.find(s => s.id === step) || CASE_STEPS[0];
+    const label = scr.querySelector('[data-case-step-label]');
+    if (label) label.textContent = `${step} מתוך ${CASE_STEPS.length} · ${meta.title}`;
+    const sub = scr.querySelector('[data-case-title]');
+    if (sub) {
+      sub.textContent = caseState.residentName
+        ? `${caseState.residentName} · ${meta.title}`
+        : meta.title;
+    }
+    // Footer buttons. On step 1 we hide the whole footer — the user advances
+    // by tapping a resident, and there's nothing to go back to.
+    const footer = scr.querySelector('[data-case-footer]');
+    const backBtn = scr.querySelector('[data-case-back]');
+    const nextBtn = scr.querySelector('[data-case-next]');
+    if (footer)  footer.style.display = step === 1 ? 'none' : 'flex';
+    if (backBtn) backBtn.hidden = step === 1;
+    if (nextBtn) nextBtn.textContent = step === CASE_STEPS.length ? 'פתיחת תיק' : 'הבא';
+
+    // Step 2 → render family members editor
+    if (step === 2) caseRenderMembers();
+    // Step 3 → make sure date picker is populated
+    if (step === 3) {
+      const dateInput = scr.querySelector('[data-case-field="eventDate"]');
+      if (dateInput && !dateInput.value) dateInput.value = caseState.fields.eventDate || todayISO();
+    }
+    // Step 7 → render summary
+    if (step === CASE_STEPS.length) caseRenderSummary();
+
+    // Save button — enabled once some progress exists (resident chosen)
+    const saveBtn = scr.querySelector('[data-case-save]');
+    if (saveBtn) saveBtn.disabled = !caseState.residentKey;
+
+    // Scroll content to top
+    const c = scr.querySelector('.content');
+    if (c) c.scrollTop = 0;
+  }
+
+  function caseAdvance(delta) {
+    const newStep = caseState.step + delta;
+    if (newStep < 1) return;
+    if (newStep > CASE_STEPS.length) {
+      // submit
+      caseSubmit();
+      return;
+    }
+    // Guard: step 1 requires resident chosen
+    if (caseState.step === 1 && delta > 0 && !caseState.residentKey) {
+      showToast('יש לבחור תושב/ת');
+      return;
+    }
+    caseState.step = newStep;
+    caseRenderStep();
+  }
+
+  function caseSubmit() {
+    if (!caseState.residentKey) { showToast('יש לבחור תושב/ת'); return; }
+
+    // Build a fresh FAMILIES record from the case input so the profile
+    // page reflects what the user just entered.
+    const f = caseState.fields;
+    const today = new Date().toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit' });
+    const newKey = caseState.residentKey;
+    const initialsOf = n => (n || '').trim().slice(0, 2) || '?';
+    FAMILIES[newKey] = {
+      title: caseState.residentName,
+      sub: caseState.residentVillage + ' · שלב א\' פעיל',
+      members: f.members
+        .filter(m => m.name || m.age || m.gender)
+        .map(m => ({
+          role: m.gender || 'child',
+          name: m.name || '—',
+          age: m.age || '',
+          initials: initialsOf(m.name)
+        })),
+      summary: (f.note && f.note.trim()) ||
+               'תיק חדש נפתח בשלב א\'. הפרטים נאספים בשיחות המשך.',
+      timeline: [
+        {
+          title: 'שלב א\' — חירום אקוטי',
+          sub: today + ' · דנה כהן',
+          body: [
+            f.eventType   ? ('סוג האירוע: ' + f.eventType) : null,
+            f.newOrExisting ? ('סטטוס: ' + f.newOrExisting) : null,
+            f.status.length ? ('מצב ראש המשפחה: ' + f.status.join(', ')) : null,
+            f.needs.length  ? ('צרכים: ' + f.needs.join(', ')) : null,
+            f.urgency     ? ('דחיפות: ' + f.urgency) : null,
+            f.note        ? ('הערה: ' + f.note) : null
+          ].filter(Boolean).join('\n') || 'תיק נפתח ללא פרטים נוספים.'
+        }
+      ],
+      tasks: f.urgency ? [
+        { urgent: /דחוף/.test(f.urgency) && !/לא דחוף/.test(f.urgency),
+          name: 'ביצוע שיחת קשר ראשונית',
+          sub: /24/.test(f.urgency) ? 'תוך 24 שעות'
+             : /3 ימים/.test(f.urgency) ? 'תוך 3 ימים'
+             : 'בשבוע הקרוב',
+          body: 'שיחה עם התושב/ת לאחר פתיחת התיק, על בסיס הצרכים שזוהו.',
+          tagList: f.needs.slice(0, 3) }
+      ] : [],
+      documents: []
+    };
+
+    showToast('התיק נפתח ונוסף לתיק המשפחה');
+    renderProfile(newKey);
+    caseReset();
+    caseRenderStep();
+    go('profile');
+  }
+
+  // Wire events
+  document.querySelectorAll('[data-case-exit]').forEach(b => {
+    b.addEventListener('click', () => { caseReset(); caseRenderStep(); go('home'); });
+  });
+  document.querySelectorAll('[data-case-back]').forEach(b => {
+    b.addEventListener('click', () => caseAdvance(-1));
+  });
+  document.querySelectorAll('[data-case-next]').forEach(b => {
+    b.addEventListener('click', () => caseAdvance(1));
+  });
+  document.querySelectorAll('[data-case-save]').forEach(b => {
+    b.addEventListener('click', () => {
+      if (!caseState.residentKey) return;
+      showToast('טיוטה נשמרה');
+    });
+  });
+
+  // Resident search
+  document.querySelectorAll('[data-case-resident-search]').forEach(inp => {
+    inp.addEventListener('input', e => caseRenderResidents(e.target.value));
+  });
+
+  // Family members: add / remove / edit
+  document.querySelectorAll('[data-case-add-member]').forEach(b => {
+    b.addEventListener('click', () => {
+      caseState.fields.members.push({ name: '', age: '', gender: null });
+      caseRenderMembers();
+      // Focus the new row's name field
+      const scr = document.querySelector('.screen[data-screen="questionnaire"]');
+      const rows = scr.querySelectorAll('.member-edit');
+      const last = rows[rows.length - 1];
+      if (last) last.querySelector('[data-member-field="name"]').focus();
+    });
+  });
+  // Remove + input delegation
+  document.addEventListener('click', (e) => {
+    const rm = e.target.closest('[data-member-remove]');
+    if (rm) {
+      const i = parseInt(rm.dataset.memberRemove, 10);
+      caseState.fields.members.splice(i, 1);
+      caseRenderMembers();
+    }
+  });
+  document.addEventListener('input', (e) => {
+    const inp = e.target.closest('[data-member-field]');
+    if (!inp) return;
+    const row = inp.closest('[data-member-row]');
+    if (!row) return;
+    const i = parseInt(row.dataset.memberRow, 10);
+    const field = inp.dataset.memberField;
+    const m = caseState.fields.members[i];
+    if (!m) return;
+    if (field === 'age') m.age = inp.value === '' ? '' : parseInt(inp.value, 10);
+    else m[field] = inp.value;
+  });
+  // Gender radios (click doesn't fire 'input' reliably)
+  document.addEventListener('change', (e) => {
+    const inp = e.target.closest('[data-member-field="gender"]');
+    if (!inp) return;
+    const row = inp.closest('[data-member-row]');
+    if (!row) return;
+    const i = parseInt(row.dataset.memberRow, 10);
+    const m = caseState.fields.members[i];
+    if (m && inp.checked) m.gender = inp.dataset.val;
+  });
+
+  // Chip selections within case-open: after the global chip handler has
+  // already toggled the `.on` class, read the current state and stash it.
+  document.addEventListener('click', (e) => {
+    const chip = e.target.closest('.case-step .chip');
+    if (!chip) return;
+    const row = chip.parentElement;
+    const field = row.dataset.caseField;
+    if (!field) return;
+    const mode = row.dataset.togglegroup;
+    if (mode === 'single') {
+      const sel = row.querySelector('.chip.on');
+      caseState.fields[field] = sel ? sel.textContent.trim() : null;
+    } else {
+      caseState.fields[field] = Array.from(row.querySelectorAll('.chip.on')).map(c => c.textContent.trim());
+    }
+  });
+
+  // Textarea + date field
+  document.querySelectorAll('[data-case-field="note"]').forEach(t => {
+    t.addEventListener('input', e => { caseState.fields.note = e.target.value; });
+  });
+  document.querySelectorAll('[data-case-field="eventDate"]').forEach(t => {
+    t.addEventListener('input', e => { caseState.fields.eventDate = e.target.value; });
+  });
+
+  // Resident picker
+  document.addEventListener('click', (e) => {
+    const row = e.target.closest('[data-case-pick]');
+    if (!row) return;
+    const key = row.dataset.casePick;
+    const found = CASE_RESIDENTS.find(r => r.key === key);
+    if (!found) return;
+    caseState.residentKey = key;
+    caseState.residentName = found.name;
+    caseState.residentVillage = found.village;
+    // Seed known household members so step 2 isn't empty
+    caseState.fields.members = (found.members || []).map(m => ({
+      name: m.name || '',
+      age: m.age ?? '',
+      gender: m.gender || null
+    }));
+    document.querySelectorAll('[data-case-pick]').forEach(r => r.classList.remove('sel'));
+    row.classList.add('sel');
+    // Auto-advance after a short beat
+    setTimeout(() => caseAdvance(1), 180);
+  });
+
+  // -------- New Resident (תושב חדש) mini-flow --------
+  const NR_STEPS = [
+    { id: 1, title: 'פרטים' },
+    { id: 2, title: 'בני המשפחה' },
+    { id: 3, title: 'היסטוריה' }
+  ];
+  const nrState = {
+    step: 1,
+    fields: { firstName: '', lastName: '', village: null, phone: '', history: '', members: [] }
+  };
+  function nrReset() {
+    nrState.step = 1;
+    nrState.fields = { firstName: '', lastName: '', village: null, phone: '', history: '', members: [] };
+    const scr = document.querySelector('.screen[data-screen="newResident"]');
+    if (!scr) return;
+    scr.querySelectorAll('.nr-step input[type="text"], .nr-step input[type="tel"], .nr-step textarea').forEach(i => i.value = '');
+    scr.querySelectorAll('.nr-step .chip.on').forEach(c => c.classList.remove('on'));
+  }
+  function nrRenderMembers() {
+    const scr = document.querySelector('.screen[data-screen="newResident"]');
+    const host = scr.querySelector('[data-nr-members]');
+    if (!host) return;
+    const ms = nrState.fields.members;
+    if (!ms.length) {
+      host.innerHTML = `<div style="text-align:center; padding: 24px 12px; color: var(--ink-3); font-size: 13px;">עדיין לא נוספו בני משפחה</div>`;
+      return;
+    }
+    host.innerHTML = ms.map((m, i) => `
+      <div class="member-edit" data-nr-member-row="${i}">
+        <input type="text" placeholder="שם" value="${m.name || ''}" data-nr-member-field="name" />
+        <input type="number" placeholder="גיל" value="${m.age ?? ''}" min="0" max="120" data-nr-member-field="age" />
+        <div class="member-gender">
+          <input type="radio" id="nrg${i}-m" name="nrg${i}" ${m.gender === 'man' ? 'checked' : ''} data-nr-member-field="gender" data-val="man" />
+          <label for="nrg${i}-m">גבר</label>
+          <input type="radio" id="nrg${i}-w" name="nrg${i}" ${m.gender === 'woman' ? 'checked' : ''} data-nr-member-field="gender" data-val="woman" />
+          <label for="nrg${i}-w">אישה</label>
+          <input type="radio" id="nrg${i}-c" name="nrg${i}" ${m.gender === 'child' ? 'checked' : ''} data-nr-member-field="gender" data-val="child" />
+          <label for="nrg${i}-c">ילד/ה</label>
+        </div>
+        <button type="button" class="member-remove" aria-label="הסרה" data-nr-member-remove="${i}">×</button>
+      </div>
+    `).join('');
+  }
+  function nrRenderStep() {
+    const scr = document.querySelector('.screen[data-screen="newResident"]');
+    if (!scr) return;
+    const step = nrState.step;
+    scr.querySelectorAll('.nr-step').forEach(el => { el.hidden = parseInt(el.dataset.nrStep, 10) !== step; });
+    scr.querySelectorAll('[data-nr-seg]').forEach(seg => {
+      const n = parseInt(seg.dataset.nrSeg, 10);
+      seg.classList.toggle('done', n < step);
+      seg.classList.toggle('active', n === step);
+    });
+    const meta = NR_STEPS.find(s => s.id === step);
+    const label = scr.querySelector('[data-nr-step-label]');
+    if (label) label.textContent = `${step} מתוך ${NR_STEPS.length} · ${meta.title}`;
+    const footer = scr.querySelector('[data-nr-footer]');
+    const backBtn = scr.querySelector('[data-nr-back]');
+    const nextBtn = scr.querySelector('[data-nr-next]');
+    if (footer)  footer.style.display = 'flex';
+    if (backBtn) backBtn.hidden = step === 1;
+    if (nextBtn) nextBtn.textContent = step === NR_STEPS.length ? 'יצירת תושב' : 'הבא';
+    if (step === 2) nrRenderMembers();
+    const c = scr.querySelector('.content');
+    if (c) c.scrollTop = 0;
+  }
+  function nrAdvance(delta) {
+    const newStep = nrState.step + delta;
+    if (newStep < 1) return;
+    if (newStep > NR_STEPS.length) { nrSubmit(); return; }
+    // Minimal validation on step 1: must have last name + village
+    if (nrState.step === 1 && delta > 0) {
+      if (!nrState.fields.lastName.trim()) { showToast('יש למלא שם משפחה'); return; }
+      if (!nrState.fields.village)         { showToast('יש לבחור יישוב'); return; }
+    }
+    nrState.step = newStep;
+    nrRenderStep();
+  }
+  function nrSubmit() {
+    showToast('התושב נוסף בהצלחה');
+    nrReset();
+    nrRenderStep();
+    go('residents');
+  }
+  document.querySelectorAll('[data-nr-back]').forEach(b => b.addEventListener('click', () => nrAdvance(-1)));
+  document.querySelectorAll('[data-nr-next]').forEach(b => b.addEventListener('click', () => nrAdvance(1)));
+  document.querySelectorAll('[data-nr-save]').forEach(b => b.addEventListener('click', () => showToast('טיוטה נשמרה')));
+  document.querySelectorAll('[data-nr-add-member]').forEach(b => {
+    b.addEventListener('click', () => {
+      nrState.fields.members.push({ name: '', age: '', gender: null });
+      nrRenderMembers();
+      const scr = document.querySelector('.screen[data-screen="newResident"]');
+      const rows = scr.querySelectorAll('.member-edit');
+      const last = rows[rows.length - 1];
+      if (last) last.querySelector('[data-nr-member-field="name"]').focus();
+    });
+  });
+  document.addEventListener('click', (e) => {
+    const rm = e.target.closest('[data-nr-member-remove]');
+    if (!rm) return;
+    const i = parseInt(rm.dataset.nrMemberRemove, 10);
+    nrState.fields.members.splice(i, 1);
+    nrRenderMembers();
+  });
+  document.addEventListener('input', (e) => {
+    const f = e.target.closest('[data-nr-field]');
+    if (f) {
+      nrState.fields[f.dataset.nrField] = f.value;
+      return;
+    }
+    const mf = e.target.closest('[data-nr-member-field]');
+    if (mf) {
+      const row = mf.closest('[data-nr-member-row]');
+      if (!row) return;
+      const i = parseInt(row.dataset.nrMemberRow, 10);
+      const m = nrState.fields.members[i];
+      if (!m) return;
+      const field = mf.dataset.nrMemberField;
+      if (field === 'age') m.age = mf.value === '' ? '' : parseInt(mf.value, 10);
+      else m[field] = mf.value;
+    }
+  });
+  document.addEventListener('change', (e) => {
+    const inp = e.target.closest('[data-nr-member-field="gender"]');
+    if (!inp) return;
+    const row = inp.closest('[data-nr-member-row]');
+    if (!row) return;
+    const i = parseInt(row.dataset.nrMemberRow, 10);
+    const m = nrState.fields.members[i];
+    if (m && inp.checked) m.gender = inp.dataset.val;
+  });
+  // Village chip (step 1) — single-select → stash
+  document.addEventListener('click', (e) => {
+    const chip = e.target.closest('.nr-step .chip');
+    if (!chip) return;
+    const row = chip.parentElement;
+    const field = row.dataset.nrField;
+    if (!field) return;
+    const sel = row.querySelector('.chip.on');
+    nrState.fields[field] = sel ? sel.textContent.trim() : null;
+  });
+
+  // -------- New Task (משימה חדשה) mini-flow --------
+  const NT_STEPS = [
+    { id: 1, title: 'בחירת משפחה' },
+    { id: 2, title: 'סוג משימה' },
+    { id: 3, title: 'תיאור' }
+  ];
+  const ntState = {
+    step: 1,
+    residentKey: null, residentName: null, residentVillage: null,
+    fields: { type: null, urgency: null, dueDate: '', description: '' }
+  };
+  function ntReset() {
+    ntState.step = 1;
+    ntState.residentKey = null;
+    ntState.residentName = null;
+    ntState.residentVillage = null;
+    ntState.fields = { type: null, urgency: null, dueDate: todayISO(), description: '' };
+    const scr = document.querySelector('.screen[data-screen="newTask"]');
+    if (!scr) return;
+    scr.querySelectorAll('.nt-step .chip.on').forEach(c => c.classList.remove('on'));
+    const date = scr.querySelector('[data-nt-field="dueDate"]');
+    if (date) date.value = todayISO();
+    const desc = scr.querySelector('[data-nt-field="description"]');
+    if (desc) desc.value = '';
+    const search = scr.querySelector('[data-nt-search]');
+    if (search) search.value = '';
+    scr.querySelectorAll('[data-nt-resident-list] .row-item.sel').forEach(r => r.classList.remove('sel'));
+  }
+  // NT resident list reuses case-opener residents + the wired families
+  const NT_RESIDENTS = [
+    // wired families first — user can create tasks for them
+    { key: 'cohen',   name: 'משפחת כהן',    village: 'יד מרדכי' },
+    { key: 'avraham', name: 'רחלי אברהם',   village: 'ברכיה' },
+    { key: 'alon',    name: 'נועה אלון',    village: 'ברכיה' }
+  ].concat(CASE_RESIDENTS.map(r => ({ key: r.key, name: r.name, village: r.village })));
+  function ntRenderResidents(filter) {
+    const scr = document.querySelector('.screen[data-screen="newTask"]');
+    const host = scr.querySelector('[data-nt-resident-list]');
+    if (!host) return;
+    const q = (filter || '').trim().toLowerCase();
+    const matches = NT_RESIDENTS.filter(r => !q || r.name.toLowerCase().includes(q) || r.village.toLowerCase().includes(q));
+    host.innerHTML = matches.map(r => `
+      <div class="row-item" data-nt-pick="${r.key}">
+        <div class="row-main">
+          <div class="row-name">${r.name}</div>
+          <div class="row-sub">${r.village}</div>
+        </div>
+        <span class="chev">›</span>
+      </div>
+    `).join('') || '<div class="empty-state"><div class="empty-title">אין תושבים תואמים</div></div>';
+  }
+  function ntRenderStep() {
+    const scr = document.querySelector('.screen[data-screen="newTask"]');
+    if (!scr) return;
+    const step = ntState.step;
+    scr.querySelectorAll('.nt-step').forEach(el => { el.hidden = parseInt(el.dataset.ntStep, 10) !== step; });
+    scr.querySelectorAll('[data-nt-seg]').forEach(seg => {
+      const n = parseInt(seg.dataset.ntSeg, 10);
+      seg.classList.toggle('done', n < step);
+      seg.classList.toggle('active', n === step);
+    });
+    const meta = NT_STEPS.find(s => s.id === step);
+    const label = scr.querySelector('[data-nt-step-label]');
+    if (label) label.textContent = `${step} מתוך ${NT_STEPS.length} · ${meta.title}`;
+    const footer = scr.querySelector('[data-nt-footer]');
+    const backBtn = scr.querySelector('[data-nt-back]');
+    const nextBtn = scr.querySelector('[data-nt-next]');
+    if (footer)  footer.style.display = 'flex';
+    if (backBtn) backBtn.hidden = step === 1;
+    if (nextBtn) nextBtn.textContent = step === NT_STEPS.length ? 'יצירת משימה' : 'הבא';
+    if (step === 2) {
+      const dateInput = scr.querySelector('[data-nt-field="dueDate"]');
+      if (dateInput && !dateInput.value) dateInput.value = todayISO();
+    }
+    if (step === 1) ntRenderResidents('');
+    const c = scr.querySelector('.content');
+    if (c) c.scrollTop = 0;
+  }
+  function ntAdvance(delta) {
+    const newStep = ntState.step + delta;
+    if (newStep < 1) return;
+    if (newStep > NT_STEPS.length) { ntSubmit(); return; }
+    if (ntState.step === 1 && delta > 0 && !ntState.residentKey) {
+      showToast('יש לבחור משפחה / תושב/ת'); return;
+    }
+    if (ntState.step === 2 && delta > 0 && !ntState.fields.type) {
+      showToast('יש לבחור סוג משימה'); return;
+    }
+    ntState.step = newStep;
+    ntRenderStep();
+  }
+  function ntSubmit() {
+    showToast('המשימה נוספה לרשימת המשימות');
+    ntReset();
+    ntRenderStep();
+    go('tasks');
+  }
+  document.querySelectorAll('[data-nt-back]').forEach(b => b.addEventListener('click', () => ntAdvance(-1)));
+  document.querySelectorAll('[data-nt-next]').forEach(b => b.addEventListener('click', () => ntAdvance(1)));
+  document.querySelectorAll('[data-nt-save]').forEach(b => b.addEventListener('click', () => showToast('טיוטה נשמרה')));
+  document.querySelectorAll('[data-nt-search]').forEach(inp => inp.addEventListener('input', e => ntRenderResidents(e.target.value)));
+  // Resident pick → auto-advance
+  document.addEventListener('click', (e) => {
+    const row = e.target.closest('[data-nt-pick]');
+    if (!row) return;
+    const key = row.dataset.ntPick;
+    const found = NT_RESIDENTS.find(r => r.key === key);
+    if (!found) return;
+    ntState.residentKey = key;
+    ntState.residentName = found.name;
+    ntState.residentVillage = found.village;
+    document.querySelectorAll('[data-nt-pick]').forEach(r => r.classList.remove('sel'));
+    row.classList.add('sel');
+    setTimeout(() => ntAdvance(1), 180);
+  });
+  // NT chips (single-select fields) — stash state after the global toggler
+  document.addEventListener('click', (e) => {
+    const chip = e.target.closest('.nt-step .chip');
+    if (!chip) return;
+    const row = chip.parentElement;
+    const field = row.dataset.ntField;
+    if (!field) return;
+    const sel = row.querySelector('.chip.on');
+    ntState.fields[field] = sel ? sel.textContent.trim() : null;
+  });
+  // NT textarea + date
+  document.addEventListener('input', (e) => {
+    const inp = e.target.closest('[data-nt-field]');
+    if (!inp) return;
+    ntState.fields[inp.dataset.ntField] = inp.value;
+  });
+
+  // When navigating INTO a flow screen, reset + prime it
+  const _go = go;
+  go = function (name) {
+    if (name === 'questionnaire') {
+      caseReset();
+      caseRenderResidents('');
+      caseRenderStep();
+    } else if (name === 'newResident') {
+      nrReset();
+      nrRenderStep();
+    } else if (name === 'newTask') {
+      ntReset();
+      ntRenderStep();
+    }
+    _go(name);
+  };
+
   // -------- Language switcher (presentation only) --------
   // Hebrew → English dictionary. Exact full-string match on text nodes and on
   // placeholder/aria-label/title attributes. Caches the Hebrew original so we
@@ -2345,7 +3463,9 @@
     // Home
     'פעולות מהירות': 'Quick actions',
     'פתיחת תיק חדש': 'Open new case',
+    'שאלון שלב א\'': 'Stage A questionnaire',
     'שאלון שלב א\' — חירום אקוטי': 'Stage A questionnaire — acute emergency',
+    'משפחה, סוג, תיאור': 'Family, type, description',
     'תושב חדש': 'New resident',
     'הוספה לרשימת תושבים': 'Add to residents list',
     'העלאת מסמכים': 'Upload documents',
@@ -2474,6 +3594,7 @@
     '27.4 · טיוטה': '27.4 · Draft',
 
     // Tasks screen
+    'משימה חדשה': 'New task',
     'משימות פתוחות ': 'Open tasks ',
     'משימות פתוחות': 'Open tasks',
     '9 פתוחות': '9 open',
@@ -2528,6 +3649,11 @@
       'Rachel came back a week ago. Her husband is back at work, Rachel isn\'t. Sleep deprivation and worry about the children. Emotional need, unsure whether to see a psychologist. Asked for another call in a week.',
     // Version/date variants on the main appbar subtitles
     'Hof Ashkelon · v0.3 · ניווט בחמישה טאבים': 'Hof Ashkelon · v0.3 · 5-tab navigation',
+    // New-task flow
+    'בחירת משפחה': 'Choose family',
+    '1 מתוך 3 · בחירת משפחה': '1 of 3 · Choose family',
+    '2 מתוך 3 · סוג משימה': '2 of 3 · Task type',
+    'יש לבחור משפחה / תושב/ת': 'Please choose a family / resident',
     // Open-tasks screen — combined subtitles and full row names
     'היום 11:00': 'Today 11:00',
     'היום 17:00': 'Today 17:00',
@@ -2675,6 +3801,7 @@
     'שמירה': 'Save',
 
     // Questionnaire
+    'שלב א\'': 'Stage A',
     'שלב א\' — חירום אקוטי': 'Stage A — acute emergency',
     '3 מתוך 5 · צרכים דחופים': '3 of 5 · urgent needs',
     'צרכים מיוחדים של ראש המשפחה': 'Special needs of the head of household',
