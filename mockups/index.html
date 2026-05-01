@@ -141,21 +141,35 @@
   /* branded header on home */
   .brandbar {
     display: flex; align-items: center; gap: 14px;
-    padding: 14px 20px 18px;
+    padding: 14px 20px 14px;
     background: transparent;
   }
   .brandbar-logo {
-    width: 44px; height: 44px;
+    width: 36px; height: 36px;
     object-fit: contain;
     flex-shrink: 0;
   }
-  .brandbar-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .brandbar-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
   .brandbar-app {
-    font-size: 22px; font-weight: 800; color: var(--ink); line-height: 1;
+    font-size: 17px; font-weight: 800; color: var(--ink); line-height: 1;
     letter-spacing: -.3px;
   }
   .brandbar-council {
-    font-size: 12.5px; color: var(--ink-3); line-height: 1.3;
+    font-size: 11.5px; color: var(--ink-3); line-height: 1.3;
+  }
+  /* compact mode-toggle inline in header */
+  .mode-toggle-compact {
+    display: flex;
+    background: var(--line-2);
+    border-radius: 999px;
+    padding: 2px;
+    flex-shrink: 0;
+  }
+  .mode-toggle-compact .mode-btn {
+    flex: unset;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 700;
   }
 
   .appbar {
@@ -217,12 +231,16 @@
     overflow: hidden;
   }
   .card-pad { padding: 16px 18px;}
+  /* Section header above a card / card-list. Must read bigger than the
+     item titles inside so hierarchy flows top-down. */
   .card-title {
-    font-size: 12px; font-weight: 700; color: var(--ink-3);
+    font-size: 15px; font-weight: 700; color: var(--ink);
     margin: 22px 4px 10px;
-    letter-spacing: .2px;
+    letter-spacing: -.1px;
   }
   .card-title:first-child { margin-top: 6px;}
+  /* Smaller variant for inline labels (e.g. "Latest summary" header inside a card-pad) */
+  .card-title.sub { font-size: 12px; color: var(--ink-3); font-weight: 700; letter-spacing: .2px;}
 
   .row-item {
     display:flex; align-items:center; gap: 12px;
@@ -242,9 +260,30 @@
   }
   .dot-status.urgent { background: var(--danger);}
 
-  .chev { color: var(--ink-3); font-size: 15px; font-weight: 500;}
-  /* flip chevron glyph so it always points toward drill-down direction */
-  [dir="rtl"] .chev { transform: scaleX(-1); display: inline-block; }
+  /* Chevron: use an inline SVG so the arrow direction is explicit
+     (the browser mirrors single-angle glyphs like › / ‹ in RTL, which
+     produces the wrong visual for drill-down affordances). */
+  .chev {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 14px; height: 14px;
+    color: var(--ink-3);
+    font-size: 0; /* hide any legacy text content */
+    flex-shrink: 0;
+  }
+  .chev::before {
+    content: '';
+    display: block;
+    width: 8px; height: 12px;
+    background-color: currentColor;
+    /* Right-pointing chevron (LTR default) */
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 12'><path d='M1.5 1.2 L6 6 L1.5 10.8' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>") center / contain no-repeat;
+            mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 12'><path d='M1.5 1.2 L6 6 L1.5 10.8' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>") center / contain no-repeat;
+  }
+  /* Flip in RTL so the arrow visually points toward the inline-end (left in Hebrew) */
+  html[dir="rtl"] .chev::before,
+  body.lang-he .chev::before {
+    transform: scaleX(-1);
+  }
 
   /* Pill buttons (Clubhouse-style fully rounded) */
   .btn {
@@ -297,14 +336,17 @@
   .action-title { font-size: 15px; font-weight: 700; line-height: 1.25; }
   .action-sub   { font-size: 12.5px; color: var(--ink-3); line-height: 1.4; }
 
-  /* mode toggle */
-  .mode-toggle {
-    display: flex;
-    background: var(--line-2);
-    border-radius: 999px;
-    padding: 3px;
-    margin-bottom: 16px;
+  /* Summary header: title on one side, date/author on the other */
+  .summary-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 10px;
   }
+  .summary-meta {
+    font-size: 11.5px; color: var(--ink-3); font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* mode toggle (shared base) */
   .mode-btn {
     flex: 1; padding: 9px 0;
     border: 0; border-radius: 999px;
@@ -443,6 +485,59 @@
   .action-hero:hover  { background: #cf4a22; }
   .action-hero:active { transform: scale(.99); }
   .action-hero svg { width: 26px; height: 26px; flex-shrink: 0; }
+
+  /* Events tabs (open/closed) in emergency mode */
+  .events-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+    margin: 2px 0 14px;
+  }
+  .events-tab {
+    flex: 1;
+    padding: 10px 8px 12px;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-3);
+    cursor: pointer;
+    transition: color 120ms, border-color 120ms;
+    margin-bottom: -1px;
+  }
+  .events-tab:hover { color: var(--ink-2); }
+  .events-tab.on {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* Pinned emergency CTA bar (slim, elegant) */
+  .emergency-cta {
+    padding: 10px 18px 10px;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+  }
+  .emergency-cta-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 12px 18px;
+    background: var(--danger); color: #fff;
+    border: 0; border-radius: 999px;
+    cursor: pointer; font-family: inherit;
+    font-size: 15px; font-weight: 700; letter-spacing: -.1px;
+    transition: background 120ms, transform 80ms;
+    box-shadow: 0 2px 8px rgba(229, 87, 43, .22);
+  }
+  .emergency-cta-btn:hover  { background: #cf4a22; }
+  .emergency-cta-btn:active { transform: scale(.99); }
+  .emergency-cta-btn svg {
+    width: 16px; height: 16px; flex-shrink: 0;
+    stroke: currentColor; fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
 
   /* tiny tag */
   .tag {
@@ -587,9 +682,10 @@
   .scope-dd-menu li.on { background: var(--ink); color: #fff;}
 
   .metric-label {
-    font-size: 12px; color: var(--ink-3);
-    margin: 0 2px 8px;
+    font-size: 15px; color: var(--ink);
+    margin: 0 2px 10px;
     font-weight: 700;
+    letter-spacing: -.1px;
   }
 
   /* Case-open (פתיחת תיק) multi-step flow */
@@ -823,6 +919,8 @@
   }
   .detail-badge.urgent { background: var(--danger); color: #fff;}
   .detail-badge.ai     { background: var(--accent-soft); color: var(--ink);}
+  /* Spacing after the tags chip-row in detail screen */
+  .detail-tags { margin-bottom: 18px; padding-top: 2px; }
 
   /* settings: profile card + editor */
   .profile-card {
@@ -1060,18 +1158,32 @@
   /* bottom tabs */
   .tabbar {
     display:grid; grid-template-columns: repeat(5, 1fr);
-    padding: 10px 6px 14px;
-    background: transparent;
+    padding: 8px 6px 12px;
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,.06);
   }
   .tabbar .t {
     display:flex; flex-direction:column; align-items:center; gap: 4px;
-    padding: 6px 0;
-    color: var(--ink-3); cursor: pointer; user-select: none;
+    padding: 8px 0 4px;
+    color: rgba(255,255,255,.55); cursor: pointer; user-select: none;
+    transition: color 120ms;
   }
-  .tabbar .t .ic { font-size: 20px; line-height: 1;}
+  .tabbar .t .ic {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px;
+  }
+  .tabbar .t .ic svg {
+    width: 22px; height: 22px;
+    display: block;
+    stroke: currentColor; fill: none;
+    stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
   .tabbar .t .lbl { font-size: 11px; font-weight: 600;}
-  .tabbar .t.on { color: var(--ink);}
+  .tabbar .t.on { color: #fff;}
   .tabbar .t.on .lbl { font-weight: 700;}
+  .tabbar .t:hover { color: rgba(255,255,255,.85);}
+  .tabbar .t.on:hover { color: #fff;}
 
   footer.page {
     padding: 8px 32px 40px;
@@ -1114,16 +1226,15 @@
             <div class="brandbar-app">שירותים חברתיים</div>
             <div class="brandbar-council">מועצה אזורית חוף אשקלון</div>
           </div>
+          <div class="mode-toggle-compact">
+            <button class="mode-btn on" id="modeRoutine" onclick="setHomeMode('routine')">שגרה</button>
+            <button class="mode-btn emergency" id="modeEmergency" onclick="setHomeMode('emergency')">חירום</button>
+          </div>
         </div>
 
         <div class="content">
 
-          <div class="mode-toggle">
-            <button class="mode-btn on" id="modeRoutine" onclick="setHomeMode('routine')">שגרה</button>
-            <button class="mode-btn emergency" id="modeEmergency" onclick="setHomeMode('emergency')">חירום</button>
-          </div>
-
-          <div class="card-title" style="margin-top: 4px;">פעולות מהירות</div>
+          <div class="card-title" id="homeQuickActionsTitle" style="margin-top: 4px;">פעולות מהירות</div>
 
           <!-- routine actions -->
           <div class="actions" id="actionsRoutine">
@@ -1133,7 +1244,6 @@
               </span>
               <span class="action-main">
                 <span class="action-title">פתיחת תיק חדש</span>
-                <span class="action-sub">שאלון שלב א'</span>
               </span>
               <span class="chev">›</span>
             </button>
@@ -1143,7 +1253,6 @@
               </span>
               <span class="action-main">
                 <span class="action-title">משימה חדשה</span>
-                <span class="action-sub">משפחה, סוג, תיאור</span>
               </span>
               <span class="chev">›</span>
             </button>
@@ -1153,36 +1262,64 @@
               </span>
               <span class="action-main">
                 <span class="action-title">העלאת מסמכים</span>
-                <span class="action-sub">סריקות, טפסים, אישורים</span>
               </span>
               <span class="chev">›</span>
             </button>
           </div>
 
-          <!-- emergency actions -->
+          <!-- emergency actions: open/closed events tabs -->
           <div id="actionsEmergency" style="display:none;">
-            <button class="action-hero" data-nav="newEvent">פתיחת אירוע</button>
-            <div class="actions">
-              <button class="action" data-toast="אירועים פתוחים — דמו">
-                <span class="action-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                </span>
-                <span class="action-main">
-                  <span class="action-title">אירועים פתוחים</span>
-                  <span class="action-sub">טיפול פעיל, ממתין למענה</span>
-                </span>
+            <div class="events-tabs" role="tablist">
+              <button type="button" class="events-tab on" data-events-tab="open" role="tab" aria-selected="true">אירועים פתוחים</button>
+              <button type="button" class="events-tab" data-events-tab="closed" role="tab" aria-selected="false">אירועים סגורים</button>
+            </div>
+
+            <!-- open events list -->
+            <div class="card" data-events-view="open">
+              <div class="row-item" data-toast="אירוע — רכס — דמו">
+                <span class="dot-status urgent"></span>
+                <div class="row-main">
+                  <div class="row-name">241107 · רכס</div>
+                  <div class="row-sub">5 משימות פתוחות · ממתין למענה</div>
+                </div>
                 <span class="chev">›</span>
-              </button>
-              <button class="action" data-toast="אירועים סגורים — דמו">
-                <span class="action-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>
-                </span>
-                <span class="action-main">
-                  <span class="action-title">אירועים סגורים</span>
-                  <span class="action-sub">הושלמו, בוטלו</span>
-                </span>
+              </div>
+              <div class="row-item" data-toast="אירוע — ניר גלים — דמו">
+                <span class="dot-status"></span>
+                <div class="row-main">
+                  <div class="row-name">241203 · ניר גלים</div>
+                  <div class="row-sub">3 משימות פתוחות · בטיפול</div>
+                </div>
                 <span class="chev">›</span>
-              </button>
+              </div>
+              <div class="row-item" data-toast="אירוע — ברכיה — דמו">
+                <span class="dot-status"></span>
+                <div class="row-main">
+                  <div class="row-name">250112 · ברכיה</div>
+                  <div class="row-sub">2 משימות פתוחות · ממתין לשיבוץ</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+            </div>
+
+            <!-- closed events list -->
+            <div class="card" data-events-view="closed" style="display:none;">
+              <div class="row-item" data-toast="אירוע סגור — דמו">
+                <span class="dot-status"></span>
+                <div class="row-main">
+                  <div class="row-name">240815 · יד מרדכי</div>
+                  <div class="row-sub">הסתיים 22.8 · 8 משימות הושלמו</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+              <div class="row-item" data-toast="אירוע סגור — דמו">
+                <span class="dot-status"></span>
+                <div class="row-main">
+                  <div class="row-name">240601 · נחל עוז</div>
+                  <div class="row-sub">הסתיים 12.6 · בוטל</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
             </div>
           </div>
 
@@ -1190,7 +1327,7 @@
           <div id="tasksRoutine">
             <div class="card-title">המשימות שלי היום</div>
             <div class="card">
-              <div class="row-item" data-nav="profile" data-family="cohen">
+              <div class="row-item" data-nav="detail" data-family="cohen" data-detail-kind="task" data-detail-index="0">
                 <span class="dot-status urgent"></span>
                 <div class="row-main">
                   <div class="row-name">מימוש זכויות — משפחת כהן</div>
@@ -1198,7 +1335,7 @@
                 </div>
                 <span class="chev">›</span>
               </div>
-              <div class="row-item" data-nav="profile" data-family="avraham">
+              <div class="row-item" data-nav="detail" data-family="avraham" data-detail-kind="task" data-detail-index="1">
                 <span class="dot-status"></span>
                 <div class="row-main">
                   <div class="row-name">שיחת המשך — רחלי אברהם</div>
@@ -1206,7 +1343,7 @@
                 </div>
                 <span class="chev">›</span>
               </div>
-              <div class="row-item" data-nav="profile" data-family="alon">
+              <div class="row-item" data-nav="detail" data-family="alon" data-detail-kind="timeline" data-detail-index="0">
                 <span class="dot-status"></span>
                 <div class="row-main">
                   <div class="row-name">שאלון "מה נשמע" — נועה אלון</div>
@@ -1217,68 +1354,14 @@
             </div>
           </div>
 
-          <!-- emergency: tasks by event -->
-          <div id="tasksEmergency" style="display:none; margin-top: 20px;">
-            <div class="card-title">משימות לפי אירוע</div>
+        </div>
 
-            <div class="event-group">
-              <div class="event-group-header">
-                <span class="event-group-name"><span class="event-dot"></span>241107 · רכס</span>
-                <span class="event-count">5 משימות</span>
-              </div>
-              <div class="card">
-                <div class="row-item" data-toast="סיוע נפשי — דמו">
-                  <span class="dot-status urgent"></span>
-                  <div class="row-main">
-                    <div class="row-name">סיוע נפשי — 3 משפחות</div>
-                    <div class="row-sub">דחוף · ממתין לשיבוץ</div>
-                  </div>
-                  <span class="chev">›</span>
-                </div>
-                <div class="row-item" data-toast="מגורים זמניים — דמו">
-                  <span class="dot-status"></span>
-                  <div class="row-main">
-                    <div class="row-name">מגורים זמניים — משפחות דגן, לוי</div>
-                    <div class="row-sub">בטיפול · ניר גלים</div>
-                  </div>
-                  <span class="chev">›</span>
-                </div>
-                <div class="row-item" data-toast="תיק זכויות — דמו">
-                  <span class="dot-status"></span>
-                  <div class="row-main">
-                    <div class="row-name">פתיחת תיק זכויות — 7 נפשות</div>
-                    <div class="row-sub">ממתין · טרם הוקצה</div>
-                  </div>
-                  <span class="chev">›</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="event-group">
-              <div class="event-group-header">
-                <span class="event-group-name"><span class="event-dot"></span>241203 · ניר גלים</span>
-                <span class="event-count">3 משימות</span>
-              </div>
-              <div class="card">
-                <div class="row-item" data-toast="בדיקה רפואית — דמו">
-                  <span class="dot-status urgent"></span>
-                  <div class="row-main">
-                    <div class="row-name">בדיקת מצב רפואי — 5 נפשות</div>
-                    <div class="row-sub">דחוף · תיאום עם מד"א</div>
-                  </div>
-                  <span class="chev">›</span>
-                </div>
-                <div class="row-item" data-toast="הסעות — דמו">
-                  <span class="dot-status"></span>
-                  <div class="row-main">
-                    <div class="row-name">תיאום הסעות — אגמון</div>
-                    <div class="row-sub">בטיפול · מחר 08:00</div>
-                  </div>
-                  <span class="chev">›</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- pinned emergency CTA (shown only in emergency mode) -->
+        <div id="emergencyCta" class="emergency-cta" style="display:none;">
+          <button class="emergency-cta-btn" type="button" data-nav="newEvent">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>פתיחת אירוע</span>
+          </button>
         </div>
 
         <div class="tabbar"></div>
@@ -1489,8 +1572,11 @@
           </div>
 
           <div class="card card-pad">
-            <div class="card-title" style="margin: 0 0 6px;">סיכום אחרון</div>
-            <p data-slot="summary" style="margin:0; font-size: 13px; color: var(--ink-2); line-height: 1.55;"></p>
+            <div class="summary-head">
+              <div class="card-title" style="margin: 0;">סיכום אחרון</div>
+              <div class="summary-meta" data-slot="summary-meta"></div>
+            </div>
+            <p data-slot="summary" style="margin:8px 0 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.6;"></p>
           </div>
 
           <div class="card-title">פעולות</div>
@@ -1501,7 +1587,6 @@
               </span>
               <span class="action-main">
                 <span class="action-title">מילוי שאלון חדש</span>
-                <span class="action-sub">שלב א' / ב' / ג' לפי המצב</span>
               </span>
               <span class="chev">›</span>
             </button>
@@ -1511,7 +1596,6 @@
               </span>
               <span class="action-main">
                 <span class="action-title">עדכון פרטי משפחה</span>
-                <span class="action-sub">הרכב, פרטי קשר, יישוב</span>
               </span>
               <span class="chev">›</span>
             </button>
@@ -1545,7 +1629,6 @@
             <div class="confirm-sheet">
               <h3>הוספת עדכון</h3>
               <textarea id="updateText" class="ta" rows="5"
-                        placeholder="תיאור הפעולה, שיחה, ביקור, הערה…"
                         style="width:100%; margin-bottom:14px; resize:none;"></textarea>
               <div class="confirm-btns">
                 <button class="btn primary" type="button" id="saveUpdateBtn">שמירה</button>
@@ -1560,7 +1643,7 @@
       <div class="screen" data-screen="detail">
         <div class="statusbar"><span>9:46</span><span>4G · 78%</span></div>
         <div class="appbar with-back">
-          <div class="back" data-nav="profile" role="button" aria-label="חזרה">
+          <div class="back" data-detail-back role="button" aria-label="חזרה">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </div>
           <div class="appbar-main">
@@ -1577,9 +1660,34 @@
 
           <div class="card-title" data-slot="detail-extra-title" hidden></div>
           <div class="card" data-slot="detail-extra" hidden></div>
+
+          <!-- Task-only: free-text notes -->
+          <div data-slot="detail-task-actions" hidden>
+            <div class="card-title">הערות ועדכונים</div>
+            <div class="card card-pad">
+              <textarea class="ta" rows="4" data-slot="detail-notes"
+                        style="width:100%; font-family:inherit; font-size:14px; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-s); padding:10px 12px; resize:none; color:var(--ink);"></textarea>
+              <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+                <button class="btn-link primary" type="button" data-detail-save-notes
+                        style="font-size:13px; padding:6px 12px; border-radius:var(--r-s);">שמירת הערה</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="footerbar" data-slot="detail-footer"></div>
+
+        <!-- Follow-up prompt after marking complete -->
+        <div class="confirm-overlay" id="followupOverlay">
+          <div class="confirm-sheet">
+            <h3>המשימה סומנה כהושלמה</h3>
+            <p>האם ליצור משימת המשך?</p>
+            <div class="confirm-btns">
+              <button class="btn primary" type="button" id="followupYesBtn">כן, צור משימת המשך</button>
+              <button class="btn ghost"   type="button" id="followupNoBtn">סיום</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- QUESTIONNAIRE (sub-flow) -->
@@ -1610,14 +1718,36 @@
           </div>
           <div class="progress-label" data-case-step-label>1 מתוך 7 · בחירת תושב/ת</div>
 
-          <!-- STEP 1: pick resident -->
+          <!-- STEP 1: create new resident -->
           <div class="case-step" data-step="1">
-            <div class="search">
-              <span class="ic">⌕</span>
-              <input placeholder="שם או יישוב" data-case-resident-search />
-            </div>
-            <div class="card" data-case-resident-list>
-              <!-- rendered by JS -->
+            <div class="q-help" style="margin: 0 0 10px;">פרטי ראש המשפחה החדש</div>
+            <div class="card">
+              <label class="field">
+                <span class="field-label">שם פרטי של ראש המשפחה</span>
+                <input class="field-input" type="text" data-case-new-field="firstName" />
+              </label>
+              <label class="field">
+                <span class="field-label">שם משפחה</span>
+                <input class="field-input" type="text" data-case-new-field="lastName" />
+              </label>
+              <label class="field">
+                <span class="field-label">יישוב</span>
+                <div class="chip-row" data-togglegroup="single" data-case-new-field="village">
+                  <div class="chip">יד מרדכי</div>
+                  <div class="chip">ברכיה</div>
+                  <div class="chip">זיקים</div>
+                  <div class="chip">כרמיה</div>
+                  <div class="chip">ניצנים</div>
+                </div>
+              </label>
+              <label class="field">
+                <span class="field-label">טלפון</span>
+                <input class="field-input" type="tel" data-case-new-field="phone" />
+              </label>
+              <label class="field">
+                <span class="field-label">אימייל</span>
+                <input class="field-input" type="email" data-case-new-field="email" />
+              </label>
             </div>
           </div>
 
@@ -1640,13 +1770,6 @@
                 <div class="chip">פציעה / נפילה</div>
                 <div class="chip">שכול</div>
                 <div class="chip">אחר</div>
-              </div>
-            </div>
-            <div class="q">
-              <div class="q-text">האם זהו אירוע חדש או המשך מטיפול קיים?</div>
-              <div class="chip-row" data-togglegroup="single" data-case-field="newOrExisting">
-                <div class="chip">אירוע חדש</div>
-                <div class="chip">המשך טיפול</div>
               </div>
             </div>
             <div class="q">
@@ -1693,8 +1816,8 @@
               <div class="q-help">קריטריון לטריאז' יישובי</div>
               <div class="chip-row chips-stacked" data-togglegroup="single" data-case-field="urgency">
                 <div class="chip">דחוף — קשר תוך 24 שעות</div>
-                <div class="chip">מיידי — קשר תוך 3 ימים</div>
-                <div class="chip">לא דחוף — שבוע ומעלה</div>
+                <div class="chip">מהיר — קשר תוך 3 ימים</div>
+                <div class="chip">רגיל — שבוע ומעלה</div>
                 <div class="chip">אין צורך בהמשך טיפול</div>
               </div>
             </div>
@@ -1705,8 +1828,7 @@
             <div class="q">
               <div class="q-text">הערה מילולית</div>
               <div class="note-field">
-                <textarea class="ta" rows="6" data-case-field="note"
-                          placeholder="למשל: יכולת התארגנות, דחיפות קשר, פרטים נוספים"></textarea>
+                <textarea class="ta" rows="6" data-case-field="note"></textarea>
                 <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="3" width="6" height="12" rx="3"/>
@@ -1816,6 +1938,7 @@
               <span class="group-name">דחוף</span>
               <span class="group-count" data-group-count>3</span>
             </div>
+
             <div class="card">
               <div class="row-item" data-nav="profile" data-urgency="urgent" data-village="yad">
                 <div class="row-main">
@@ -1844,7 +1967,7 @@
           <div data-group="immediate">
             <div class="group-head">
               <span class="group-dot immediate"></span>
-              <span class="group-name">מיידי</span>
+              <span class="group-name">מהיר</span>
               <span class="group-count" data-group-count>3</span>
             </div>
             <div class="card">
@@ -1875,7 +1998,7 @@
           <div data-group="normal">
             <div class="group-head">
               <span class="group-dot normal"></span>
-              <span class="group-name">לא דחוף</span>
+              <span class="group-name">רגיל</span>
               <span class="group-count" data-group-count>3</span>
             </div>
             <div class="card">
@@ -1936,8 +2059,8 @@
             <div class="metric-label">משפחות לפי סיווג דחיפות</div>
             <div class="metric-row">
               <div class="metric accent" data-nav="tasks"><div class="v">9</div><div class="l">דחוף</div></div>
-              <div class="metric" data-nav="tasks"><div class="v">28</div><div class="l">מיידי</div></div>
-              <div class="metric" data-nav="tasks"><div class="v">114</div><div class="l">לא דחוף</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">28</div><div class="l">מהיר</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">114</div><div class="l">רגיל</div></div>
             </div>
 
             <!-- per-village split, visible only in combined -->
@@ -2051,8 +2174,8 @@
             <div class="metric-label">משפחות לפי סיווג דחיפות</div>
             <div class="metric-row">
               <div class="metric accent" data-nav="tasks"><div class="v">7</div><div class="l">דחוף</div></div>
-              <div class="metric" data-nav="tasks"><div class="v">22</div><div class="l">מיידי</div></div>
-              <div class="metric" data-nav="tasks"><div class="v">64</div><div class="l">לא דחוף</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">22</div><div class="l">מהיר</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">64</div><div class="l">רגיל</div></div>
             </div>
 
             <div class="card card-pad">
@@ -2123,8 +2246,8 @@
             <div class="metric-label">משפחות לפי סיווג דחיפות</div>
             <div class="metric-row">
               <div class="metric accent" data-nav="tasks"><div class="v">2</div><div class="l">דחוף</div></div>
-              <div class="metric" data-nav="tasks"><div class="v">6</div><div class="l">מיידי</div></div>
-              <div class="metric" data-nav="tasks"><div class="v">50</div><div class="l">לא דחוף</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">6</div><div class="l">מהיר</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">50</div><div class="l">רגיל</div></div>
             </div>
 
             <div class="card card-pad">
@@ -2377,11 +2500,11 @@
             <div class="card">
               <label class="field">
                 <span class="field-label">שם פרטי של ראש המשפחה</span>
-                <input class="field-input" type="text" data-nr-field="firstName" placeholder="למשל: מיכאל" />
+                <input class="field-input" type="text" data-nr-field="firstName" />
               </label>
               <label class="field">
                 <span class="field-label">שם משפחה</span>
-                <input class="field-input" type="text" data-nr-field="lastName" placeholder="למשל: רז" />
+                <input class="field-input" type="text" data-nr-field="lastName" />
               </label>
               <label class="field">
                 <span class="field-label">יישוב</span>
@@ -2395,7 +2518,11 @@
               </label>
               <label class="field">
                 <span class="field-label">טלפון</span>
-                <input class="field-input" type="tel" data-nr-field="phone" placeholder="05_-_______" />
+                <input class="field-input" type="tel" data-nr-field="phone" />
+              </label>
+              <label class="field">
+                <span class="field-label">אימייל</span>
+                <input class="field-input" type="email" data-nr-field="email" />
               </label>
             </div>
           </div>
@@ -2409,14 +2536,13 @@
             <button class="member-add-btn" type="button" data-nr-add-member>+ הוסף בן/ת משפחה</button>
           </div>
 
-          <!-- STEP 3: free-text history -->
+          <!-- STEP 3: free-text history + tags -->
           <div class="nr-step" data-nr-step="3" hidden>
             <div class="q">
               <div class="q-text">היסטוריה וסיפור המשפחה</div>
               <div class="q-help">מה חשוב לדעת על המשפחה לפני תחילת טיפול</div>
               <div class="note-field">
-                <textarea class="ta" rows="8" data-nr-field="history"
-                          placeholder="למשל: מוכרים בקהילה מ-2020, חזרו מהמלון בינואר, האם בריאה אך בעלה פצוע, שני ילדים במסגרות..."></textarea>
+                <textarea class="ta" rows="6" data-nr-field="history"></textarea>
                 <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="3" width="6" height="12" rx="3"/>
@@ -2424,6 +2550,18 @@
                     <path d="M12 18v3"/>
                   </svg>
                 </button>
+              </div>
+            </div>
+            <div class="q">
+              <div class="q-text">תגיות</div>
+              <div class="q-help">ניתן לבחור יותר מאפשרות אחת</div>
+              <div class="chip-row" data-togglegroup="multi" data-nr-field="tags">
+                <div class="chip">שכול</div>
+                <div class="chip">נכות</div>
+                <div class="chip">שורדי שואה</div>
+                <div class="chip">אלימות</div>
+                <div class="chip">רווחה</div>
+                <div class="chip">כלכלי</div>
               </div>
             </div>
           </div>
@@ -2484,8 +2622,8 @@
               <div class="q-text">דחיפות</div>
               <div class="chip-row" data-togglegroup="single" data-nt-field="urgency">
                 <div class="chip">דחוף</div>
-                <div class="chip">מיידי</div>
-                <div class="chip">לא דחוף</div>
+                <div class="chip">מהיר</div>
+                <div class="chip">רגיל</div>
               </div>
             </div>
             <div class="q">
@@ -2500,8 +2638,7 @@
             <div class="q">
               <div class="q-text">תיאור המשימה</div>
               <div class="note-field">
-                <textarea class="ta" rows="8" data-nt-field="description"
-                          placeholder="מה צריך לעשות, מה חשוב לדעת לפני הביצוע, עם מי לתאם"></textarea>
+                <textarea class="ta" rows="8" data-nt-field="description"></textarea>
                 <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="3" width="6" height="12" rx="3"/>
@@ -2547,7 +2684,7 @@
 
           <div class="q" id="customNameWrap" hidden>
             <div class="q-text">שם האירוע</div>
-            <input class="field-input" type="text" id="newEventCustomName" placeholder="שם אירוע חופשי…" />
+            <input class="field-input" type="text" id="newEventCustomName" />
           </div>
 
           <div class="q">
@@ -2563,14 +2700,13 @@
 
           <div class="q">
             <div class="q-text">מיקום — פירוט נוסף (רשות)</div>
-            <input class="field-input" type="text" id="newEventLocation" placeholder="כתובת, נקודת ציון, שם אתר…" />
+            <input class="field-input" type="text" id="newEventLocation" />
           </div>
 
           <div class="q">
             <div class="q-text">תיאור האירוע</div>
             <div class="note-field">
-              <textarea class="ta" rows="4" id="newEventDesc"
-                        placeholder="מה קרה, מה מצב השטח, מה נדרש כרגע"></textarea>
+              <textarea class="ta" rows="4" id="newEventDesc"></textarea>
               <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
               </button>
@@ -2682,7 +2818,7 @@
         <div class="content">
           <div class="q">
             <div class="q-text">שם המשימה</div>
-            <input class="field-input" type="text" id="ntName" placeholder="לדוגמה: פינוי דיירים, סיוע נפשי…" />
+            <input class="field-input" type="text" id="ntName" />
           </div>
 
           <div class="q">
@@ -2700,7 +2836,7 @@
           <div class="q">
             <div class="q-text">תיאור / מלל חופשי</div>
             <div class="note-field">
-              <textarea class="ta" rows="4" id="ntDesc" placeholder="פרטים, הנחיות לביצוע, אנשי קשר…"></textarea>
+              <textarea class="ta" rows="4" id="ntDesc"></textarea>
               <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
               </button>
@@ -2711,8 +2847,8 @@
             <div class="q-text">דחיפות</div>
             <div class="chip-row" data-togglegroup="single" id="ntUrgencyChips">
               <div class="chip" data-nturgency="דחוף">דחוף</div>
-              <div class="chip on" data-nturgency="מיידי">מיידי</div>
-              <div class="chip" data-nturgency="לא דחוף">לא דחוף</div>
+              <div class="chip on" data-nturgency="מהיר">מהיר</div>
+              <div class="chip" data-nturgency="רגיל">רגיל</div>
             </div>
           </div>
 
@@ -2741,11 +2877,41 @@
 
 <!-- shared tabbar template injected on load -->
 <template id="tabbarTpl">
-  <div class="t" data-nav="home"><span class="ic">⌂</span><span class="lbl">בית</span></div>
-  <div class="t" data-nav="residents"><span class="ic">◇</span><span class="lbl">תושבים</span></div>
-  <div class="t" data-nav="tasks"><span class="ic">☰</span><span class="lbl">משימות</span></div>
-  <div class="t" data-nav="insights"><span class="ic">⌃</span><span class="lbl">תובנות</span></div>
-  <div class="t" data-nav="settings"><span class="ic">◦</span><span class="lbl">הגדרות</span></div>
+  <div class="t" data-nav="home">
+    <span class="ic" aria-hidden="true">
+      <!-- fa-house -->
+      <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg>
+    </span>
+    <span class="lbl">בית</span>
+  </div>
+  <div class="t" data-nav="residents">
+    <span class="ic" aria-hidden="true">
+      <!-- fa-users -->
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.3 3.4-5.5 6.5-5.5s5.9 2.2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M15 14.5c2.8 0 5.1 2 5.5 4.5"/></svg>
+    </span>
+    <span class="lbl">תושבים</span>
+  </div>
+  <div class="t" data-nav="tasks">
+    <span class="ic" aria-hidden="true">
+      <!-- fa-list-check -->
+      <svg viewBox="0 0 24 24"><path d="M10 6h10"/><path d="M10 12h10"/><path d="M10 18h10"/><path d="M3.5 6 5 7.5 7.5 5"/><path d="M3.5 12 5 13.5 7.5 11"/><path d="M3.5 18 5 19.5 7.5 17"/></svg>
+    </span>
+    <span class="lbl">משימות</span>
+  </div>
+  <div class="t" data-nav="insights">
+    <span class="ic" aria-hidden="true">
+      <!-- fa-chart-line -->
+      <svg viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M3 20V5"/><polyline points="6,16 10,11 13,13 19,6"/><circle cx="6" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="10" cy="11" r="1" fill="currentColor" stroke="none"/><circle cx="13" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="19" cy="6" r="1" fill="currentColor" stroke="none"/></svg>
+    </span>
+    <span class="lbl">תובנות</span>
+  </div>
+  <div class="t" data-nav="settings">
+    <span class="ic" aria-hidden="true">
+      <!-- fa-gear -->
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+    </span>
+    <span class="lbl">הגדרות</span>
+  </div>
 </template>
 
 <script>
@@ -2790,6 +2956,8 @@
         { role: 'child', name: 'איתי',    age: 5,  initials: 'אי' }
       ],
       summary: 'חזרו לפני שבועיים ליד מרדכי. שני ילדים חזרו למסגרות, בן 11 עדיין לא. אבי מבקש מיצוי זכויות וסיוע לוגיסטי.',
+      summaryDate: '26.4',
+      summaryBy: 'דנה כהן',
       timeline: [
         { title: 'שלב ב' + "'" + ' — ביסוס תפקוד', sub: '26.4 · דנה כהן',
           body: 'שיחה של 28 דקות עם אבי ושרה. שלושה ילדים חזרו למסגרות, בן 11 עדיין לא. אבי מבקש ליווי במיצוי זכויות — דמי אבטלה חלקיים וסיוע בשכר דירה. שרה בעיקר עסוקה בילדים, מעדיפה לא לפתוח שיחה רגשית בשלב הזה.' },
@@ -2822,6 +2990,8 @@
         { role: 'child', name: 'דניאל',   age: 6,  initials: 'דנ' }
       ],
       summary: 'רחלי חזרה לפני שבוע מהמלון. יוסי שב לעבודה, רחלי עדיין לא. חוסר שינה ודאגה לילדים, מתלבטת על פנייה לפסיכולוג.',
+      summaryDate: '24.4',
+      summaryBy: 'דנה כהן',
       timeline: [
         { title: 'שיחת המשך — עם רחלי',  sub: '24.4 · דנה כהן',
           body: 'שיחה טלפונית של 23 דקות. רחלי דיווחה שיוסי שב לעבודה אבל היא עדיין לא. חוסר שינה וקושי להתמקד. מערכת תמיכה משפחתית זמינה — אחות גרה ביישוב. ביקשה שיחה נוספת בעוד שבוע.' },
@@ -2853,6 +3023,8 @@
         { role: 'child', name: 'עידו',    age: 7,  initials: 'עי' }
       ],
       summary: 'אם חד-הורית, חזרה מוקדם יחסית. בעלה לשעבר היה בן משפחה של קורבן. נועה ביקשה ליווי רגשי מזדמן ומסגרת אחה' + '"' + 'צ לעידו.',
+      summaryDate: '27.4',
+      summaryBy: 'דנה כהן',
       timeline: [
         { title: 'שאלון "מה נשמע"', sub: '27.4 · דנה כהן',
           body: 'מענה קצר לשאלון Reaching out. נועה מדווחת שהיא "בסדר", אך עוד מתקשה לישון. עידו חזר לבית הספר אך חסר לו מסגרת אחה' + '"' + 'צ. אין בקשות נוספות כרגע.' },
@@ -2895,6 +3067,11 @@
     scr.querySelector('[data-slot="title"]').textContent = f.title;
     scr.querySelector('[data-slot="sub"]').textContent = f.sub;
     scr.querySelector('[data-slot="summary"]').textContent = f.summary;
+    const metaEl = scr.querySelector('[data-slot="summary-meta"]');
+    if (metaEl) {
+      const bits = [f.summaryDate, f.summaryBy].filter(Boolean);
+      metaEl.textContent = bits.length ? bits.join(' · ') : '';
+    }
 
     const membersEl = scr.querySelector('[data-slot="members"]');
     membersEl.innerHTML = f.members.map(m => `
@@ -2984,7 +3161,7 @@
       extra.hidden = false;
       extraTitle.textContent = 'תגיות';
       extra.classList.remove('card');
-      extra.className = 'chip-row';
+      extra.className = 'chip-row detail-tags';
       extra.innerHTML = src.tagList.map(t => `<span class="chip on">${t}</span>`).join('');
     } else {
       extraTitle.hidden = true;
@@ -2993,16 +3170,93 @@
       extra.innerHTML = '';
     }
 
+    // Task-only: notes + follow-up action
+    const taskActions = scr.querySelector('[data-slot="detail-task-actions"]');
+    const notesTa    = scr.querySelector('[data-slot="detail-notes"]');
+    if (taskActions && notesTa) {
+      if (kind === 'task') {
+        taskActions.hidden = false;
+        notesTa.value = src.notes || '';
+        notesTa.dataset.familyKey = currentFamilyKey;
+        notesTa.dataset.taskIndex = String(index);
+      } else {
+        taskActions.hidden = true;
+        notesTa.value = '';
+      }
+    }
+
     // Footer actions differ per kind
     if (kind === 'task') {
       footer.hidden = false;
       footer.innerHTML =
-        '<button class="btn primary" data-toast="המשימה סומנה כהושלמה">סמן כהושלמה</button>';
+        '<button class="btn primary" data-detail-complete>סמן כהושלמה</button>';
     } else {
       footer.hidden = true;
       footer.innerHTML = '';
     }
   }
+
+  // Save notes on the active task
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-detail-save-notes]');
+    if (!btn) return;
+    const ta = document.querySelector('[data-slot="detail-notes"]');
+    if (!ta) return;
+    const famKey = ta.dataset.familyKey;
+    const idx    = parseInt(ta.dataset.taskIndex, 10);
+    const fam    = FAMILIES[famKey];
+    if (fam && fam.tasks && fam.tasks[idx]) {
+      fam.tasks[idx].notes = ta.value;
+      showToast('ההערה נשמרה');
+    }
+  });
+
+  // Detail "back" — return to whichever screen we came from
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-detail-back]');
+    if (!btn) return;
+    const prev = window.__lastScreen || 'profile';
+    // Guard against looping back into detail itself
+    const target = prev === 'detail' ? 'profile' : prev;
+    go(target);
+  });
+
+  // Mark-complete — persist notes, then open the follow-up prompt
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-detail-complete]');
+    if (!btn) return;
+    const ta = document.querySelector('[data-slot="detail-notes"]');
+    if (ta && ta.dataset.familyKey) {
+      const famKey = ta.dataset.familyKey;
+      const idx    = parseInt(ta.dataset.taskIndex, 10);
+      const fam    = FAMILIES[famKey];
+      if (fam && fam.tasks && fam.tasks[idx]) fam.tasks[idx].notes = ta.value;
+    }
+    const overlay = document.getElementById('followupOverlay');
+    if (overlay) overlay.classList.add('open');
+  });
+
+  // Follow-up prompt — Yes: go to newTask with the family preselected
+  const fuOverlay = document.getElementById('followupOverlay');
+  const fuYes = document.getElementById('followupYesBtn');
+  const fuNo  = document.getElementById('followupNoBtn');
+  if (fuYes) fuYes.addEventListener('click', () => {
+    if (fuOverlay) fuOverlay.classList.remove('open');
+    const ta = document.querySelector('[data-slot="detail-notes"]');
+    const famKey = ta && ta.dataset.familyKey;
+    if (window.ntPreselect && famKey) window.ntPreselect(famKey);
+    go('newTask');
+  });
+  if (fuNo) fuNo.addEventListener('click', () => {
+    if (fuOverlay) fuOverlay.classList.remove('open');
+    showToast('המשימה סומנה כהושלמה');
+    // Go back to the family profile
+    go('profile');
+  });
+  // Click outside the sheet dismisses like "No"
+  if (fuOverlay) fuOverlay.addEventListener('click', (e) => {
+    if (e.target === fuOverlay && fuNo) fuNo.click();
+  });
 
   // --- members carousel arrows ---
   function updateMembersArrows() {
@@ -3041,8 +3295,16 @@
     if (sub) sub.textContent = total + ' פתוחות';
   }
 
+  // Track previous screen so the detail back button can return where it came from
+  window.__lastScreen = null;
+
   window.go = function go(name) {
     if (!document.querySelector(`.screen[data-screen="${name}"]`)) return;
+    // Remember the current screen before switching (only for real transitions)
+    const current = document.querySelector('.screen.on');
+    if (current && current.dataset.screen !== name) {
+      window.__lastScreen = current.dataset.screen;
+    }
     screens.forEach(s => s.classList.toggle('on', s.dataset.screen === name));
 
     const activeTab = SCREEN_TAB[name] || name;
@@ -3237,7 +3499,7 @@
 
   // -------- Case-open (פתיחת תיק) state machine --------
   const CASE_STEPS = [
-    { id: 1, title: 'בחירת תושב/ת' },
+    { id: 1, title: 'תושב/ת חדש/ה' },
     { id: 2, title: 'בני המשפחה' },
     { id: 3, title: 'סיווג ראשוני' },
     { id: 4, title: 'צרכים דחופים' },
@@ -3284,10 +3546,10 @@
     residentKey: null,
     residentName: null,
     residentVillage: null,
+    newResident: { firstName: '', lastName: '', village: null, phone: '', email: '' },
     fields: {
       members: [],
       eventType: null,
-      newOrExisting: null,
       eventDate: null,
       status: [],
       needs: [],
@@ -3308,9 +3570,10 @@
     caseState.residentKey = null;
     caseState.residentName = null;
     caseState.residentVillage = null;
+    caseState.newResident = { firstName: '', lastName: '', village: null, phone: '', email: '' };
     caseState.fields = {
       members: [],
-      eventType: null, newOrExisting: null, eventDate: todayISO(),
+      eventType: null, eventDate: todayISO(),
       status: [], needs: [], urgency: null, note: ''
     };
 
@@ -3321,8 +3584,10 @@
     // Clear textarea; prefill date to today
     scr.querySelectorAll('[data-case-field="note"]').forEach(t => t.value = '');
     scr.querySelectorAll('[data-case-field="eventDate"]').forEach(t => t.value = todayISO());
-    scr.querySelectorAll('[data-case-resident-search]').forEach(i => i.value = '');
-    scr.querySelectorAll('[data-case-resident-list] .row-item.sel').forEach(r => r.classList.remove('sel'));
+    // Clear new-resident inputs (step 1)
+    scr.querySelectorAll('[data-case-new-field]').forEach(el => {
+      if (el.tagName === 'INPUT') el.value = '';
+    });
   }
 
   function caseRenderMembers() {
@@ -3355,24 +3620,21 @@
     `).join('');
   }
 
-  function caseRenderResidents(filter) {
+  function caseRenderNewResident() {
     const scr = document.querySelector('.screen[data-screen="questionnaire"]');
-    const list = scr.querySelector('[data-case-resident-list]');
-    if (!list) return;
-    const q = (filter || '').trim().toLowerCase();
-    const matches = CASE_RESIDENTS.filter(r => {
-      if (!q) return true;
-      return r.name.toLowerCase().includes(q) || r.village.toLowerCase().includes(q);
+    if (!scr) return;
+    const nr = caseState.newResident;
+    scr.querySelectorAll('[data-case-new-field]').forEach(el => {
+      const f = el.dataset.caseNewField;
+      if (el.tagName === 'INPUT') el.value = nr[f] || '';
     });
-    list.innerHTML = matches.map(r => `
-      <div class="row-item" data-case-pick="${r.key}">
-        <div class="row-main">
-          <div class="row-name">${r.name}</div>
-          <div class="row-sub">${r.village}</div>
-        </div>
-        <span class="chev">›</span>
-      </div>
-    `).join('') || '<div class="empty-state"><div class="empty-title">אין תושבים תואמים</div></div>';
+    // Reflect the village chip selection
+    const villageRow = scr.querySelector('[data-case-new-field="village"]');
+    if (villageRow) {
+      villageRow.querySelectorAll('.chip').forEach(c => {
+        c.classList.toggle('on', nr.village && c.textContent.trim() === nr.village);
+      });
+    }
   }
 
   function caseRenderSummary() {
@@ -3391,7 +3653,6 @@
       ['תושב/ת',          caseState.residentName ? `${caseState.residentName} · ${caseState.residentVillage}` : null],
       ['בני המשפחה',      membersSummary],
       ['סוג האירוע',      f.eventType],
-      ['חדש / המשך',      f.newOrExisting],
       ['תאריך האירוע',    f.eventDate],
       ['מצב ראש המשפחה',  f.status.length ? f.status.join(', ') : null],
       ['צרכים',           f.needs.length ? f.needs.join(', ') : null],
@@ -3431,15 +3692,16 @@
         ? `${caseState.residentName} · ${meta.title}`
         : meta.title;
     }
-    // Footer buttons. On step 1 we hide the whole footer — the user advances
-    // by tapping a resident, and there's nothing to go back to.
+    // Footer buttons. Step 1 now has its own Next button (no resident list auto-advance).
     const footer = scr.querySelector('[data-case-footer]');
     const backBtn = scr.querySelector('[data-case-back]');
     const nextBtn = scr.querySelector('[data-case-next]');
-    if (footer)  footer.style.display = step === 1 ? 'none' : 'flex';
+    if (footer)  footer.style.display = 'flex';
     if (backBtn) backBtn.hidden = step === 1;
     if (nextBtn) nextBtn.textContent = step === CASE_STEPS.length ? 'פתיחת תיק' : 'הבא';
 
+    // Step 1 → reflect new-resident state
+    if (step === 1) caseRenderNewResident();
     // Step 2 → render family members editor
     if (step === 2) caseRenderMembers();
     // Step 3 → make sure date picker is populated
@@ -3450,9 +3712,12 @@
     // Step 7 → render summary
     if (step === CASE_STEPS.length) caseRenderSummary();
 
-    // Save button — enabled once some progress exists (resident chosen)
+    // Save button — enabled once step-1 minimum fields are filled
     const saveBtn = scr.querySelector('[data-case-save]');
-    if (saveBtn) saveBtn.disabled = !caseState.residentKey;
+    if (saveBtn) {
+      const nr = caseState.newResident;
+      saveBtn.disabled = !(nr.lastName && nr.lastName.trim() && nr.village);
+    }
 
     // Scroll content to top
     const c = scr.querySelector('.content');
@@ -3467,10 +3732,20 @@
       caseSubmit();
       return;
     }
-    // Guard: step 1 requires resident chosen
-    if (caseState.step === 1 && delta > 0 && !caseState.residentKey) {
-      showToast('יש לבחור תושב/ת');
-      return;
+    // Guard: step 1 requires last name + village
+    if (caseState.step === 1 && delta > 0) {
+      const nr = caseState.newResident;
+      if (!nr.lastName.trim()) { showToast('יש למלא שם משפחה'); return; }
+      if (!nr.village)         { showToast('יש לבחור יישוב'); return; }
+      // Materialize residentKey/Name from the new-resident form
+      const fullName = (nr.firstName + ' ' + nr.lastName).trim() || nr.lastName.trim();
+      caseState.residentName = 'משפחת ' + (nr.lastName.trim() || fullName);
+      caseState.residentVillage = nr.village;
+      caseState.residentKey = 'new_' + nr.lastName.trim().replace(/\s+/g, '_') + '_' + Date.now();
+      // Seed members — at least the head of household
+      if (!caseState.fields.members.length) {
+        caseState.fields.members = [{ name: fullName || nr.lastName, age: '', gender: 'man' }];
+      }
     }
     caseState.step = newStep;
     caseRenderStep();
@@ -3498,13 +3773,14 @@
         })),
       summary: (f.note && f.note.trim()) ||
                'תיק חדש נפתח בשלב א\'. הפרטים נאספים בשיחות המשך.',
+      summaryDate: today,
+      summaryBy: 'דנה כהן',
       timeline: [
         {
           title: 'שלב א\' — חירום אקוטי',
           sub: today + ' · דנה כהן',
           body: [
             f.eventType   ? ('סוג האירוע: ' + f.eventType) : null,
-            f.newOrExisting ? ('סטטוס: ' + f.newOrExisting) : null,
             f.status.length ? ('מצב ראש המשפחה: ' + f.status.join(', ')) : null,
             f.needs.length  ? ('צרכים: ' + f.needs.join(', ')) : null,
             f.urgency     ? ('דחיפות: ' + f.urgency) : null,
@@ -3513,7 +3789,7 @@
         }
       ],
       tasks: f.urgency ? [
-        { urgent: /דחוף/.test(f.urgency) && !/לא דחוף/.test(f.urgency),
+        { urgent: /דחוף/.test(f.urgency),
           name: 'ביצוע שיחת קשר ראשונית',
           sub: /24/.test(f.urgency) ? 'תוך 24 שעות'
              : /3 ימים/.test(f.urgency) ? 'תוך 3 ימים'
@@ -3543,14 +3819,26 @@
   });
   document.querySelectorAll('[data-case-save]').forEach(b => {
     b.addEventListener('click', () => {
-      if (!caseState.residentKey) return;
+      const nr = caseState.newResident;
+      if (!(nr.lastName && nr.lastName.trim() && nr.village)) return;
       showToast('טיוטה נשמרה');
     });
   });
 
-  // Resident search
-  document.querySelectorAll('[data-case-resident-search]').forEach(inp => {
-    inp.addEventListener('input', e => caseRenderResidents(e.target.value));
+  // Step 1 — new-resident text inputs
+  document.addEventListener('input', (e) => {
+    const inp = e.target.closest('[data-case-new-field]');
+    if (!inp) return;
+    const f = inp.dataset.caseNewField;
+    if (inp.tagName === 'INPUT') caseState.newResident[f] = inp.value;
+  });
+  // Step 1 — village chip (single-select)
+  document.addEventListener('click', (e) => {
+    const chip = e.target.closest('[data-case-new-field="village"] .chip');
+    if (!chip) return;
+    const row = chip.parentElement;
+    const sel = row.querySelector('.chip.on');
+    caseState.newResident.village = sel ? sel.textContent.trim() : null;
   });
 
   // Family members: add / remove / edit
@@ -3622,27 +3910,7 @@
     t.addEventListener('input', e => { caseState.fields.eventDate = e.target.value; });
   });
 
-  // Resident picker
-  document.addEventListener('click', (e) => {
-    const row = e.target.closest('[data-case-pick]');
-    if (!row) return;
-    const key = row.dataset.casePick;
-    const found = CASE_RESIDENTS.find(r => r.key === key);
-    if (!found) return;
-    caseState.residentKey = key;
-    caseState.residentName = found.name;
-    caseState.residentVillage = found.village;
-    // Seed known household members so step 2 isn't empty
-    caseState.fields.members = (found.members || []).map(m => ({
-      name: m.name || '',
-      age: m.age ?? '',
-      gender: m.gender || null
-    }));
-    document.querySelectorAll('[data-case-pick]').forEach(r => r.classList.remove('sel'));
-    row.classList.add('sel');
-    // Auto-advance after a short beat
-    setTimeout(() => caseAdvance(1), 180);
-  });
+  // (Resident picker removed — step 1 now creates a new resident)
 
   // -------- New Resident (תושב חדש) mini-flow --------
   const NR_STEPS = [
@@ -3652,14 +3920,14 @@
   ];
   const nrState = {
     step: 1,
-    fields: { firstName: '', lastName: '', village: null, phone: '', history: '', members: [] }
+    fields: { firstName: '', lastName: '', village: null, phone: '', email: '', history: '', members: [], tags: [] }
   };
   function nrReset() {
     nrState.step = 1;
-    nrState.fields = { firstName: '', lastName: '', village: null, phone: '', history: '', members: [] };
+    nrState.fields = { firstName: '', lastName: '', village: null, phone: '', email: '', history: '', members: [], tags: [] };
     const scr = document.querySelector('.screen[data-screen="newResident"]');
     if (!scr) return;
-    scr.querySelectorAll('.nr-step input[type="text"], .nr-step input[type="tel"], .nr-step textarea').forEach(i => i.value = '');
+    scr.querySelectorAll('.nr-step input[type="text"], .nr-step input[type="tel"], .nr-step input[type="email"], .nr-step textarea').forEach(i => i.value = '');
     scr.querySelectorAll('.nr-step .chip.on').forEach(c => c.classList.remove('on'));
   }
   function nrRenderMembers() {
@@ -3775,15 +4043,20 @@
     const m = nrState.fields.members[i];
     if (m && inp.checked) m.gender = inp.dataset.val;
   });
-  // Village chip (step 1) — single-select → stash
+  // NR chips (village = single-select; tags = multi-select) — stash
   document.addEventListener('click', (e) => {
     const chip = e.target.closest('.nr-step .chip');
     if (!chip) return;
     const row = chip.parentElement;
     const field = row.dataset.nrField;
     if (!field) return;
-    const sel = row.querySelector('.chip.on');
-    nrState.fields[field] = sel ? sel.textContent.trim() : null;
+    const mode = row.dataset.togglegroup;
+    if (mode === 'multi') {
+      nrState.fields[field] = Array.from(row.querySelectorAll('.chip.on')).map(c => c.textContent.trim());
+    } else {
+      const sel = row.querySelector('.chip.on');
+      nrState.fields[field] = sel ? sel.textContent.trim() : null;
+    }
   });
 
   // -------- New Task (משימה חדשה) mini-flow --------
@@ -3883,6 +4156,17 @@
     ntRenderStep();
     go('tasks');
   }
+  // Jump directly into step 2 with a pre-selected family (used by follow-up from task detail)
+  window.ntPreselect = function (famKey) {
+    ntReset();
+    const found = NT_RESIDENTS.find(r => r.key === famKey);
+    if (!found) return;
+    ntState.residentKey = famKey;
+    ntState.residentName = found.name;
+    ntState.residentVillage = found.village;
+    ntState.step = 2;
+    ntRenderStep();
+  };
   document.querySelectorAll('[data-nt-back]').forEach(b => b.addEventListener('click', () => ntAdvance(-1)));
   document.querySelectorAll('[data-nt-next]').forEach(b => b.addEventListener('click', () => ntAdvance(1)));
   document.querySelectorAll('[data-nt-save]').forEach(b => b.addEventListener('click', () => showToast('טיוטה נשמרה')));
@@ -3923,13 +4207,16 @@
   go = function (name) {
     if (name === 'questionnaire') {
       caseReset();
-      caseRenderResidents('');
+      caseRenderNewResident();
       caseRenderStep();
     } else if (name === 'newResident') {
       nrReset();
       nrRenderStep();
     } else if (name === 'newTask') {
-      ntReset();
+      // Preserve ntState when the flow was explicitly pre-selected (follow-up)
+      if (!ntState.residentKey) {
+        ntReset();
+      }
       ntRenderStep();
     }
     _go(name);
@@ -4383,7 +4670,190 @@
     'ביקור בית בברכיה. נועה פתוחה לשיתוף פעולה. עידו בבית הספר, פעם-פעמיים בשבוע דחיית הגעה. נועה ביקשה: חיבור לקבוצת תמיכה לנשים חד-הוריות ביישוב.':
       'Home visit in Brachia. Noa is open to collaboration. Ido is in school; once or twice a week he delays going. Noa asked to be connected to a support group for single mothers in the village.',
     'נתפסו בבית. נועה מתפקדת, עידו שקט מאוד. סיווג: מיידי. הועברו לאגף הסעות מיד למחרת.':
-      'Found at home. Noa is functioning, Ido is very quiet. Classification: immediate. Transferred to the transport division the next day.'
+      'Found at home. Noa is functioning, Ido is very quiet. Classification: immediate. Transferred to the transport division the next day.',
+
+    // ---------- Additional translations ----------
+    // Generic CTAs
+    'הוסף': 'Add',
+    'ביטול': 'Cancel',
+    'אישור': 'Confirm',
+    'הקודם': 'Previous',
+    'הוסף עדכון': 'Add update',
+    'הוספת עדכון': 'Add update',
+    'תיאור הפעולה, שיחה, ביקור, הערה…': 'Description of action, call, visit, note…',
+    'חזרה לבית': 'Back to home',
+    // Emergency event flow
+    'פתיחת אירוע': 'Open event',
+    'פתיחת אירוע חדש': 'Open new event',
+    'אירוע': 'Event',
+    'אירועים פתוחים': 'Open events',
+    'אירועים סגורים': 'Closed events',
+    'טיפול פעיל, ממתין למענה': 'Active handling, pending response',
+    'הושלמו, בוטלו': 'Completed, canceled',
+    'סגור אירוע': 'Close event',
+    'סגירת אירוע': 'Closing event',
+    'כן, סגור אירוע': 'Yes, close event',
+    'האם לסגור את האירוע? פעולה זו תשנה את הסטטוס לסגור ולא ניתן יהיה להוסיף משימות חדשות.':
+      'Close this event? Status will be set to closed and no new tasks can be added.',
+    'סוג האירוע': 'Event type',
+    'שם האירוע': 'Event name',
+    'שם אירוע חופשי…': 'Free-text event name…',
+    'מיקום — יישוב': 'Location — village',
+    '— בחר יישוב —': '— Choose village —',
+    'מיקום — פירוט נוסף (רשות)': 'Location — additional details (optional)',
+    'כתובת, נקודת ציון, שם אתר…': 'Address, landmark, site name…',
+    'תיאור האירוע': 'Event description',
+    'מה קרה, מה מצב השטח, מה נדרש כרגע': 'What happened, field status, what is needed now',
+    'עוסיות מורשות לטיפול': 'Authorized caseworkers',
+    'כל העוסיות': 'All caseworkers',
+    'בחר ספציפיות': 'Pick specific',
+    'חיפוש שם עוסית…': 'Search caseworker name…',
+    '0 עוסיות נבחרו': '0 caseworkers selected',
+    'עוסיות': 'Caseworkers',
+    'הצפה': 'Flood',
+    'שריפה': 'Fire',
+    'פינוי': 'Evacuation',
+    'טילים': 'Missiles',
+    'אחר': 'Other',
+    'אחר / מחוץ ליישוב': 'Other / outside village',
+    'קוד': 'Code',
+    'מיקום': 'Location',
+    'משימות': 'Tasks',
+    'אין משימות עדיין': 'No tasks yet',
+    'משימה חדשה לאירוע': 'New event task',
+    'שם המשימה': 'Task name',
+    'לדוגמה: פינוי דיירים, סיוע נפשי…': 'e.g., Evacuating residents, emotional support…',
+    'סוג משימה': 'Task type',
+    'רפואי': 'Medical',
+    'סיעודי': 'Nursing',
+    'מינהלי': 'Administrative',
+    'תיאור / מלל חופשי': 'Description / free text',
+    'פרטים, הנחיות לביצוע, אנשי קשר…': 'Details, instructions, contacts…',
+    'דחיפות': 'Urgency',
+    'אחראית': 'Assigned to',
+    '— לא הוקצה —': '— Unassigned —',
+    'הכתבה קולית': 'Voice dictation',
+    'הכתבה קולית — דמו': 'Voice dictation — demo',
+    'פינוי דיירים': 'Evacuating residents',
+    'בדיקת תשתיות': 'Infrastructure check',
+    'מציאת מגורים זמניים': 'Temporary housing search',
+    'תיאום עם כיבוי אש': 'Coordination with fire department',
+    'סיוע נפשי': 'Mental-health support',
+    'טיפול רפואי ראשוני': 'First-aid medical treatment',
+    'בדיקת נזקים': 'Damage assessment',
+    'רישום מפונים': 'Registering evacuees',
+    'תיאום הסעות': 'Transport coordination',
+    'בדיקת מצב רפואי': 'Medical status check',
+    'חלוקת ציוד בסיסי': 'Basic equipment distribution',
+    'בדיקת נפגעים': 'Casualty check',
+    'פינוי לממ"דים': 'Evacuation to safe rooms',
+    'תיאום עם מד"א': 'Coordination with Magen David Adom',
+    'איתור נעדרים': 'Locating missing persons',
+    // Mode toggle
+    'שגרה': 'Routine',
+    'חירום': 'Emergency',
+    // Questionnaire steps
+    '1 מתוך 7 · בחירת תושב/ת': '1 of 7 · Choose resident',
+    'בחירת תושב/ת': 'Choose resident',
+    'הוסיפו או עדכנו את בני המשפחה. שם, גיל ומין.':
+      'Add or update family members. Name, age, and gender.',
+    'הוסיפו את בני המשפחה. שם, גיל ומין.':
+      'Add family members. Name, age, and gender.',
+    '+ הוסף בן/ת משפחה': '+ Add family member',
+    'האם זהו אירוע חדש או המשך מטיפול קיים?': 'Is this a new event or continuation of existing care?',
+    'אירוע חדש': 'New event',
+    'המשך טיפול': 'Continuation of care',
+    'תאריך האירוע': 'Event date',
+    'מצב ראש המשפחה / ראש משק הבית': 'Status of head of household',
+    'בשירות מילואים': 'In reserve duty',
+    'צרכים דחופים': 'Urgent needs',
+    'רגשי': 'Emotional',
+    'כספי': 'Financial',
+    'חינוכי (ילדים)': 'Educational (children)',
+    'משפטי': 'Legal',
+    'הערכת העו"ס — דחיפות כללית': 'Social worker assessment — overall urgency',
+    'קריטריון לטריאז\' יישובי': 'Village triage criterion',
+    'דחוף — קשר תוך 24 שעות': 'Urgent — contact within 24 hours',
+    'מיידי — קשר תוך 3 ימים': 'Immediate — contact within 3 days',
+    'לא דחוף — שבוע ומעלה': 'Not urgent — a week or more',
+    'אין צורך בהמשך טיפול': 'No further care needed',
+    'למשל: יכולת התארגנות, דחיפות קשר, פרטים נוספים':
+      'E.g., ability to organize, contact urgency, further details',
+    'חדירת כוחות': 'Hostile force incursion',
+    'פציעה / נפילה': 'Injury / fall',
+    'פתיחת תיק': 'Open case',
+    // New resident / task flow
+    'יצירת תושב': 'Create resident',
+    'יצירת משימה': 'Create task',
+    'שם פרטי של ראש המשפחה': 'First name of head of household',
+    'שם משפחה': 'Last name',
+    'למשל: מיכאל': 'E.g., Michael',
+    'למשל: רז': 'E.g., Raz',
+    'יישוב': 'Village',
+    'טלפון': 'Phone',
+    'היסטוריה וסיפור המשפחה': 'History and family story',
+    'מה חשוב לדעת על המשפחה לפני תחילת טיפול': 'What is important to know about the family before starting care',
+    'למשל: מוכרים בקהילה מ-2020, חזרו מהמלון בינואר, האם בריאה אך בעלה פצוע, שני ילדים במסגרות...':
+      'E.g., known in the community since 2020, returned from the hotel in January, mother is healthy but husband is injured, two children in care frameworks…',
+    'יש לבחור משפחה / תושב/ת': 'Please choose a family / resident',
+    // Villages
+    'זיקים': 'Zikim',
+    'כרמיה': 'Karmia',
+    'ניצנים': 'Nitzanim',
+    'ניצן': 'Nitzan',
+    'גבעת ברנר': 'Givat Brenner',
+    'כפר מנחם': 'Kfar Menachem',
+    'אגמון': 'Agamon',
+    'ניר גלים': 'Nir Galim',
+    'נחל עוז': 'Nahal Oz',
+    'כרם שלום': 'Kerem Shalom',
+    // Settings/profile edit
+    'תפקיד': 'Role',
+    'יישובים באחריותי': 'Villages under my care',
+    'פרטים אישיים': 'Personal details',
+    'אבטחה': 'Security',
+    'אימייל': 'Email',
+    'החלפת סיסמה': 'Change password',
+    'אימות דו-שלבי': 'Two-factor authentication',
+    'דרך SMS': 'Via SMS',
+    // Residents row status
+    'אנשי קשר': 'Contacts',
+    // Home — Emergency events list
+    'אירועים': 'Events',
+    'פתוחים': 'Open',
+    'סגורים': 'Closed',
+
+    // Urgency taxonomy (new)
+    'מהיר': 'Soon',
+    'רגיל': 'Normal',
+    'מהיר — קשר תוך 3 ימים': 'Soon — contact within 3 days',
+    'רגיל — שבוע ומעלה': 'Normal — a week or more',
+
+    // Task detail — notes & follow-up
+    'הערות ועדכונים': 'Notes and updates',
+    'רישום קצר — שיחה, תיאום, מה קרה, מה נקבע…': 'Short note — call, scheduling, what happened, what was agreed…',
+    'שמירת הערה': 'Save note',
+    'ההערה נשמרה': 'Note saved',
+    'יצירת משימת המשך': 'Create follow-up task',
+    'האם ליצור משימת המשך?': 'Create a follow-up task?',
+    'כן, צור משימת המשך': 'Yes, create a follow-up',
+    'סיום': 'Done',
+
+    // Questionnaire — new labels
+    'תושב/ת חדש/ה': 'New resident',
+    '1 מתוך 7 · תושב/ת חדש/ה': '1 of 7 · New resident',
+    'פרטי ראש המשפחה החדש': 'Details of the new head of household',
+
+    // New-resident — added fields
+    'name@example.com': 'name@example.com',
+    // Tags
+    'תגיות': 'Tags',
+    'שכול': 'Bereavement',
+    'נכות': 'Disability',
+    'שורדי שואה': 'Holocaust survivors',
+    'אלימות': 'Violence',
+    'רווחה': 'Welfare',
+    'כלכלי': 'Financial'
   };
 
   // Text-attributes we also translate
@@ -4524,31 +4994,31 @@
   const PREDEFINED = {
     'הצפה':  [
       { name:'פינוי דיירים',          type:'לוגיסטי', urgency:'דחוף'   },
-      { name:'בדיקת תשתיות',          type:'מינהלי',  urgency:'מיידי'  },
+      { name:'בדיקת תשתיות',          type:'מינהלי',  urgency:'מהיר'  },
       { name:'מציאת מגורים זמניים',   type:'לוגיסטי', urgency:'דחוף'   },
-      { name:'תיאום עם כיבוי אש',     type:'מינהלי',  urgency:'מיידי'  },
-      { name:'סיוע נפשי',             type:'נפשי',    urgency:'לא דחוף'},
+      { name:'תיאום עם כיבוי אש',     type:'מינהלי',  urgency:'מהיר'  },
+      { name:'סיוע נפשי',             type:'נפשי',    urgency:'רגיל'},
     ],
     'שריפה': [
       { name:'פינוי דיירים',          type:'לוגיסטי', urgency:'דחוף'   },
       { name:'טיפול רפואי ראשוני',    type:'רפואי',   urgency:'דחוף'   },
       { name:'מציאת מגורים זמניים',   type:'לוגיסטי', urgency:'דחוף'   },
-      { name:'תיאום עם כיבוי אש',     type:'מינהלי',  urgency:'מיידי'  },
-      { name:'סיוע נפשי',             type:'נפשי',    urgency:'לא דחוף'},
-      { name:'בדיקת נזקים',           type:'מינהלי',  urgency:'מיידי'  },
+      { name:'תיאום עם כיבוי אש',     type:'מינהלי',  urgency:'מהיר'  },
+      { name:'סיוע נפשי',             type:'נפשי',    urgency:'רגיל'},
+      { name:'בדיקת נזקים',           type:'מינהלי',  urgency:'מהיר'  },
     ],
     'פינוי':  [
-      { name:'רישום מפונים',           type:'מינהלי',  urgency:'מיידי'  },
+      { name:'רישום מפונים',           type:'מינהלי',  urgency:'מהיר'  },
       { name:'מציאת מגורים זמניים',   type:'לוגיסטי', urgency:'דחוף'   },
-      { name:'תיאום הסעות',            type:'לוגיסטי', urgency:'מיידי'  },
-      { name:'בדיקת מצב רפואי',        type:'רפואי',   urgency:'מיידי'  },
-      { name:'חלוקת ציוד בסיסי',       type:'לוגיסטי', urgency:'לא דחוף'},
+      { name:'תיאום הסעות',            type:'לוגיסטי', urgency:'מהיר'  },
+      { name:'בדיקת מצב רפואי',        type:'רפואי',   urgency:'מהיר'  },
+      { name:'חלוקת ציוד בסיסי',       type:'לוגיסטי', urgency:'רגיל'},
     ],
     'טילים':  [
       { name:'בדיקת נפגעים',           type:'רפואי',   urgency:'דחוף'   },
       { name:'פינוי לממ"דים',          type:'לוגיסטי', urgency:'דחוף'   },
-      { name:'תיאום עם מד"א',          type:'רפואי',   urgency:'מיידי'  },
-      { name:'סיוע נפשי',              type:'נפשי',    urgency:'מיידי'  },
+      { name:'תיאום עם מד"א',          type:'רפואי',   urgency:'מהיר'  },
+      { name:'סיוע נפשי',              type:'נפשי',    urgency:'מהיר'  },
       { name:'איתור נעדרים',           type:'מינהלי',  urgency:'דחוף'   },
     ],
   };
@@ -4662,7 +5132,7 @@
       return;
     }
     list.innerHTML = eventTasks.map((t, i) => {
-      const dotCls = t.urgency === 'דחוף' ? 'urgent' : t.urgency === 'מיידי' ? 'soon' : '';
+      const dotCls = t.urgency === 'דחוף' ? 'urgent' : t.urgency === 'מהיר' ? 'soon' : '';
       return `<div class="row-item" data-toast="משימה — דמו">
         <span class="dot-status ${dotCls}"></span>
         <div class="row-main">
@@ -4686,7 +5156,7 @@
       document.getElementById('ntAssignee').value = '';
       document.querySelectorAll('#ntTypeChips .chip').forEach(c => c.classList.remove('on'));
       document.querySelectorAll('#ntUrgencyChips .chip').forEach(c => c.classList.remove('on'));
-      document.querySelector('#ntUrgencyChips [data-nturgency="מיידי"]').classList.add('on');
+      document.querySelector('#ntUrgencyChips [data-nturgency="מהיר"]').classList.add('on');
       go('newEventTask');
     });
 
@@ -4700,7 +5170,7 @@
     eventTasks.push({
       name,
       type:    typeChip ? typeChip.dataset.nttype : 'אחר',
-      urgency: urgChip  ? urgChip.dataset.nturgency : 'מיידי',
+      urgency: urgChip  ? urgChip.dataset.nturgency : 'מהיר',
       assignee,
     });
     renderEventTasks();
@@ -4758,8 +5228,35 @@ function setHomeMode(mode) {
   document.getElementById('actionsRoutine').style.display = isEmergency ? 'none' : '';
   document.getElementById('actionsEmergency').style.display = isEmergency ? '' : 'none';
   document.getElementById('tasksRoutine').style.display = isEmergency ? 'none' : '';
-  document.getElementById('tasksEmergency').style.display = isEmergency ? '' : 'none';
+  // Hide the "פעולות מהירות" subtitle in emergency mode
+  const qaTitle = document.getElementById('homeQuickActionsTitle');
+  if (qaTitle) qaTitle.style.display = isEmergency ? 'none' : '';
+  // Show the pinned emergency CTA only in emergency mode
+  const cta = document.getElementById('emergencyCta');
+  if (cta) cta.style.display = isEmergency ? '' : 'none';
+  // Always reset to the "open events" tab when switching into emergency mode
+  if (isEmergency) setEventsTab('open');
 }
+
+function setEventsTab(which) {
+  document.querySelectorAll('[data-events-tab]').forEach(tab => {
+    const active = tab.dataset.eventsTab === which;
+    tab.classList.toggle('on', active);
+    tab.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  document.querySelectorAll('[data-events-view]').forEach(view => {
+    view.style.display = view.dataset.eventsView === which ? '' : 'none';
+  });
+}
+
+// Wire up the events tabs
+document.addEventListener('click', (e) => {
+  const tab = e.target.closest('[data-events-tab]');
+  if (tab) {
+    e.stopPropagation();
+    setEventsTab(tab.dataset.eventsTab);
+  }
+});
 </script>
 
 </body>
