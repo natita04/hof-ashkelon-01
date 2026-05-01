@@ -260,6 +260,30 @@
   }
   .dot-status.urgent { background: var(--danger);}
 
+  /* Urgency tag — pill shown inline on tasks lists and in group headers.
+     Three levels: דחוף (red) / מהיר (yellow) / רגיל (gray) */
+  .urg-tag {
+    display: inline-flex; align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px; font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -.1px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .urg-tag.urgent  { background: var(--danger);     color: #fff; }
+  .urg-tag.soon    { background: var(--accent);     color: var(--ink); }
+  .urg-tag.normal  { background: var(--line);       color: var(--ink-2); }
+  /* Inline variant inside row-sub (slightly tighter) */
+  .row-sub .urg-tag { font-size: 10.5px; padding: 2px 8px; }
+
+  /* Task list rows often have the urgency tag replacing the leading dot.
+     Reserve the inline-start slot so tags have consistent alignment. */
+  .row-item .urg-tag.lead {
+    width: auto; min-width: 54px; justify-content: center;
+  }
+
   /* Chevron: use an inline SVG so the arrow direction is explicit
      (the browser mirrors single-angle glyphs like › / ‹ in RTL, which
      produces the wrong visual for drill-down affordances). */
@@ -344,6 +368,71 @@
   .summary-meta {
     font-size: 11.5px; color: var(--ink-3); font-weight: 500;
     white-space: nowrap;
+  }
+
+  /* Section header (title on one side, sort toggle on the other) */
+  .section-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px;
+    margin: 22px 4px 10px;
+  }
+  .section-head:first-child { margin-top: 6px; }
+  .section-head .card-title { margin: 0 !important; }
+
+  /* Sort control: link-style button that opens a small dropdown menu */
+  .sort-dd {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .sort-link {
+    display: inline-flex; align-items: center; gap: 4px;
+    border: 0; background: transparent;
+    font-family: inherit;
+    padding: 4px 2px;
+    font-size: 12px; font-weight: 600;
+    color: var(--brand);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .sort-link:hover { color: var(--brand-press); }
+  .sort-link .sort-caret {
+    font-size: 10px; line-height: 1;
+    transition: transform 140ms;
+  }
+  .sort-dd.open .sort-link .sort-caret { transform: rotate(180deg); }
+  .sort-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    inset-inline-end: 0;
+    min-width: 140px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-s);
+    box-shadow: 0 6px 24px rgba(20,15,5,.12);
+    padding: 4px;
+    margin: 0;
+    list-style: none;
+    display: none;
+    z-index: 40;
+  }
+  .sort-dd.open .sort-menu { display: block; }
+  .sort-menu li {
+    padding: 8px 10px;
+    border-radius: var(--r-s);
+    font-size: 13px; font-weight: 500;
+    color: var(--ink-2);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px;
+  }
+  .sort-menu li:hover { background: var(--bg-2); color: var(--ink); }
+  .sort-menu li.on {
+    color: var(--ink); font-weight: 700;
+  }
+  .sort-menu li.on::after {
+    content: '✓';
+    color: var(--brand);
+    font-weight: 700;
   }
 
   /* mode toggle (shared base) */
@@ -1030,19 +1119,45 @@
   }
   .group-head:first-child,
   [data-group]:first-child .group-head { margin-top: 4px;}
-  .group-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--ink-3); flex-shrink: 0;
-  }
-  .group-dot.urgent { background: var(--accent);}
-  .group-dot.immediate { background: var(--ink-2);}
-  .group-dot.normal { background: var(--ink-3);}
-  .group-name {
-    font-size: 13px; font-weight: 600; color: var(--ink);
+  /* Group name shown as an urgency tag (pill) */
+  .group-head .urg-tag {
+    font-size: 12px; padding: 4px 12px;
   }
   .group-count {
     margin-inline-start: auto;
     font-size: 12px; color: var(--ink-3); font-weight: 500;
+  }
+
+  /* Tasks-screen sort bar */
+  .sort-bar {
+    display: flex; align-items: center; justify-content: flex-end;
+    margin: 2px 4px 8px;
+  }
+
+  /* AI context card (theme deep-dive intro) */
+  .ai-context-card {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: var(--r-m);
+    padding: 12px 14px;
+    margin-top: 4px;
+  }
+  .ai-context-head {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px;
+  }
+  .ai-badge {
+    display: inline-flex; align-items: center;
+    padding: 2px 8px; border-radius: 999px;
+    background: var(--ink); color: #fff;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .2px;
+  }
+  .ai-context-title {
+    font-size: 13px; font-weight: 700; color: var(--ink);
+  }
+  .ai-context-body {
+    margin: 0; font-size: 12.5px; color: var(--ink-2); line-height: 1.5;
   }
 
   .micro {
@@ -1324,33 +1439,22 @@
           </div>
 
           <!-- routine: my tasks today -->
-          <div id="tasksRoutine">
-            <div class="card-title">המשימות שלי היום</div>
-            <div class="card">
-              <div class="row-item" data-nav="detail" data-family="cohen" data-detail-kind="task" data-detail-index="0">
-                <span class="dot-status urgent"></span>
-                <div class="row-main">
-                  <div class="row-name">מימוש זכויות — משפחת כהן</div>
-                  <div class="row-sub">11:00 · יד מרדכי</div>
-                </div>
-                <span class="chev">›</span>
+          <div id="tasksRoutine" style="margin-top: 22px;">
+            <div class="section-head">
+              <div class="card-title" style="margin: 0;">המשימות שלי היום</div>
+              <div class="sort-dd" data-sort-dd="home">
+                <button type="button" class="sort-link" aria-haspopup="listbox" aria-expanded="false">
+                  <span>מיון לפי <span data-sort-label>דחיפות</span></span>
+                  <span class="sort-caret" aria-hidden="true">▾</span>
+                </button>
+                <ul class="sort-menu" role="listbox">
+                  <li class="on" data-home-sort="urgency" role="option">דחיפות</li>
+                  <li data-home-sort="time" role="option">שעה</li>
+                </ul>
               </div>
-              <div class="row-item" data-nav="detail" data-family="avraham" data-detail-kind="task" data-detail-index="1">
-                <span class="dot-status"></span>
-                <div class="row-main">
-                  <div class="row-name">שיחת המשך — רחלי אברהם</div>
-                  <div class="row-sub">14:30 · ברכיה · טלפון</div>
-                </div>
-                <span class="chev">›</span>
-              </div>
-              <div class="row-item" data-nav="detail" data-family="alon" data-detail-kind="timeline" data-detail-index="0">
-                <span class="dot-status"></span>
-                <div class="row-main">
-                  <div class="row-name">שאלון "מה נשמע" — נועה אלון</div>
-                  <div class="row-sub">16:00 · ברכיה</div>
-                </div>
-                <span class="chev">›</span>
-              </div>
+            </div>
+            <div class="card" id="homeTasksList">
+              <!-- rendered by JS -->
             </div>
           </div>
 
@@ -1373,7 +1477,6 @@
         <div class="appbar appbar-split">
           <div class="appbar-main">
             <div class="title">תושבים</div>
-            <div class="sub">151 משפחות, 317 מבוגרים ו-89 ילדים</div>
           </div>
           <button class="appbar-action" type="button" data-nav="newResident">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -1922,7 +2025,6 @@
         <div class="appbar appbar-split">
           <div class="appbar-main">
             <div class="title">משימות פתוחות</div>
-            <div class="sub" data-tasks-sub>9 פתוחות</div>
           </div>
           <button class="appbar-action" type="button" data-nav="newTask">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -1931,101 +2033,21 @@
         </div>
 
         <div class="content">
-
-          <div data-group="urgent">
-            <div class="group-head">
-              <span class="group-dot urgent"></span>
-              <span class="group-name">דחוף</span>
-              <span class="group-count" data-group-count>3</span>
-            </div>
-
-            <div class="card">
-              <div class="row-item" data-nav="profile" data-urgency="urgent" data-village="yad">
-                <div class="row-main">
-                  <div class="row-name">מימוש זכויות — משפחת כהן</div>
-                  <div class="row-sub">היום 11:00 · יד מרדכי</div>
-                </div>
-                <span class="chev">›</span>
-              </div>
-              <div class="row-item" data-nav="profile" data-urgency="urgent" data-village="yad">
-                <div class="row-main">
-                  <div class="row-name">ביקור בית — משפחת לוי</div>
-                  <div class="row-sub">היום 17:00 · יד מרדכי</div>
-                </div>
-                <span class="chev">›</span>
-              </div>
-              <div class="row-item" data-nav="profile" data-urgency="urgent" data-village="brachia">
-                <div class="row-main">
-                  <div class="row-name">תיאום מרכז חוסן — נועה אלון</div>
-                  <div class="row-sub">מחר · ברכיה</div>
-                </div>
-                <span class="chev">›</span>
-              </div>
+          <!-- Sort control: urgency (default) vs. timing/deadline -->
+          <div class="sort-bar">
+            <div class="sort-dd" data-sort-dd="tasks">
+              <button type="button" class="sort-link" aria-haspopup="listbox" aria-expanded="false">
+                <span>מיון לפי <span data-sort-label>דחיפות</span></span>
+                <span class="sort-caret" aria-hidden="true">▾</span>
+              </button>
+              <ul class="sort-menu" role="listbox">
+                <li class="on" data-tasks-sort="urgency" role="option">דחיפות</li>
+                <li data-tasks-sort="time" role="option">תזמון</li>
+              </ul>
             </div>
           </div>
 
-          <div data-group="immediate">
-            <div class="group-head">
-              <span class="group-dot immediate"></span>
-              <span class="group-name">מהיר</span>
-              <span class="group-count" data-group-count>3</span>
-            </div>
-            <div class="card">
-              <div class="row-item" data-nav="ai" data-urgency="immediate" data-village="brachia">
-                <div class="row-main">
-                  <div class="row-name">שיחת המשך — רחלי אברהם</div>
-                  <div class="row-sub">היום 14:30 · ברכיה · טלפון</div>
-                </div>
-                <span class="chev">›</span>
-              </div>
-              <div class="row-item" data-nav="profile" data-urgency="immediate" data-village="brachia">
-                <div class="row-main">
-                  <div class="row-name">ביקור בית — משפחת אברהם</div>
-                  <div class="row-sub">מחר 16:00 · ברכיה</div>
-                </div>
-                <span class="chev">›</span>
-              </div>
-              <div class="row-item" data-nav="profile" data-urgency="immediate" data-village="yad">
-                <div class="row-main">
-                  <div class="row-name">תיאום עם יועצת חינוך</div>
-                  <div class="row-sub">השבוע · יד מרדכי</div>
-                </div>
-                <span class="chev">›</span>
-              </div>
-            </div>
-          </div>
-
-          <div data-group="normal">
-            <div class="group-head">
-              <span class="group-dot normal"></span>
-              <span class="group-name">רגיל</span>
-              <span class="group-count" data-group-count>3</span>
-            </div>
-            <div class="card">
-              <div class="row-item" data-nav="profile" data-urgency="normal" data-village="yad">
-                <div class="row-main">
-                  <div class="row-name">חזרה לבית הספר — בן 11 כהן</div>
-                  <div class="row-sub">מחר · יד מרדכי · יועצת ביה"ס</div>
-                </div>
-                <span class="chev">›</span>
-              </div>
-              <div class="row-item" data-nav="insights" data-urgency="normal" data-village="brachia">
-                <div class="row-main">
-                  <div class="row-name">"מה נשמע" — 18 משפחות</div>
-                  <div class="row-sub">השבוע · ברכיה</div>
-                </div>
-                <span class="chev">›</span>
-              </div>
-              <div class="row-item" data-nav="profile" data-urgency="normal" data-village="yad">
-                <div class="row-main">
-                  <div class="row-name">מעקב משפחת פרץ</div>
-                  <div class="row-sub">השבוע · יד מרדכי</div>
-                </div>
-                <span class="chev">›</span>
-              </div>
-            </div>
-          </div>
-
+          <div id="tasksScreenList"></div>
         </div>
 
         <div class="tabbar"></div>
@@ -2034,27 +2056,118 @@
       <!-- INSIGHTS -->
       <div class="screen" data-screen="insights">
         <div class="statusbar"><span>10:20</span><span>5G · 81%</span></div>
-        <div class="appbar">
-          <div class="title">תובנות</div>
-          <div class="sub" data-scope-sub>כל היישובים שלי · 151 משפחות</div>
+        <div class="appbar appbar-split">
+          <div class="appbar-main">
+            <div class="title">תובנות</div>
+          </div>
+          <button class="appbar-action" type="button" data-nav="themeDeepDive">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l7 7-7 7M5 12h14"/></svg>
+            ניתוח עומק
+          </button>
         </div>
 
         <div class="content">
 
           <div class="scope-dd" data-insights-scope>
             <button class="scope-dd-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <span class="scope-dd-val" data-scope-val>כל היישובים שלי</span>
+              <span class="scope-dd-val" data-scope-val>כל המועצה</span>
               <span class="scope-dd-caret">▾</span>
             </button>
             <ul class="scope-dd-menu" role="listbox">
-              <li data-scope="both" class="on" role="option">כל היישובים שלי</li>
+              <li data-scope="council" class="on" role="option">כל המועצה</li>
+              <li data-scope="both" role="option">כל היישובים שלי</li>
               <li data-scope="yad" role="option">יד מרדכי</li>
               <li data-scope="brachia" role="option">ברכיה</li>
             </ul>
           </div>
 
-          <!-- ---------- BOTH VILLAGES ---------- -->
-          <div class="scope-view on" data-scope-view="both">
+          <!-- ---------- WHOLE COUNCIL (default) ---------- -->
+          <div class="scope-view on" data-scope-view="council">
+
+            <div class="metric-label">משפחות לפי סיווג דחיפות</div>
+            <div class="metric-row">
+              <div class="metric accent" data-nav="tasks"><div class="v">34</div><div class="l">דחוף</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">112</div><div class="l">מהיר</div></div>
+              <div class="metric" data-nav="tasks"><div class="v">428</div><div class="l">רגיל</div></div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 10px;">פילוח לפי יישוב</div>
+              <div class="split-row">
+                <div class="split-lbl">יד מרדכי</div>
+                <div class="split-track"><span class="split-bar" style="width:22%"></span></div>
+                <div class="split-v">126</div>
+              </div>
+              <div class="split-row">
+                <div class="split-lbl">ברכיה</div>
+                <div class="split-track"><span class="split-bar" style="width:16%"></span></div>
+                <div class="split-v">94</div>
+              </div>
+              <div class="split-row">
+                <div class="split-lbl">ניר גלים</div>
+                <div class="split-track"><span class="split-bar" style="width:14%"></span></div>
+                <div class="split-v">82</div>
+              </div>
+              <div class="split-row">
+                <div class="split-lbl">ניצנים</div>
+                <div class="split-track"><span class="split-bar" style="width:12%"></span></div>
+                <div class="split-v">71</div>
+              </div>
+              <div class="split-row">
+                <div class="split-lbl">זיקים</div>
+                <div class="split-track"><span class="split-bar" style="width:10%"></span></div>
+                <div class="split-v">58</div>
+              </div>
+              <div class="split-row">
+                <div class="split-lbl">כרמיה</div>
+                <div class="split-track"><span class="split-bar" style="width:9%"></span></div>
+                <div class="split-v">53</div>
+              </div>
+              <p class="micro">תצוגה אגרגטיבית על פני כל היישובים במועצה (574 משפחות).</p>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 10px;">צרכים נפוצים</div>
+              <div class="bar-row"><div class="lbl">צורך רגשי</div><div class="bar"><span style="width:78%"></span></div><div class="v">247</div></div>
+              <div class="bar-row"><div class="lbl">מיצוי זכויות</div><div class="bar"><span style="width:62%"></span></div><div class="v">196</div></div>
+              <div class="bar-row"><div class="lbl">לוגיסטי</div><div class="bar"><span style="width:44%"></span></div><div class="v">138</div></div>
+              <div class="bar-row"><div class="lbl">צרכים מיוחדים</div><div class="bar"><span style="width:31%"></span></div><div class="v">98</div></div>
+              <div class="bar-row"><div class="lbl">שכול</div><div class="bar"><span style="width:19%"></span></div><div class="v">59</div></div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 8px;">תמות עולות</div>
+              <p class="micro" style="margin-bottom: 10px;">דפוסים שזוהו ע"י AI מהשיחות והתיקים במועצה.</p>
+
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">מסגרות אחה"צ חסרות</div>
+                  <div class="theme-trend">↑ עולה</div>
+                </div>
+                <p class="theme-body">42 משפחות מכל יישובי המועצה מזכירות היעדר מסגרת לילדים אחר הצהריים. פער משמעותי בעיקר ביישובים הקטנים.</p>
+              </div>
+
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">עומס בירוקרטי במיצוי זכויות</div>
+                  <div class="theme-trend">↑ עולה</div>
+                </div>
+                <p class="theme-body">196 משפחות (34%) מדווחות על קושי בירוקרטי. מוקדים עיקריים: ביטוח לאומי, אגף רווחה במועצה, הדיור הציבורי.</p>
+              </div>
+
+              <div class="theme">
+                <div class="theme-head">
+                  <div class="theme-name">שינה ולחץ רגשי</div>
+                  <div class="theme-trend">יציב</div>
+                </div>
+                <p class="theme-body">58 משפחות מדווחות על הפרעות שינה. פחות משליש הגיעו למרכז חוסן האזורי.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ---------- MY VILLAGES (151 families) ---------- -->
+          <div class="scope-view" data-scope-view="both">
 
             <div class="metric-label">משפחות לפי סיווג דחיפות</div>
             <div class="metric-row">
@@ -2310,6 +2423,136 @@
               </div>
             </div>
 
+          </div>
+
+        </div>
+
+        <div class="tabbar"></div>
+      </div>
+
+      <!-- THEME DEEP-DIVE (AI analysis of an emerging theme) -->
+      <div class="screen" data-screen="themeDeepDive">
+        <div class="statusbar"><span>10:21</span><span>5G · 81%</span></div>
+        <div class="appbar with-back">
+          <div class="back" role="button" aria-label="חזרה" data-nav="insights">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </div>
+          <div class="appbar-main">
+            <div class="title">ניתוח עומק</div>
+            <div class="sub">תובנות AI על תמות עולות</div>
+          </div>
+        </div>
+
+        <div class="content">
+
+          <!-- AI context strip -->
+          <div class="ai-context-card">
+            <div class="ai-context-head">
+              <span class="ai-badge">✨ AI</span>
+              <div class="ai-context-title">ניתוח מבוסס 428 שיחות · עודכן לפני 2 שעות</div>
+            </div>
+            <p class="ai-context-body">הניתוח מצליב שיחות תיעוד, מצב משפחות, ודפוסים אזוריים. המספרים אינדיקטיביים; מומלץ להיעזר בעוס״ים ובמידע נוסף לפני פעולה.</p>
+          </div>
+
+          <!-- Theme selector chips -->
+          <div class="card-title" style="margin: 16px 4px 8px;">תמה לניתוח</div>
+          <div class="chip-row" data-togglegroup="single" data-theme-selector>
+            <div class="chip on" data-theme="aftercare">מסגרות אחה"צ חסרות</div>
+            <div class="chip" data-theme="bureaucracy">עומס בירוקרטי</div>
+            <div class="chip" data-theme="sleep">שינה ולחץ רגשי</div>
+          </div>
+
+          <!-- Selected theme summary -->
+          <div class="card card-pad" style="margin-top: 14px;">
+            <div class="theme-head" style="margin-bottom: 8px;">
+              <div class="theme-name" style="font-size:16px; font-weight:800;" data-theme-slot="name">מסגרות אחה"צ חסרות</div>
+              <div class="theme-trend" data-theme-slot="trend">↑ עולה · מגמה של 3 חודשים</div>
+            </div>
+            <p class="theme-body" data-theme-slot="body" style="font-size: 13.5px;">
+              42 משפחות מכל יישובי המועצה מזכירות היעדר מסגרת מאורגנת לילדים אחרי סיום בית הספר. רוב המקרים נוגעים להורים שחזרו לעבודה, ולילדים בגילי 6–11. המצב חריף יותר ביישובים הקטנים שבהם אין מועדונית קהילתית קבועה.
+            </p>
+          </div>
+
+          <!-- Signal strength + breakdown -->
+          <div class="card card-pad">
+            <div class="card-title" style="margin: 0 0 10px;">עוצמת האות</div>
+            <div class="bar-row"><div class="lbl">התאמה בין שיחות</div><div class="bar"><span style="width:88%" data-theme-bar="confidence"></span></div><div class="v">88%</div></div>
+            <div class="bar-row"><div class="lbl">חזרתיות</div><div class="bar"><span style="width:74%" data-theme-bar="recurrence"></span></div><div class="v">74%</div></div>
+            <div class="bar-row"><div class="lbl">התפרסות גיאוגרפית</div><div class="bar"><span style="width:62%" data-theme-bar="geo"></span></div><div class="v">62%</div></div>
+            <p class="micro" style="margin-top: 10px;">אינדיקציה סטטיסטית מבוססת מודל. התאמה = האם אותו דפוס חוזר בשיחות שונות; חזרתיות = כמה פעמים עלה באותה משפחה; התפרסות = בכמה יישובים זיהינו.</p>
+          </div>
+
+          <!-- Related patterns -->
+          <div class="card card-pad">
+            <div class="card-title" style="margin: 0 0 8px;">דפוסים קשורים</div>
+            <div class="theme">
+              <div class="theme-head">
+                <div class="theme-name">הורה אחד שלא חזר לעבודה</div>
+                <div class="theme-trend">נצפה ב-38 משפחות</div>
+              </div>
+              <p class="theme-body">קיים חופף משמעותי: כ-62% מהמשפחות עם חסר במסגרות אחה"צ דיווחו גם על שהות ארוכה של הורה אחד בבית.</p>
+            </div>
+            <div class="theme">
+              <div class="theme-head">
+                <div class="theme-name">עומס רגשי על ילדים צעירים</div>
+                <div class="theme-trend">נצפה ב-24 משפחות</div>
+              </div>
+              <p class="theme-body">נקודות המעבר בין סיום בית ספר לחזרה הביתה נרשמות כשעות בהן דווחו הסלמות התנהגותיות.</p>
+            </div>
+          </div>
+
+          <!-- Geographic distribution -->
+          <div class="card card-pad">
+            <div class="card-title" style="margin: 0 0 10px;">פילוח גיאוגרפי</div>
+            <div class="split-row"><div class="split-lbl">יד מרדכי</div><div class="split-track"><span class="split-bar" style="width:40%"></span></div><div class="split-v">11</div></div>
+            <div class="split-row"><div class="split-lbl">ברכיה</div><div class="split-track"><span class="split-bar" style="width:28%"></span></div><div class="split-v">8</div></div>
+            <div class="split-row"><div class="split-lbl">ניר גלים</div><div class="split-track"><span class="split-bar" style="width:30%"></span></div><div class="split-v">8</div></div>
+            <div class="split-row"><div class="split-lbl">ניצנים</div><div class="split-track"><span class="split-bar" style="width:22%"></span></div><div class="split-v">6</div></div>
+            <div class="split-row"><div class="split-lbl">זיקים</div><div class="split-track"><span class="split-bar" style="width:18%"></span></div><div class="split-v">5</div></div>
+            <div class="split-row"><div class="split-lbl">כרמיה</div><div class="split-track"><span class="split-bar" style="width:14%"></span></div><div class="split-v">4</div></div>
+            <p class="micro" style="margin-top: 10px;">תדירות ההזכרה ביחס למספר המשפחות ביישוב. בתצוגה מנורמלת.</p>
+          </div>
+
+          <!-- AI recommendations -->
+          <div class="card card-pad">
+            <div class="card-title" style="margin: 0 0 8px;">המלצות מערכת</div>
+            <p class="micro" style="margin-bottom: 12px;">על סמך התמה והצלבות, המערכת מציעה מהלכים אפשריים. לא מבוצעים עד לאישור.</p>
+
+            <div class="suggestion">
+              <div class="sugg-head">
+                <div class="sugg-title">פתיחת יום פתוח עם מתנ"ס אזורי</div>
+                <span class="sugg-weight">קובץ פעולה</span>
+              </div>
+              <p class="sugg-why">איחוד ביקוש במקום פתרונות ספוראדיים. התאמה גבוהה ליישובים הקטנים.</p>
+              <div class="sugg-cta">
+                <button class="btn-link">דחייה</button>
+                <button class="btn-link primary">הוספה למשימות</button>
+              </div>
+            </div>
+
+            <div class="suggestion">
+              <div class="sugg-head">
+                <div class="sugg-title">פגישת סטטוס עם מנהלת החינוך</div>
+                <span class="sugg-weight">שולחן עגול</span>
+              </div>
+              <p class="sugg-why">הבאת הנתון למערכת החינוך של המועצה על מנת לפתוח דיון מוסדי.</p>
+              <div class="sugg-cta">
+                <button class="btn-link">דחייה</button>
+                <button class="btn-link primary">הוספה למשימות</button>
+              </div>
+            </div>
+
+            <div class="suggestion">
+              <div class="sugg-head">
+                <div class="sugg-title">שליחת שאלון ממוקד ל-42 המשפחות</div>
+                <span class="sugg-weight">איסוף נתונים</span>
+              </div>
+              <p class="sugg-why">לאמת את התמה ולהבין ההעדפות: מסגרת במועצה, בבית הספר, או בבית.</p>
+              <div class="sugg-cta">
+                <button class="btn-link">דחייה</button>
+                <button class="btn-link primary">הוספה למשימות</button>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -2633,12 +2876,12 @@
             </div>
           </div>
 
-          <!-- STEP 3: description -->
+          <!-- STEP 3: description + assignee -->
           <div class="nt-step" data-nt-step="3" hidden>
             <div class="q">
               <div class="q-text">תיאור המשימה</div>
               <div class="note-field">
-                <textarea class="ta" rows="8" data-nt-field="description"></textarea>
+                <textarea class="ta" rows="6" data-nt-field="description"></textarea>
                 <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="3" width="6" height="12" rx="3"/>
@@ -2646,6 +2889,19 @@
                     <path d="M12 18v3"/>
                   </svg>
                 </button>
+              </div>
+            </div>
+            <div class="q">
+              <div class="q-text">שיוך</div>
+              <div class="q-help">ברירת המחדל — לעצמך. אפשר להקצות עוסית אחרת.</div>
+              <div class="chip-row" data-togglegroup="single" data-nt-field="assigneeMode">
+                <div class="chip on" data-assignee-mode="me">שלי</div>
+                <div class="chip" data-assignee-mode="other">עוסית אחרת</div>
+              </div>
+              <div data-assignee-other-wrap hidden style="margin-top: 10px;">
+                <select class="field-input" data-nt-field="assignee" style="appearance:auto; background:var(--surface); border-radius:var(--r-s); padding:12px 14px; width:100%;">
+                  <option value="">— בחרי עוסית —</option>
+                </select>
               </div>
             </div>
           </div>
@@ -2936,7 +3192,8 @@
     newTask: 'tasks',
     newEvent: 'home',
     eventDetail: 'home',
-    newEventTask: 'home'
+    newEventTask: 'home',
+    themeDeepDive: 'insights'
   };
 
   const screens = document.querySelectorAll('.screen[data-screen]');
@@ -3095,16 +3352,21 @@
     `).join('');
 
     const tsEl = scr.querySelector('[data-slot="tasks"]');
-    tsEl.innerHTML = f.tasks.map((t, i) => `
-      <div class="row-item" data-nav="detail" data-detail-kind="task" data-detail-index="${i}">
-        <span class="dot-status ${t.urgent ? 'urgent' : ''}"></span>
-        <div class="row-main">
-          <div class="row-name">${t.name}</div>
-          <div class="row-sub">${t.sub}</div>
+    tsEl.innerHTML = f.tasks.map((t, i) => {
+      // Resolve urgency tag: explicit `urgency` field preferred, else fall back to urgent boolean
+      const urgencyLabel = t.urgency || (t.urgent ? 'דחוף' : 'רגיל');
+      const cls = urgencyLabel === 'דחוף' ? 'urgent' : urgencyLabel === 'מהיר' ? 'soon' : 'normal';
+      return `
+        <div class="row-item" data-nav="detail" data-detail-kind="task" data-detail-index="${i}">
+          <span class="urg-tag lead ${cls}">${urgencyLabel}</span>
+          <div class="row-main">
+            <div class="row-name">${t.name}</div>
+            <div class="row-sub">${t.sub}</div>
+          </div>
+          <span class="chev">›</span>
         </div>
-        <span class="chev">›</span>
-      </div>
-    `).join('');
+      `;
+    }).join('');
 
     const docsEl = scr.querySelector('[data-slot="documents"]');
     const docs = f.documents || [];
@@ -3250,8 +3512,10 @@
   if (fuNo) fuNo.addEventListener('click', () => {
     if (fuOverlay) fuOverlay.classList.remove('open');
     showToast('המשימה סומנה כהושלמה');
-    // Go back to the family profile
-    go('profile');
+    // Return to whichever screen we came from (home, tasks, profile…)
+    const prev = window.__lastScreen || 'profile';
+    const target = prev === 'detail' ? 'profile' : prev;
+    go(target);
   });
   // Click outside the sheet dismisses like "No"
   if (fuOverlay) fuOverlay.addEventListener('click', (e) => {
@@ -3419,7 +3683,8 @@
       const sub = host.querySelector('[data-scope-sub]');
       if (sub) {
         const map = {
-          both: 'כל היישובים שלי · 151 משפחות',
+          council: '574 משפחות במועצה',
+          both: '151 משפחות תחת טיפולי',
           yad: 'יד מרדכי · 93 משפחות',
           brachia: 'ברכיה · 58 משפחות'
         };
@@ -4068,17 +4333,27 @@
   const ntState = {
     step: 1,
     residentKey: null, residentName: null, residentVillage: null,
-    fields: { type: null, urgency: null, dueDate: '', description: '' }
+    fields: { type: null, urgency: null, dueDate: '', description: '', assigneeMode: 'me', assignee: null }
   };
+  // Available caseworkers for the "אחרת" picker
+  const NT_ASSIGNEES = [
+    'רחל כהן', 'מרים לוי', 'דנה ברק', 'שרה גולדברג', 'נועה אברהם',
+    'יעל שמש', 'אורית כץ', 'תמר פרידמן', 'ליאת גרין', 'חנה סגל'
+  ];
   function ntReset() {
     ntState.step = 1;
     ntState.residentKey = null;
     ntState.residentName = null;
     ntState.residentVillage = null;
-    ntState.fields = { type: null, urgency: null, dueDate: todayISO(), description: '' };
+    ntState.fields = { type: null, urgency: null, dueDate: todayISO(), description: '', assigneeMode: 'me', assignee: null };
     const scr = document.querySelector('.screen[data-screen="newTask"]');
     if (!scr) return;
     scr.querySelectorAll('.nt-step .chip.on').forEach(c => c.classList.remove('on'));
+    // Default assignee-mode = "שלי"
+    const meChip = scr.querySelector('[data-assignee-mode="me"]');
+    if (meChip) meChip.classList.add('on');
+    const otherWrap = scr.querySelector('[data-assignee-other-wrap]');
+    if (otherWrap) otherWrap.hidden = true;
     const date = scr.querySelector('[data-nt-field="dueDate"]');
     if (date) date.value = todayISO();
     const desc = scr.querySelector('[data-nt-field="description"]');
@@ -4086,6 +4361,16 @@
     const search = scr.querySelector('[data-nt-search]');
     if (search) search.value = '';
     scr.querySelectorAll('[data-nt-resident-list] .row-item.sel').forEach(r => r.classList.remove('sel'));
+    // Populate assignee dropdown
+    const sel = scr.querySelector('[data-nt-field="assignee"]');
+    if (sel && sel.options.length <= 1) {
+      NT_ASSIGNEES.forEach(name => {
+        const o = document.createElement('option');
+        o.value = name; o.textContent = name;
+        sel.appendChild(o);
+      });
+    }
+    if (sel) sel.value = '';
   }
   // NT resident list reuses case-opener residents + the wired families
   const NT_RESIDENTS = [
@@ -4193,7 +4478,24 @@
     const field = row.dataset.ntField;
     if (!field) return;
     const sel = row.querySelector('.chip.on');
-    ntState.fields[field] = sel ? sel.textContent.trim() : null;
+    if (field === 'assigneeMode') {
+      const mode = sel ? sel.dataset.assigneeMode : 'me';
+      ntState.fields.assigneeMode = mode;
+      // Show/hide the "other" dropdown
+      const scr = document.querySelector('.screen[data-screen="newTask"]');
+      const wrap = scr && scr.querySelector('[data-assignee-other-wrap]');
+      if (wrap) wrap.hidden = mode !== 'other';
+      // Clear assignee if switching back to me
+      if (mode === 'me') ntState.fields.assignee = null;
+    } else {
+      ntState.fields[field] = sel ? sel.textContent.trim() : null;
+    }
+  });
+  // Assignee dropdown change
+  document.addEventListener('change', (e) => {
+    const sel = e.target.closest('[data-nt-field="assignee"]');
+    if (!sel) return;
+    ntState.fields.assignee = sel.value || null;
   });
   // NT textarea + date
   document.addEventListener('input', (e) => {
@@ -4839,6 +5141,51 @@
     'כן, צור משימת המשך': 'Yes, create a follow-up',
     'סיום': 'Done',
 
+    // Sort toggle + urgency tag mode
+    'דחיפות': 'Urgency',
+    'שעה': 'Time',
+    'תזמון': 'Timing',
+    'מיון': 'Sort',
+    'היום': 'Today',
+    'מחר': 'Tomorrow',
+    'השבוע': 'This week',
+
+    // New task — assignee
+    'שיוך': 'Assignment',
+    'ברירת המחדל — לעצמך. אפשר להקצות עוסית אחרת.': 'Default is to yourself. You can assign another caseworker.',
+    'שלי': 'Mine',
+    'עוסית אחרת': 'Another caseworker',
+    '— בחרי עוסית —': '— Pick a caseworker —',
+
+    // Insights — council scope
+    'כל המועצה': 'Whole council',
+    '574 משפחות במועצה': '574 families in the council',
+    '151 משפחות תחת טיפולי': '151 families in my caseload',
+    'תצוגה אגרגטיבית על פני כל היישובים במועצה (574 משפחות).':
+      'Aggregate view across all villages in the council (574 families).',
+
+    // Deep-dive screen
+    'ניתוח עומק': 'Deep analysis',
+    'תובנות AI על תמות עולות': 'AI insights on emerging themes',
+    'ניתוח מבוסס 428 שיחות · עודכן לפני 2 שעות':
+      'Analysis based on 428 conversations · updated 2h ago',
+    'הניתוח מצליב שיחות תיעוד, מצב משפחות, ודפוסים אזוריים. המספרים אינדיקטיביים; מומלץ להיעזר בעוס״ים ובמידע נוסף לפני פעולה.':
+      'The analysis cross-references logged conversations, family status, and regional patterns. Numbers are indicative; consult caseworkers and further data before acting.',
+    'תמה לניתוח': 'Theme to analyze',
+    'עוצמת האות': 'Signal strength',
+    'התאמה בין שיחות': 'Cross-conversation match',
+    'חזרתיות': 'Recurrence',
+    'התפרסות גיאוגרפית': 'Geographic spread',
+    'אינדיקציה סטטיסטית מבוססת מודל. התאמה = האם אותו דפוס חוזר בשיחות שונות; חזרתיות = כמה פעמים עלה באותה משפחה; התפרסות = בכמה יישובים זיהינו.':
+      'Model-based statistical indicator. Match = whether the same pattern recurs across conversations; Recurrence = how often it appears in the same family; Spread = how many villages we identified it in.',
+    'דפוסים קשורים': 'Related patterns',
+    'המלצות מערכת': 'System recommendations',
+    'על סמך התמה והצלבות, המערכת מציעה מהלכים אפשריים. לא מבוצעים עד לאישור.':
+      'Based on the theme and cross-references, the system suggests possible actions. Nothing runs until you approve.',
+    'פילוח גיאוגרפי': 'Geographic breakdown',
+    'תדירות ההזכרה ביחס למספר המשפחות ביישוב. בתצוגה מנורמלת.':
+      'Mention frequency relative to the number of families in the village. Normalized view.',
+
     // Questionnaire — new labels
     'תושב/ת חדש/ה': 'New resident',
     '1 מתוך 7 · תושב/ת חדש/ה': '1 of 7 · New resident',
@@ -5256,6 +5603,275 @@ document.addEventListener('click', (e) => {
     e.stopPropagation();
     setEventsTab(tab.dataset.eventsTab);
   }
+});
+
+// -------- Home: "My tasks today" list (sortable by urgency / time) --------
+// Urgency priority — lower number = more urgent.
+const URG_PRIORITY = { 'דחוף': 0, 'מהיר': 1, 'רגיל': 2 };
+const URG_CLASS    = { 'דחוף': 'urgent', 'מהיר': 'soon', 'רגיל': 'normal' };
+
+const HOME_TASKS = [
+  { family: 'cohen',   kind: 'task',     idx: 1, name: 'חזרה לבית הספר — נועם כהן',       time: '08:30', village: 'יד מרדכי · בי״ס',      urgency: 'רגיל' },
+  { family: 'avraham', kind: 'task',     idx: 0, name: 'תיאום פסיכולוג — רחלי אברהם',      time: '10:30', village: 'ברכיה · מרכז חוסן',   urgency: 'דחוף' },
+  { family: 'cohen',   kind: 'task',     idx: 0, name: 'מימוש זכויות — משפחת כהן',         time: '11:00', village: 'יד מרדכי',             urgency: 'דחוף' },
+  { family: 'alon',    kind: 'task',     idx: 0, name: 'בירור מסגרת אחה״צ — נועה אלון',    time: '13:00', village: 'ברכיה · מתנ״ס',        urgency: 'מהיר' },
+  { family: 'avraham', kind: 'task',     idx: 1, name: 'שיחת המשך — רחלי אברהם',           time: '14:30', village: 'ברכיה · טלפון',        urgency: 'מהיר' },
+  { family: 'alon',    kind: 'timeline', idx: 0, name: 'שאלון "מה נשמע" — נועה אלון',     time: '16:00', village: 'ברכיה',                urgency: 'רגיל' },
+  { family: 'alon',    kind: 'task',     idx: 1, name: 'ביקור בית דחוף — נועה אלון',       time: '17:30', village: 'ברכיה',                urgency: 'דחוף' }
+];
+
+let homeSort = 'urgency';
+
+function renderHomeTasks() {
+  const host = document.getElementById('homeTasksList');
+  if (!host) return;
+  // Copy, then sort
+  const items = HOME_TASKS.slice().sort((a, b) => {
+    if (homeSort === 'time') return a.time.localeCompare(b.time);
+    // urgency (default)
+    const pa = URG_PRIORITY[a.urgency] ?? 99;
+    const pb = URG_PRIORITY[b.urgency] ?? 99;
+    if (pa !== pb) return pa - pb;
+    return a.time.localeCompare(b.time);
+  });
+  host.innerHTML = items.map(t => {
+    const urgCls = URG_CLASS[t.urgency] || 'normal';
+    return `
+      <div class="row-item" data-nav="detail" data-family="${t.family}" data-detail-kind="${t.kind}" data-detail-index="${t.idx}">
+        <span class="urg-tag lead ${urgCls}">${t.urgency}</span>
+        <div class="row-main">
+          <div class="row-name">${t.name}</div>
+          <div class="row-sub">${t.time} · ${t.village}</div>
+        </div>
+        <span class="chev">›</span>
+      </div>
+    `;
+  }).join('');
+}
+
+// Sort dropdown (home): open/close + selection
+document.addEventListener('click', (e) => {
+  // Open/close when clicking the trigger
+  const trigger = e.target.closest('[data-sort-dd="home"] .sort-link');
+  if (trigger) {
+    const dd = trigger.closest('.sort-dd');
+    const willOpen = !dd.classList.contains('open');
+    // Close any other open sort dropdowns
+    document.querySelectorAll('.sort-dd.open').forEach(o => {
+      o.classList.remove('open');
+      const btn = o.querySelector('.sort-link');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+    dd.classList.toggle('open', willOpen);
+    trigger.setAttribute('aria-expanded', String(willOpen));
+    return;
+  }
+  // Select an option
+  const opt = e.target.closest('[data-sort-dd="home"] [data-home-sort]');
+  if (opt) {
+    homeSort = opt.dataset.homeSort;
+    const dd = opt.closest('.sort-dd');
+    dd.querySelectorAll('[data-home-sort]').forEach(li => li.classList.toggle('on', li === opt));
+    const label = dd.querySelector('[data-sort-label]');
+    if (label) label.textContent = opt.textContent.trim();
+    dd.classList.remove('open');
+    const btn = dd.querySelector('.sort-link');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+    renderHomeTasks();
+    return;
+  }
+});
+
+// Initial render (also after DOMContentLoaded in case scripts load before DOM)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderHomeTasks);
+} else {
+  renderHomeTasks();
+}
+
+// -------- Tasks screen (open tasks list) --------
+// Simple day offsets for "timing" sort: 0=today, 1=tomorrow, >=2=this week, etc.
+const OPEN_TASKS = [
+  { nav: 'profile', name: 'מימוש זכויות — משפחת כהן',     sub: 'היום 11:00 · יד מרדכי',        urgency: 'דחוף', day: 0, time: '11:00' },
+  { nav: 'profile', name: 'ביקור בית — משפחת לוי',          sub: 'היום 17:00 · יד מרדכי',        urgency: 'דחוף', day: 0, time: '17:00' },
+  { nav: 'profile', name: 'תיאום מרכז חוסן — נועה אלון',   sub: 'מחר · ברכיה',                   urgency: 'דחוף', day: 1, time: '09:00' },
+  { nav: 'ai',      name: 'שיחת המשך — רחלי אברהם',        sub: 'היום 14:30 · ברכיה · טלפון',   urgency: 'מהיר', day: 0, time: '14:30' },
+  { nav: 'profile', name: 'ביקור בית — משפחת אברהם',        sub: 'מחר 16:00 · ברכיה',            urgency: 'מהיר', day: 1, time: '16:00' },
+  { nav: 'profile', name: 'תיאום עם יועצת חינוך',            sub: 'השבוע · יד מרדכי',             urgency: 'מהיר', day: 3, time: '00:00' },
+  { nav: 'profile', name: 'חזרה לבית הספר — בן 11 כהן',     sub: 'מחר · יד מרדכי · יועצת ביה"ס', urgency: 'רגיל', day: 1, time: '08:00' },
+  { nav: 'insights',name: '"מה נשמע" — 18 משפחות',           sub: 'השבוע · ברכיה',                 urgency: 'רגיל', day: 4, time: '00:00' },
+  { nav: 'profile', name: 'מעקב משפחת פרץ',                   sub: 'השבוע · יד מרדכי',             urgency: 'רגיל', day: 5, time: '00:00' }
+];
+
+let tasksSort = 'urgency';
+
+function renderTasksScreen() {
+  const host = document.getElementById('tasksScreenList');
+  if (!host) return;
+  // Group by current sort key
+  const groups = new Map();
+  if (tasksSort === 'urgency') {
+    ['דחוף', 'מהיר', 'רגיל'].forEach(k => groups.set(k, []));
+    OPEN_TASKS.forEach(t => (groups.get(t.urgency) || []).push(t));
+    // Within each urgency group, order by time
+    groups.forEach((arr) => arr.sort((a, b) => (a.day - b.day) || a.time.localeCompare(b.time)));
+  } else {
+    // timing: Today / Tomorrow / This week
+    groups.set('היום',  []);
+    groups.set('מחר',   []);
+    groups.set('השבוע', []);
+    OPEN_TASKS.forEach(t => {
+      const k = t.day === 0 ? 'היום' : t.day === 1 ? 'מחר' : 'השבוע';
+      groups.get(k).push(t);
+    });
+    // Within each timing group, order by urgency then time
+    groups.forEach((arr) => arr.sort((a, b) => {
+      const pa = URG_PRIORITY[a.urgency] ?? 99;
+      const pb = URG_PRIORITY[b.urgency] ?? 99;
+      if (pa !== pb) return pa - pb;
+      return (a.day - b.day) || a.time.localeCompare(b.time);
+    }));
+  }
+
+  // Render
+  const html = [];
+  groups.forEach((items, key) => {
+    if (!items.length) return;
+    const header = (tasksSort === 'urgency')
+      ? `<span class="urg-tag ${URG_CLASS[key] || 'normal'}">${key}</span>`
+      : `<span class="group-name" style="font-size:13px;font-weight:700;color:var(--ink);">${key}</span>`;
+    html.push(`
+      <div class="tasks-group">
+        <div class="group-head">
+          ${header}
+          <span class="group-count">${items.length}</span>
+        </div>
+        <div class="card">
+          ${items.map(t => {
+            // Leading element depends on sort mode
+            const lead = (tasksSort === 'time')
+              ? `<span class="urg-tag lead ${URG_CLASS[t.urgency] || 'normal'}">${t.urgency}</span>`
+              : '';
+            return `
+              <div class="row-item" data-nav="${t.nav}" data-urgency="${URG_CLASS[t.urgency] || ''}">
+                ${lead}
+                <div class="row-main">
+                  <div class="row-name">${t.name}</div>
+                  <div class="row-sub">${t.sub}</div>
+                </div>
+                <span class="chev">›</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `);
+  });
+  host.innerHTML = html.join('');
+
+  // Update subtitle count
+  const sub = document.querySelector('[data-tasks-sub]');
+  if (sub) sub.textContent = OPEN_TASKS.length + ' פתוחות';
+}
+
+// Sort dropdown (tasks screen): open/close + selection
+document.addEventListener('click', (e) => {
+  const trigger = e.target.closest('[data-sort-dd="tasks"] .sort-link');
+  if (trigger) {
+    const dd = trigger.closest('.sort-dd');
+    const willOpen = !dd.classList.contains('open');
+    document.querySelectorAll('.sort-dd.open').forEach(o => {
+      o.classList.remove('open');
+      const btn = o.querySelector('.sort-link');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+    dd.classList.toggle('open', willOpen);
+    trigger.setAttribute('aria-expanded', String(willOpen));
+    return;
+  }
+  const opt = e.target.closest('[data-sort-dd="tasks"] [data-tasks-sort]');
+  if (opt) {
+    tasksSort = opt.dataset.tasksSort;
+    const dd = opt.closest('.sort-dd');
+    dd.querySelectorAll('[data-tasks-sort]').forEach(li => li.classList.toggle('on', li === opt));
+    const label = dd.querySelector('[data-sort-label]');
+    if (label) label.textContent = opt.textContent.trim();
+    dd.classList.remove('open');
+    const btn = dd.querySelector('.sort-link');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+    renderTasksScreen();
+    return;
+  }
+});
+
+// Close sort dropdowns when clicking anywhere outside
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.sort-dd')) return;
+  document.querySelectorAll('.sort-dd.open').forEach(o => {
+    o.classList.remove('open');
+    const btn = o.querySelector('.sort-link');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  });
+});
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderTasksScreen);
+} else {
+  renderTasksScreen();
+}
+
+// -------- Theme deep-dive: swap content when user picks a different theme --------
+const THEME_DATA = {
+  aftercare: {
+    name: 'מסגרות אחה"צ חסרות',
+    trend: '↑ עולה · מגמה של 3 חודשים',
+    body: '42 משפחות מכל יישובי המועצה מזכירות היעדר מסגרת מאורגנת לילדים אחרי סיום בית הספר. רוב המקרים נוגעים להורים שחזרו לעבודה, ולילדים בגילי 6–11. המצב חריף יותר ביישובים הקטנים שבהם אין מועדונית קהילתית קבועה.',
+    confidence: 88, recurrence: 74, geo: 62
+  },
+  bureaucracy: {
+    name: 'עומס בירוקרטי במיצוי זכויות',
+    trend: '↑ עולה · מגמה של 4 חודשים',
+    body: '196 משפחות (34%) מדווחות על קושי בירוקרטי חוזר — חלקם פונים 3–4 פעמים לאותו גורם. מוקדים: ביטוח לאומי, אגף רווחה במועצה, דיור ציבורי. פערים מצטברים גוררים דחייה של מיצוי זכויות בחודשים.',
+    confidence: 92, recurrence: 81, geo: 77
+  },
+  sleep: {
+    name: 'שינה ולחץ רגשי',
+    trend: 'יציב · נצפה 5 חודשים',
+    body: '58 משפחות מזכירות הפרעות שינה של מבוגרים ו/או ילדים, בעיקר כדפוס כרוני. רק כ-27% מהמקרים הגיעו עד כה למרכז חוסן או לטיפול רגשי. התמה חוזרת באופן רוחבי במיוחד במשפחות עם ילדים צעירים (0–6).',
+    confidence: 76, recurrence: 68, geo: 54
+  }
+};
+
+function setDeepDiveTheme(key) {
+  const scr = document.querySelector('.screen[data-screen="themeDeepDive"]');
+  if (!scr) return;
+  const data = THEME_DATA[key];
+  if (!data) return;
+  scr.querySelectorAll('[data-theme-selector] .chip').forEach(c => {
+    c.classList.toggle('on', c.dataset.theme === key);
+  });
+  const set = (slot, val) => {
+    const el = scr.querySelector(`[data-theme-slot="${slot}"]`);
+    if (el) el.textContent = val;
+  };
+  set('name',  data.name);
+  set('trend', data.trend);
+  set('body',  data.body);
+  const setBar = (k, v) => {
+    const el = scr.querySelector(`[data-theme-bar="${k}"]`);
+    if (el) el.style.width = v + '%';
+    const valEl = el && el.closest('.bar-row') && el.closest('.bar-row').querySelector('.v');
+    if (valEl) valEl.textContent = v + '%';
+  };
+  setBar('confidence', data.confidence);
+  setBar('recurrence', data.recurrence);
+  setBar('geo',        data.geo);
+}
+
+document.addEventListener('click', (e) => {
+  const chip = e.target.closest('[data-theme-selector] .chip');
+  if (!chip) return;
+  setDeepDiveTheme(chip.dataset.theme);
 });
 </script>
 
