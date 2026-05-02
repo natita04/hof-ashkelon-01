@@ -524,6 +524,64 @@
   .confirm-sheet p  { margin: 0 0 20px; font-size: 14px; color: var(--ink-2); line-height:1.5; }
   .confirm-btns { display: flex; flex-direction: column; gap: 10px; }
 
+  /* Top-right "cancel" button in the newEvent appbar */
+  .ne-cancel-top {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 6px 12px; border-radius: 999px;
+    background: transparent; color: var(--ink-3);
+    border: 0;
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 120ms, color 120ms;
+  }
+  .ne-cancel-top:hover { background: var(--line-2); color: var(--ink-2); }
+  .ne-cancel-top svg { width: 14px; height: 14px; display: block; }
+
+  /* Task-selection rows (shown on newEvent step 2) */
+  .ne-task-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line-2);
+    cursor: pointer;
+    user-select: none;
+    transition: background 120ms;
+  }
+  .ne-task-row:last-child { border-bottom: 0; }
+  .ne-task-row:hover { background: var(--bg-2); }
+  .ne-task-checkbox {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    border: 2px solid var(--line);
+    background: var(--surface);
+    flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background 120ms, border-color 120ms;
+  }
+  .ne-task-row.on .ne-task-checkbox {
+    background: var(--brand); border-color: var(--brand);
+  }
+  .ne-task-checkbox::after {
+    content: '';
+    width: 5px; height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) translate(-0.5px, -0.5px);
+    opacity: 0;
+    transition: opacity 120ms;
+  }
+  .ne-task-row.on .ne-task-checkbox::after { opacity: 1; }
+  .ne-task-main { flex: 1; min-width: 0; }
+  .ne-task-name {
+    font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.3;
+  }
+  .ne-task-meta {
+    font-size: 11.5px; color: var(--ink-3);
+    margin-top: 3px;
+    display: flex; align-items: center; gap: 6px;
+    flex-wrap: wrap;
+  }
+
   /* event task type tags */
   .et-type { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; }
   .et-type-רפואי   { background:#fde8e8; color:#c0392b; }
@@ -540,6 +598,103 @@
     padding:8px 12px; background:var(--surface);
     border:1px solid var(--line); border-radius:var(--r-s);
     margin-bottom:12px; white-space:pre-wrap;
+  }
+
+  /* Status banner (urgency + status label + opened-at) */
+  .ed-status {
+    display: flex; align-items: center; gap: 10px;
+    flex-wrap: wrap;
+    margin: 4px 2px 12px;
+  }
+  .ed-status .urg-tag { font-size: 12px; padding: 4px 12px; }
+  .ed-status-label {
+    font-size: 13px; font-weight: 700; color: var(--ink);
+  }
+  .ed-status-time {
+    font-size: 12px; color: var(--ink-3);
+    margin-inline-start: auto;
+  }
+
+  /* AI-summary card */
+  .ed-ai-card {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: var(--r-m);
+    padding: 12px 14px;
+    margin-bottom: 14px;
+  }
+  .ed-ai-head {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px;
+  }
+  .ed-ai-title {
+    font-size: 13px; font-weight: 700; color: var(--ink);
+  }
+  .ed-ai-time {
+    font-size: 11px; color: var(--ink-3);
+    margin-inline-start: auto;
+  }
+  .ed-ai-body {
+    margin: 0; font-size: 13px; color: var(--ink-2); line-height: 1.55;
+  }
+
+  /* Progress metrics grid */
+  .ed-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .ed-metric {
+    text-align: center;
+    padding: 8px 4px;
+    background: var(--bg-2);
+    border-radius: var(--r-s);
+  }
+  .ed-metric-v {
+    font-size: 20px; font-weight: 800; color: var(--ink);
+    line-height: 1;
+  }
+  .ed-metric-l {
+    font-size: 10.5px; color: var(--ink-3); font-weight: 600;
+    margin-top: 4px;
+    line-height: 1.2;
+  }
+  .ed-progress-bar {
+    height: 6px;
+    background: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .ed-progress-fill {
+    display: block; height: 100%;
+    background: var(--success);
+    border-radius: 999px;
+    transition: width 240ms ease-out;
+  }
+
+  /* Family rows in event detail */
+  #edFamiliesList .row-name { font-weight: 700; }
+  #edFamiliesList .row-sub { font-size: 12px; }
+  /* Timeline list: compact bullets */
+  .ed-timeline-row {
+    display: flex; gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .ed-timeline-row:last-child { border-bottom: 0; }
+  .ed-timeline-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ink-3); flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .ed-timeline-dot.active { background: var(--danger); }
+  .ed-timeline-main { flex: 1; min-width: 0; }
+  .ed-timeline-title {
+    font-size: 13.5px; font-weight: 700; color: var(--ink); line-height: 1.3;
+  }
+  .ed-timeline-sub {
+    font-size: 11.5px; color: var(--ink-3); margin-top: 2px;
   }
 
   /* emergency tasks by event */
@@ -1391,24 +1546,24 @@
 
             <!-- open events list -->
             <div class="card" data-events-view="open">
-              <div class="row-item" data-toast="אירוע — רכס — דמו">
-                <span class="dot-status urgent"></span>
+              <div class="row-item" data-nav="eventDetail" data-event-key="rakas">
+                <span class="urg-tag lead urgent">דחוף</span>
                 <div class="row-main">
                   <div class="row-name">241107 · רכס</div>
                   <div class="row-sub">5 משימות פתוחות · ממתין למענה</div>
                 </div>
                 <span class="chev">›</span>
               </div>
-              <div class="row-item" data-toast="אירוע — ניר גלים — דמו">
-                <span class="dot-status"></span>
+              <div class="row-item" data-nav="eventDetail" data-event-key="nirgalim">
+                <span class="urg-tag lead soon">מהיר</span>
                 <div class="row-main">
                   <div class="row-name">241203 · ניר גלים</div>
                   <div class="row-sub">3 משימות פתוחות · בטיפול</div>
                 </div>
                 <span class="chev">›</span>
               </div>
-              <div class="row-item" data-toast="אירוע — ברכיה — דמו">
-                <span class="dot-status"></span>
+              <div class="row-item" data-nav="eventDetail" data-event-key="brachia">
+                <span class="urg-tag lead normal">רגיל</span>
                 <div class="row-main">
                   <div class="row-name">250112 · ברכיה</div>
                   <div class="row-sub">2 משימות פתוחות · ממתין לשיבוץ</div>
@@ -1419,16 +1574,16 @@
 
             <!-- closed events list -->
             <div class="card" data-events-view="closed" style="display:none;">
-              <div class="row-item" data-toast="אירוע סגור — דמו">
-                <span class="dot-status"></span>
+              <div class="row-item" data-nav="eventDetail" data-event-key="yad815">
+                <span class="urg-tag lead normal">הושלם</span>
                 <div class="row-main">
                   <div class="row-name">240815 · יד מרדכי</div>
                   <div class="row-sub">הסתיים 22.8 · 8 משימות הושלמו</div>
                 </div>
                 <span class="chev">›</span>
               </div>
-              <div class="row-item" data-toast="אירוע סגור — דמו">
-                <span class="dot-status"></span>
+              <div class="row-item" data-nav="eventDetail" data-event-key="nachal601">
+                <span class="urg-tag lead normal">בוטל</span>
                 <div class="row-main">
                   <div class="row-name">240601 · נחל עוז</div>
                   <div class="row-sub">הסתיים 12.6 · בוטל</div>
@@ -1463,7 +1618,6 @@
         <!-- pinned emergency CTA (shown only in emergency mode) -->
         <div id="emergencyCta" class="emergency-cta" style="display:none;">
           <button class="emergency-cta-btn" type="button" data-nav="newEvent">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             <span>פתיחת אירוע</span>
           </button>
         </div>
@@ -2924,70 +3078,145 @@
           <div class="appbar-main">
             <div class="title">פתיחת אירוע חדש</div>
           </div>
+          <button type="button" class="ne-cancel-top" data-nav="home" aria-label="ביטול">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span>ביטול</span>
+          </button>
         </div>
 
         <div class="content">
-          <div class="q">
-            <div class="q-text">סוג האירוע</div>
-            <div class="chip-row" id="eventTypeChips">
-              <div class="chip" data-etype="הצפה">הצפה</div>
-              <div class="chip" data-etype="שריפה">שריפה</div>
-              <div class="chip" data-etype="פינוי">פינוי</div>
-              <div class="chip" data-etype="טילים">טילים</div>
-              <div class="chip" data-etype="אחר">אחר</div>
-            </div>
+          <!-- 3-step progress indicator -->
+          <div class="progress" id="newEventProgress">
+            <div class="seg active" data-ne-seg="1"></div>
+            <div class="seg" data-ne-seg="2"></div>
+            <div class="seg" data-ne-seg="3"></div>
           </div>
+          <div class="progress-label" id="newEventStepLabel">1 מתוך 3 · פרטים</div>
 
-          <div class="q" id="customNameWrap" hidden>
-            <div class="q-text">שם האירוע</div>
-            <input class="field-input" type="text" id="newEventCustomName" />
-          </div>
-
-          <div class="q">
-            <div class="q-text">מיקום — יישוב</div>
-            <select class="field-input" id="newEventVillage" style="appearance:auto;">
-              <option value="">— בחר יישוב —</option>
-              <option>ניצן</option><option>ניצנים</option><option>גבעת ברנר</option>
-              <option>ברכיה</option><option>כפר מנחם</option><option>אגמון</option>
-              <option>ניר גלים</option><option>יד מרדכי</option><option>נחל עוז</option>
-              <option>כרם שלום</option><option>זיקים</option><option>אחר / מחוץ ליישוב</option>
-            </select>
-          </div>
-
-          <div class="q">
-            <div class="q-text">מיקום — פירוט נוסף (רשות)</div>
-            <input class="field-input" type="text" id="newEventLocation" />
-          </div>
-
-          <div class="q">
-            <div class="q-text">תיאור האירוע</div>
-            <div class="note-field">
-              <textarea class="ta" rows="4" id="newEventDesc"></textarea>
-              <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="q">
-            <div class="q-text">עוסיות מורשות לטיפול</div>
-            <div class="chip-row" style="margin-bottom:10px;">
-              <div class="chip on" id="allWorkersChip" onclick="setWorkersMode('all')">כל העוסיות</div>
-              <div class="chip" id="specificWorkersChip" onclick="setWorkersMode('specific')">בחר ספציפיות</div>
-            </div>
-            <div id="workersPickerWrap" hidden>
-              <div class="workers-picker">
-                <input class="workers-search" id="workerSearch" type="text" placeholder="חיפוש שם עוסית…" oninput="filterWorkers(this.value)" />
-                <div class="workers-list" id="workersList"></div>
+          <!-- STEP 1: details -->
+          <div id="newEventStep1">
+            <div class="q">
+              <div class="q-text">סוג האירוע</div>
+              <div class="chip-row" id="eventTypeChips">
+                <div class="chip" data-etype="הצפה">הצפה</div>
+                <div class="chip" data-etype="שריפה">שריפה</div>
+                <div class="chip" data-etype="פינוי">פינוי</div>
+                <div class="chip" data-etype="טילים">טילים</div>
+                <div class="chip" data-etype="פח&quot;ע">פח"ע</div>
+                <div class="chip" data-etype="אחר">אחר</div>
               </div>
-              <div class="workers-footer" id="workersCount">0 עוסיות נבחרו</div>
+            </div>
+
+            <div class="q" id="customNameWrap" hidden>
+              <div class="q-text">שם האירוע</div>
+              <input class="field-input" type="text" id="newEventCustomName" />
+            </div>
+
+            <div class="q">
+              <div class="q-text">מיקום — יישוב</div>
+              <select class="field-input" id="newEventVillage" style="appearance:auto;">
+                <option value="">— בחר יישוב —</option>
+                <option>ניצן</option><option>ניצנים</option><option>גבעת ברנר</option>
+                <option>ברכיה</option><option>כפר מנחם</option><option>אגמון</option>
+                <option>ניר גלים</option><option>יד מרדכי</option><option>נחל עוז</option>
+                <option>כרם שלום</option><option>זיקים</option><option>אחר / מחוץ ליישוב</option>
+              </select>
+            </div>
+
+            <div class="q">
+              <div class="q-text">מיקום — פירוט נוסף (רשות)</div>
+              <input class="field-input" type="text" id="newEventLocation" />
+            </div>
+
+            <div class="q">
+              <div class="q-text">תיאור האירוע</div>
+              <div class="note-field">
+                <textarea class="ta" rows="4" id="newEventDesc"></textarea>
+                <button class="mic-btn" type="button" aria-label="הכתבה קולית" data-toast="הכתבה קולית — דמו">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="q">
+              <div class="q-text">עוסיות מורשות לטיפול</div>
+              <div class="chip-row" style="margin-bottom:10px;">
+                <div class="chip on" id="allWorkersChip" onclick="setWorkersMode('all')">כל העוסיות</div>
+                <div class="chip" id="specificWorkersChip" onclick="setWorkersMode('specific')">בחר ספציפיות</div>
+              </div>
+              <div id="workersPickerWrap" hidden>
+                <div class="workers-picker">
+                  <input class="workers-search" id="workerSearch" type="text" placeholder="חיפוש שם עוסית…" oninput="filterWorkers(this.value)" />
+                  <div class="workers-list" id="workersList"></div>
+                </div>
+                <div class="workers-footer" id="workersCount">0 עוסיות נבחרו</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 2: affected residents -->
+          <div id="newEventStep2" hidden>
+            <div class="q">
+              <div class="q-text">מי נפגעו באירוע?</div>
+              <div class="q-help">בחרו האם מדובר בכלל היישוב או במשפחות ספציפיות.</div>
+              <div class="chip-row" id="neAffectedModeChips" data-togglegroup="single">
+                <div class="chip on" data-affected-mode="village">כל היישוב</div>
+                <div class="chip" data-affected-mode="specific">משפחות ספציפיות</div>
+                <div class="chip" data-affected-mode="unknown">טרם ידוע</div>
+              </div>
+            </div>
+
+            <!-- Whole-village summary -->
+            <div class="q" id="neAffectedVillageWrap">
+              <div class="q-text">היישוב שנפגע</div>
+              <div class="q-help" id="neVillageSummary" style="margin-top: 4px;">—</div>
+              <p class="micro" style="margin-top: 10px;">פתיחת האירוע תסמן את כל המשפחות ביישוב כמעורבות. ניתן לפרט לכל משפחה בנפרד לאחר הפתיחה.</p>
+            </div>
+
+            <!-- Specific-families picker -->
+            <div class="q" id="neAffectedSpecificWrap" hidden>
+              <div class="q-text">בחרו משפחות</div>
+              <div class="q-help">ניתן לסמן מספר משפחות. משפחות מסומנות יקושרו אוטומטית לאירוע.</div>
+              <div class="search" style="margin-top: 8px;">
+                <span class="ic">⌕</span>
+                <input id="neFamilySearch" placeholder="שם או יישוב" />
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin: 4px 4px 6px;">
+                <div id="neFamiliesCount" style="font-size:12px; color:var(--ink-3); font-weight:600;">0 משפחות נבחרו</div>
+                <div style="display:flex; gap:10px;">
+                  <button type="button" class="btn-link" id="neFamSelectAll"  style="font-size:12px; font-weight:700; padding:4px 8px;">סמן הכל</button>
+                  <button type="button" class="btn-link" id="neFamSelectNone" style="font-size:12px; font-weight:700; padding:4px 8px;">נקה</button>
+                </div>
+              </div>
+              <div class="card" id="neFamilyList"></div>
+            </div>
+
+            <!-- Unknown note -->
+            <div class="q" id="neAffectedUnknownWrap" hidden>
+              <div class="q-text">בשלב זה לא ידוע מי נפגעו</div>
+              <p class="micro" style="margin-top: 4px;">האירוע ייפתח ללא קישור ישיר למשפחות. ניתן להוסיף משפחות מעורבות מדף האירוע בהמשך.</p>
+            </div>
+          </div>
+
+          <!-- STEP 3: task selection -->
+          <div id="newEventStep3" hidden>
+            <div class="q-help" style="margin: 0 0 10px;">בחרו אילו משימות לפתוח עם האירוע. ניתן להסיר משימות או להשאיר את כולן מסומנות.</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin: 0 4px 8px;">
+              <div id="neTasksCount" style="font-size:12px; color:var(--ink-3); font-weight:600;">0 מתוך 0 נבחרו</div>
+              <div style="display:flex; gap:10px;">
+                <button type="button" class="btn-link" id="neSelectAll" style="font-size:12px; font-weight:700; padding:4px 8px;">סמן הכל</button>
+                <button type="button" class="btn-link" id="neSelectNone" style="font-size:12px; font-weight:700; padding:4px 8px;">נקה</button>
+              </div>
+            </div>
+            <div class="card" id="neTaskList">
+              <div style="padding:20px; text-align:center; color:var(--ink-3); font-size:13px;">בחרו סוג אירוע בשלב הראשון כדי לראות משימות מוצעות.</div>
             </div>
           </div>
         </div>
 
-        <div class="footerbar">
-          <button class="btn ghost" type="button" data-nav="home">ביטול</button>
-          <button class="btn primary" type="button" id="openEventBtn" style="background:var(--danger);">פתיחת אירוע</button>
+        <div class="footerbar" id="newEventFooter">
+          <button class="btn ghost"    type="button" id="neBackBtn" hidden>הקודם</button>
+          <button class="btn primary"  type="button" id="openEventBtn" style="background:var(--danger);">הבא</button>
         </div>
       </div>
 
@@ -3009,6 +3238,13 @@
         </div>
 
         <div class="content">
+          <!-- Status banner + urgency -->
+          <div class="ed-status">
+            <span class="urg-tag" id="edUrgency">דחוף</span>
+            <span class="ed-status-label" id="edStatus">פעיל · ממתין למענה</span>
+            <span class="ed-status-time" id="edStatusTime">נפתח לפני 3 שעות</span>
+          </div>
+
           <!-- compact meta -->
           <div class="ed-meta">
             <div class="ed-meta-item">
@@ -3019,6 +3255,10 @@
               <span class="ed-meta-label">מיקום</span>
               <span class="ed-meta-val" id="edLocation"></span>
             </div>
+            <div class="ed-meta-item">
+              <span class="ed-meta-label">סוג</span>
+              <span class="ed-meta-val" id="edType">—</span>
+            </div>
             <div class="ed-meta-item" style="flex-basis:100%;">
               <span class="ed-meta-label">עוסיות</span>
               <span class="ed-meta-val" id="edWorkers"></span>
@@ -3028,8 +3268,51 @@
           <!-- description -->
           <div id="edDesc" class="ed-desc-block"></div>
 
+          <!-- AI summary -->
+          <div class="ed-ai-card" id="edAiWrap" hidden>
+            <div class="ed-ai-head">
+              <span class="ai-badge">✨ AI</span>
+              <span class="ed-ai-title">תקציר מצב</span>
+              <span class="ed-ai-time" id="edAiTime">עודכן לפני 12 דק׳</span>
+            </div>
+            <p class="ed-ai-body" id="edAiBody"></p>
+          </div>
+
+          <!-- Progress metrics -->
+          <div class="card card-pad">
+            <div class="card-title" style="margin: 0 0 10px;">התקדמות</div>
+            <div class="ed-metrics">
+              <div class="ed-metric">
+                <div class="ed-metric-v" id="edMetricFamilies">—</div>
+                <div class="ed-metric-l">משפחות</div>
+              </div>
+              <div class="ed-metric">
+                <div class="ed-metric-v" id="edMetricPeople">—</div>
+                <div class="ed-metric-l">נפשות</div>
+              </div>
+              <div class="ed-metric">
+                <div class="ed-metric-v" id="edMetricOpen">—</div>
+                <div class="ed-metric-l">משימות פתוחות</div>
+              </div>
+              <div class="ed-metric">
+                <div class="ed-metric-v" id="edMetricDone">—</div>
+                <div class="ed-metric-l">הושלמו</div>
+              </div>
+            </div>
+            <div class="ed-progress-bar">
+              <span class="ed-progress-fill" id="edProgressFill" style="width:0%"></span>
+            </div>
+            <p class="micro" id="edProgressLabel" style="margin-top: 8px;">—</p>
+          </div>
+
+          <!-- Affected families -->
+          <div id="edFamiliesWrap" hidden>
+            <div class="card-title">משפחות מעורבות</div>
+            <div class="card" id="edFamiliesList"></div>
+          </div>
+
           <!-- tasks -->
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; margin-top: 14px;">
             <div class="card-title" style="margin:0;">משימות</div>
             <button class="btn-link primary" type="button" id="addEventTaskBtn"
                     style="font-size:13px; display:flex; align-items:center; gap:4px; padding:6px 10px; border-radius:var(--r-s);">
@@ -3039,6 +3322,12 @@
           </div>
           <div class="card" id="edTasksList">
             <div style="padding:20px; text-align:center; color:var(--ink-3); font-size:14px;">אין משימות עדיין</div>
+          </div>
+
+          <!-- Event timeline -->
+          <div id="edTimelineWrap" hidden>
+            <div class="card-title">קו זמן</div>
+            <div class="card" id="edTimelineList"></div>
           </div>
         </div>
 
@@ -3615,6 +3904,7 @@
     if (nav) {
       if (nav.dataset.family) renderProfile(nav.dataset.family);
       if (nav.dataset.detailKind) renderDetail(nav.dataset.detailKind, parseInt(nav.dataset.detailIndex, 10) || 0);
+      if (nav.dataset.eventKey && window.renderEventDetailByKey) window.renderEventDetailByKey(nav.dataset.eventKey);
       if (nav.dataset.toast) showToast(nav.dataset.toast);
       // Persist edited profile on save
       if (nav.dataset.nav === 'settings') syncProfileFromEdit();
@@ -3756,6 +4046,7 @@
     clearTimeout(showToast._t);
     showToast._t = setTimeout(() => toastEl.classList.remove('on'), 1800);
   }
+  window.showToast = showToast;
 
   // recompute carousel arrows when profile shows or window resizes
   const memList = document.querySelector('.members-wrap .members');
@@ -4379,6 +4670,8 @@
     { key: 'avraham', name: 'רחלי אברהם',   village: 'ברכיה' },
     { key: 'alon',    name: 'נועה אלון',    village: 'ברכיה' }
   ].concat(CASE_RESIDENTS.map(r => ({ key: r.key, name: r.name, village: r.village })));
+  // Expose for use in other IIFEs (e.g., the event-form's affected-residents step)
+  window.ALL_RESIDENTS = NT_RESIDENTS;
   function ntRenderResidents(filter) {
     const scr = document.querySelector('.screen[data-screen="newTask"]');
     const host = scr.querySelector('[data-nt-resident-list]');
@@ -5186,6 +5479,75 @@
     'תדירות ההזכרה ביחס למספר המשפחות ביישוב. בתצוגה מנורמלת.':
       'Mention frequency relative to the number of families in the village. Normalized view.',
 
+    // Emergency events — status tags
+    'הושלם': 'Completed',
+    'בוטל':  'Cancelled',
+
+    // Event type (new)
+    'פח"ע': 'Hostile act',
+
+    // New-event 2-step flow
+    '1 מתוך 2 · פרטים': '1 of 2 · Details',
+    '2 מתוך 2 · בחירת משימות': '2 of 2 · Pick tasks',
+    'בחרו אילו משימות לפתוח עם האירוע. ניתן להסיר משימות או להשאיר את כולן מסומנות.':
+      'Choose which tasks to open with the event. You can remove any or keep them all checked.',
+    'בחרו סוג אירוע בשלב הקודם כדי לראות משימות מוצעות.':
+      'Pick an event type in the previous step to see suggested tasks.',
+    'אין משימות מוצעות לסוג אירוע זה. ניתן להוסיף משימות מדף האירוע לאחר פתיחתו.':
+      'No suggested tasks for this event type. You can add tasks from the event page after opening it.',
+    'סמן הכל': 'Select all',
+    'נקה': 'Clear',
+    'יש לבחור סוג אירוע': 'Please choose an event type',
+    '1 מתוך 3 · פרטים': '1 of 3 · Details',
+    '2 מתוך 3 · בחירת נפגעים': '2 of 3 · Affected residents',
+    '3 מתוך 3 · בחירת משימות': '3 of 3 · Pick tasks',
+    'מי נפגעו באירוע?': 'Who was affected?',
+    'בחרו האם מדובר בכלל היישוב או במשפחות ספציפיות.':
+      'Choose whether the whole village is affected or specific families.',
+    'כל היישוב': 'Whole village',
+    'משפחות ספציפיות': 'Specific families',
+    'טרם ידוע': 'Unknown yet',
+    'היישוב שנפגע': 'Affected village',
+    'פתיחת האירוע תסמן את כל המשפחות ביישוב כמעורבות. ניתן לפרט לכל משפחה בנפרד לאחר הפתיחה.':
+      'Opening the event will mark all families in the village as involved. You can refine per family afterwards.',
+    'בחרו משפחות': 'Pick families',
+    'ניתן לסמן מספר משפחות. משפחות מסומנות יקושרו אוטומטית לאירוע.':
+      'You can pick multiple families. Selected families will be linked to the event automatically.',
+    '0 משפחות נבחרו': '0 families selected',
+    'בשלב זה לא ידוע מי נפגעו': 'Affected residents are not yet known',
+    'האירוע ייפתח ללא קישור ישיר למשפחות. ניתן להוסיף משפחות מעורבות מדף האירוע בהמשך.':
+      'The event will open without a direct family link. You can add involved families from the event page later.',
+    'יש לבחור לפחות משפחה אחת': 'Please select at least one family',
+    'יישוב לא נבחר': 'Village not selected',
+
+    // Event detail
+    'סוג': 'Type',
+    'פעיל · ממתין למענה': 'Active · awaiting response',
+    'פעיל · נפתח כעת': 'Active · just opened',
+    'בטיפול · 2/3 משימות פתוחות': 'In progress · 2/3 tasks open',
+    'ממתין לשיבוץ': 'Awaiting assignment',
+    'נפתח לפני 3 שעות': 'Opened 3h ago',
+    'נפתח אתמול':      'Opened yesterday',
+    'נפתח לפני 18 שעות': 'Opened 18h ago',
+    'נסגר לפני 9 חודשים':  'Closed 9 months ago',
+    'נסגר לפני 11 חודשים': 'Closed 11 months ago',
+    'עכשיו': 'Now',
+    'תקציר מצב': 'Situation summary',
+    'עודכן לפני 12 דק׳': 'Updated 12 min ago',
+    'עודכן לפני 8 דק׳':  'Updated 8 min ago',
+    'עודכן לפני 2 שעות': 'Updated 2h ago',
+    'עודכן לפני שעה':    'Updated 1h ago',
+    'עודכן במרץ 2026':   'Updated March 2026',
+    'התקדמות': 'Progress',
+    'משפחות': 'Families',
+    'נפשות': 'People',
+    'משימות פתוחות': 'Open tasks',
+    'הושלמו': 'Completed',
+    'אין עדיין משימות': 'No tasks yet',
+    'משפחות מעורבות': 'Involved families',
+    'קו זמן': 'Timeline',
+    'נסגר': 'Closed',
+
     // Questionnaire — new labels
     'תושב/ת חדש/ה': 'New resident',
     '1 מתוך 7 · תושב/ת חדש/ה': '1 of 7 · New resident',
@@ -5368,10 +5730,262 @@
       { name:'סיוע נפשי',              type:'נפשי',    urgency:'מהיר'  },
       { name:'איתור נעדרים',           type:'מינהלי',  urgency:'דחוף'   },
     ],
+    'פח"ע': [
+      { name:'איתור נעדרים',                type:'מינהלי', urgency:'דחוף' },
+      { name:'תיאום עם כוחות הביטחון',      type:'מינהלי', urgency:'דחוף' },
+      { name:'בדיקת נפגעים ופצועים',        type:'רפואי',  urgency:'דחוף' },
+      { name:'פינוי תושבים למקום מוגן',     type:'לוגיסטי', urgency:'דחוף' },
+      { name:'סיוע נפשי למשפחות',           type:'נפשי',    urgency:'מהיר' },
+      { name:'ליווי משפחות שכולים',          type:'נפשי',    urgency:'מהיר' },
+      { name:'תיאום עם זק"א',                type:'מינהלי', urgency:'מהיר' },
+      { name:'רישום מפונים',                 type:'מינהלי', urgency:'מהיר' },
+    ],
   };
 
   const selectedWorkers = new Set();
   let eventTasks = [];
+
+  // ----- Predefined events (reachable from home → emergency mode) -----
+  const EVENTS = {
+    rakas: {
+      code: '241107', name: 'רכס · טילים', type: 'טילים',
+      location: 'רכס · מערב יד מרדכי', workers: 'רחל כהן, מרים לוי, דנה ברק',
+      status: 'open', urgency: 'דחוף',
+      statusLabel: 'פעיל · ממתין למענה',
+      statusTime: 'נפתח לפני 3 שעות',
+      desc: 'מטחי טילים על אזור יד מרדכי. 3 פגיעות ישירות דווחו; לא ידוע על נפגעים קשים. פינוי למקומות מוגנים הושלם; חלק מהתושבים ללא קורת גג עקב פגיעה במבנים.',
+      ai: 'שיחות עם 12 משפחות שבוצעו ב-45 הדקות האחרונות מעידות על צורך מיידי בסיוע נפשי וצרכים לוגיסטיים מיידיים. 3 משפחות דיווחו על חוסר תחושה של שייכות קהילתית מאז הפינוי הקודם — עלייה של 180% ביחס לשבוע שעבר. מומלץ להגדיר אחראי נפרד לקבוצה זו.',
+      aiTime: 'עודכן לפני 8 דק׳',
+      metrics: { families: 12, people: 47, open: 5, done: 2 },
+      families: [
+        { name: 'משפחת כהן',     sub: 'יד מרדכי · 6 נפשות · פונו למרכז קליטה',       urgent: true },
+        { name: 'משפחת לוי',     sub: 'יד מרדכי · 4 נפשות · בבית',                     urgent: true },
+        { name: 'משפחת דגן',     sub: 'יד מרדכי · 5 נפשות · נזק למבנה · ללא קורת גג',  urgent: true },
+        { name: 'משפחת אוחיון',  sub: 'יד מרדכי · 3 נפשות · בבית · פציעה קלה',          urgent: false }
+      ],
+      tasks: [
+        { name: 'בדיקת נפגעים',        type: 'רפואי',  urgency: 'דחוף',  assignee: 'רחל כהן',   done: true  },
+        { name: 'פינוי לממ"דים',       type: 'לוגיסטי', urgency: 'דחוף', assignee: 'מרים לוי',   done: true  },
+        { name: 'סיוע נפשי — 3 משפחות', type: 'נפשי',  urgency: 'דחוף',  assignee: '',          done: false },
+        { name: 'מגורים זמניים — 3 נפשות', type: 'לוגיסטי', urgency: 'דחוף', assignee: 'דנה ברק', done: false },
+        { name: 'פתיחת תיק זכויות',    type: 'מינהלי', urgency: 'מהיר', assignee: '',          done: false },
+        { name: 'איתור נעדרים',       type: 'מינהלי', urgency: 'דחוף', assignee: '',          done: false },
+        { name: 'תיאום עם מד"א',      type: 'רפואי',  urgency: 'מהיר', assignee: 'רחל כהן',   done: false }
+      ],
+      timeline: [
+        { title: 'פתיחת האירוע',               sub: 'היום 06:52 · דנה כהן' },
+        { title: 'הזנקת כוחות + תיאום עם מד"א', sub: 'היום 07:05 · מרכז מבצעי' },
+        { title: 'פינוי תושבים לממ"דים',        sub: 'היום 07:20 · סיום' },
+        { title: 'איתור נזקים מבניים',          sub: 'היום 08:10 · 3 מבנים שוחזרו' },
+        { title: 'ממתין: שיבוץ עובדת סיוע נפשי', sub: 'היום 09:15 · פתוח', active: true }
+      ]
+    },
+    nirgalim: {
+      code: '241203', name: 'ניר גלים · שריפה', type: 'שריפה',
+      location: 'ניר גלים · שכונה דרומית', workers: 'כל העוסיות',
+      status: 'open', urgency: 'מהיר',
+      statusLabel: 'בטיפול · 2/3 משימות פתוחות',
+      statusTime: 'נפתח אתמול',
+      desc: 'שריפת שדות שחדרה לגבול הישוב; 2 מבנים נפגעו. תושבי השכונה פונו למועדון הקהילתי. המצב מיוצב, מה שנותר הוא ליווי המשפחות שנפגעו והחזרה הדרגתית הביתה.',
+      ai: 'מעקב אוטומטי מזהה שתי משפחות עם ילדים קטנים שטרם חזרו הביתה ומביעות חרדה מחזרה בגלל סיפורים של חברים. פעולה: מומלץ להפעיל ליווי נפשי פרטני לפני חזרה הביתה. 73% מהמשפחות כבר חזרו לשגרה.',
+      aiTime: 'עודכן לפני 2 שעות',
+      metrics: { families: 8, people: 29, open: 3, done: 6 },
+      families: [
+        { name: 'משפחת אוחיון', sub: 'ניר גלים · 4 נפשות · חזרו הביתה',                    urgent: false },
+        { name: 'משפחת ביטון',  sub: 'ניר גלים · 3 נפשות · עדיין במועדון · חרדה',           urgent: true  },
+        { name: 'משפחת גולן',   sub: 'ניר גלים · 5 נפשות · פונו למגורים זמניים',             urgent: true  }
+      ],
+      tasks: [
+        { name: 'פינוי דיירים',          type: 'לוגיסטי', urgency: 'דחוף', assignee: 'נועה אברהם', done: true  },
+        { name: 'טיפול רפואי ראשוני',    type: 'רפואי',  urgency: 'דחוף', assignee: 'יעל שמש',    done: true  },
+        { name: 'תיאום עם כיבוי אש',     type: 'מינהלי', urgency: 'מהיר', assignee: 'אורית כץ',   done: true  },
+        { name: 'מציאת מגורים זמניים',   type: 'לוגיסטי', urgency: 'דחוף', assignee: 'תמר פרידמן', done: true  },
+        { name: 'בדיקת נזקים',           type: 'מינהלי', urgency: 'מהיר', assignee: '',          done: true  },
+        { name: 'סיוע נפשי — משפחת ביטון', type: 'נפשי', urgency: 'מהיר', assignee: '',          done: false },
+        { name: 'ליווי חזרה הביתה',      type: 'נפשי',   urgency: 'רגיל', assignee: 'רחל כהן',   done: false },
+        { name: 'מעקב שיקום תשתיות',     type: 'מינהלי', urgency: 'רגיל', assignee: '',          done: false },
+        { name: 'ליווי אישי — משפחת גולן', type: 'נפשי', urgency: 'רגיל', assignee: '',          done: true  }
+      ],
+      timeline: [
+        { title: 'פתיחת האירוע',             sub: 'אתמול 14:22 · אביטל שרון' },
+        { title: 'פינוי הושלם',                sub: 'אתמול 15:40' },
+        { title: 'כוחות כיבוי השתלטו על האש',  sub: 'אתמול 17:10' },
+        { title: 'תושבים החלו לחזור הביתה',    sub: 'היום 08:00' },
+        { title: 'ליווי משפחת ביטון',          sub: 'היום בבוקר · פתוח', active: true }
+      ]
+    },
+    brachia: {
+      code: '250112', name: 'ברכיה · פינוי', type: 'פינוי',
+      location: 'ברכיה · שכונת המזרח', workers: 'מיכל דביר, שושנה ויס',
+      status: 'open', urgency: 'רגיל',
+      statusLabel: 'ממתין לשיבוץ',
+      statusTime: 'נפתח לפני 18 שעות',
+      desc: 'פינוי מקדים בהתראה של שעה נוכח התראות אזוריות. האירוע הסתיים ללא פגיעות. נדרש מעקב שגרתי.',
+      ai: 'אופי האירוע מצביע על דפוס חוזר של "פינוי שגרתי ללא פגיעות" — 5 אירועים דומים ב-3 חודשים האחרונים בברכיה. בהיסטוריה של המשפחות נצפה שחלקן מאבדות אמון במערכת כשיש הרבה פינויים בלי משבר משמעותי. מומלץ: שיחה יישובית קצרה אחרי סגירת האירוע.',
+      aiTime: 'עודכן לפני שעה',
+      metrics: { families: 6, people: 22, open: 2, done: 3 },
+      families: [
+        { name: 'רחלי אברהם',   sub: 'ברכיה · 4 נפשות · חזרו',       urgent: false },
+        { name: 'נועה אלון',    sub: 'ברכיה · 2 נפשות · חזרו',       urgent: false }
+      ],
+      tasks: [
+        { name: 'רישום מפונים',          type: 'מינהלי', urgency: 'מהיר', assignee: 'מיכל דביר', done: true  },
+        { name: 'תיאום הסעות',            type: 'לוגיסטי', urgency: 'מהיר', assignee: 'שושנה ויס', done: true  },
+        { name: 'בדיקת מצב רפואי',        type: 'רפואי',  urgency: 'מהיר', assignee: 'יעל שמש',    done: true  },
+        { name: 'חלוקת ציוד בסיסי',       type: 'לוגיסטי', urgency: 'רגיל', assignee: '',          done: false },
+        { name: 'שיחה יישובית — מעקב',    type: 'נפשי',    urgency: 'רגיל', assignee: '',          done: false }
+      ],
+      timeline: [
+        { title: 'פתיחת האירוע',          sub: 'אתמול 15:30 · אביטל שרון' },
+        { title: 'הסתיים בהצלחה — ללא נפגעים', sub: 'אתמול 17:45' },
+        { title: 'כל המשפחות חזרו הביתה',   sub: 'היום 07:00' },
+        { title: 'ממתין: שיחה יישובית',     sub: 'היום · פתוח', active: true }
+      ]
+    },
+    yad815: {
+      code: '240815', name: 'יד מרדכי · הצפה', type: 'הצפה',
+      location: 'יד מרדכי · שכונת המערב', workers: 'דנה ברק',
+      status: 'closed', urgency: 'רגיל',
+      statusLabel: 'הושלם · 22.8.2024',
+      statusTime: 'נסגר לפני 9 חודשים',
+      desc: 'הצפה כתוצאה מגשמים עזים שגרמה לנזק ל-4 מבנים. האירוע טופל תוך 3 ימים והמשפחות חזרו לבתים משופצים.',
+      ai: 'אירוע דומה עלה שוב במהלך אוקטובר 2025, באותה שכונה. דפוס חוזר שמצביע על בעיית ניקוז חוזרת. מומלץ להעלות לשיחה עם אגף ההנדסה במועצה.',
+      aiTime: 'עודכן במרץ 2026',
+      metrics: { families: 4, people: 16, open: 0, done: 8 },
+      families: [
+        { name: 'משפחת נחום',   sub: 'יד מרדכי · 4 נפשות · שיקום הושלם', urgent: false },
+        { name: 'משפחת שפירא',  sub: 'יד מרדכי · 3 נפשות · שיקום הושלם', urgent: false }
+      ],
+      tasks: [
+        { name: 'פינוי דיירים',        type: 'לוגיסטי', urgency: 'דחוף', assignee: 'דנה ברק', done: true },
+        { name: 'מציאת מגורים זמניים', type: 'לוגיסטי', urgency: 'דחוף', assignee: 'דנה ברק', done: true },
+        { name: 'בדיקת נזקים',         type: 'מינהלי', urgency: 'מהיר', assignee: 'דנה ברק', done: true },
+        { name: 'שיקום מבנים',        type: 'מינהלי', urgency: 'רגיל', assignee: 'דנה ברק', done: true },
+        { name: 'מיצוי זכויות',        type: 'מינהלי', urgency: 'רגיל', assignee: 'דנה ברק', done: true },
+        { name: 'סיוע נפשי',           type: 'נפשי',   urgency: 'רגיל', assignee: 'דנה ברק', done: true },
+        { name: 'תיאום עם כיבוי אש',   type: 'מינהלי', urgency: 'מהיר', assignee: 'דנה ברק', done: true },
+        { name: 'סגירת האירוע',        type: 'מינהלי', urgency: 'רגיל', assignee: 'דנה ברק', done: true }
+      ],
+      timeline: [
+        { title: 'פתיחת האירוע',     sub: '15.8.2024 · 06:00 · דנה כהן' },
+        { title: 'פינוי הושלם',       sub: '15.8.2024 · 09:30' },
+        { title: 'תושבים חזרו הביתה', sub: '22.8.2024' },
+        { title: 'האירוע נסגר',       sub: '22.8.2024 · 18:00' }
+      ]
+    },
+    nachal601: {
+      code: '240601', name: 'נחל עוז · התראה', type: 'אחר',
+      location: 'נחל עוז', workers: 'לא הוקצה',
+      status: 'cancelled', urgency: 'רגיל',
+      statusLabel: 'בוטל · 12.6.2024',
+      statusTime: 'נסגר לפני 11 חודשים',
+      desc: 'התראה אזורית שבוטלה לאחר בדיקה. האירוע נסגר ללא פעולה.',
+      metrics: { families: 0, people: 0, open: 0, done: 0 },
+      families: [],
+      tasks: [],
+      timeline: [
+        { title: 'פתיחת האירוע', sub: '12.6.2024 · 11:15 · אביטל שרון' },
+        { title: 'האירוע בוטל', sub: '12.6.2024 · 12:40' }
+      ]
+    }
+  };
+
+  window.renderEventDetailByKey = function (key) {
+    const ev = EVENTS[key];
+    if (!ev) return;
+    // Title + meta
+    document.getElementById('edTitle').textContent    = ev.name;
+    document.getElementById('edSub').textContent      = ev.code + ' · ' + ev.location;
+    document.getElementById('edCode').textContent     = ev.code;
+    document.getElementById('edLocation').textContent = ev.location;
+    document.getElementById('edType').textContent     = ev.type || '—';
+    document.getElementById('edWorkers').textContent  = ev.workers || '—';
+    document.getElementById('edDesc').textContent     = ev.desc || '—';
+
+    // Status banner
+    const urgEl = document.getElementById('edUrgency');
+    const urgCls = ev.urgency === 'דחוף' ? 'urgent' : ev.urgency === 'מהיר' ? 'soon' : 'normal';
+    urgEl.className = 'urg-tag ' + urgCls;
+    urgEl.textContent = ev.urgency;
+    document.getElementById('edStatus').textContent     = ev.statusLabel || '';
+    document.getElementById('edStatusTime').textContent = ev.statusTime  || '';
+
+    // Close button — disable for closed/cancelled events
+    const closeBtn = document.getElementById('closeEventBtn');
+    if (ev.status !== 'open') {
+      closeBtn.disabled = true;
+      closeBtn.style.background = 'var(--ink-3)';
+      closeBtn.textContent = ev.status === 'cancelled' ? 'בוטל' : 'נסגר';
+    } else {
+      closeBtn.disabled = false;
+      closeBtn.style.background = 'var(--danger)';
+      closeBtn.textContent = 'סגור אירוע';
+    }
+
+    // AI summary
+    const aiWrap = document.getElementById('edAiWrap');
+    if (ev.ai) {
+      aiWrap.hidden = false;
+      document.getElementById('edAiBody').textContent = ev.ai;
+      document.getElementById('edAiTime').textContent = ev.aiTime || '';
+    } else {
+      aiWrap.hidden = true;
+    }
+
+    // Metrics
+    const m = ev.metrics || {};
+    document.getElementById('edMetricFamilies').textContent = m.families ?? 0;
+    document.getElementById('edMetricPeople').textContent   = m.people   ?? 0;
+    document.getElementById('edMetricOpen').textContent     = m.open     ?? 0;
+    document.getElementById('edMetricDone').textContent     = m.done     ?? 0;
+    const totalTasks = (m.open || 0) + (m.done || 0);
+    const pct = totalTasks ? Math.round((m.done / totalTasks) * 100) : 0;
+    document.getElementById('edProgressFill').style.width = pct + '%';
+    document.getElementById('edProgressLabel').textContent = totalTasks
+      ? `${pct}% מהמשימות הושלמו · ${m.done} מתוך ${totalTasks}`
+      : 'אין עדיין משימות';
+
+    // Families
+    const famWrap = document.getElementById('edFamiliesWrap');
+    const famList = document.getElementById('edFamiliesList');
+    if (ev.families && ev.families.length) {
+      famWrap.hidden = false;
+      famList.innerHTML = ev.families.map(f => `
+        <div class="row-item" data-toast="${f.name} — דמו">
+          ${f.urgent ? '<span class="urg-tag lead urgent">דחוף</span>' : '<span class="urg-tag lead normal">רגיל</span>'}
+          <div class="row-main">
+            <div class="row-name">${f.name}</div>
+            <div class="row-sub">${f.sub}</div>
+          </div>
+          <span class="chev">›</span>
+        </div>
+      `).join('');
+    } else {
+      famWrap.hidden = true;
+    }
+
+    // Tasks
+    eventTasks = (ev.tasks || []).slice();
+    renderEventTasks();
+
+    // Timeline
+    const tlWrap = document.getElementById('edTimelineWrap');
+    const tlList = document.getElementById('edTimelineList');
+    if (ev.timeline && ev.timeline.length) {
+      tlWrap.hidden = false;
+      tlList.innerHTML = ev.timeline.map(t => `
+        <div class="ed-timeline-row">
+          <span class="ed-timeline-dot ${t.active ? 'active' : ''}"></span>
+          <div class="ed-timeline-main">
+            <div class="ed-timeline-title">${t.title}</div>
+            <div class="ed-timeline-sub">${t.sub}</div>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      tlWrap.hidden = true;
+    }
+  };
 
   // ---------- workers picker ----------
   function buildWorkersList(filter) {
@@ -5437,7 +6051,290 @@
   // ---------- open event ----------
   function genCode() { return String(Math.floor(100000 + Math.random() * 900000)); }
 
+  // ----- newEvent 3-step flow -----
+  let newEventStep = 1;
+  // Task-selection state (step 3): array of { name, type, urgency, selected }
+  let neTaskState = [];
+  // Affected residents (step 2)
+  let neAffectedMode = 'village'; // 'village' | 'specific' | 'unknown'
+  let neFamilyState = []; // array of { key, name, village, selected }
+
+  const NE_STEP_LABELS = {
+    1: '1 מתוך 3 · פרטים',
+    2: '2 מתוך 3 · בחירת נפגעים',
+    3: '3 מתוך 3 · בחירת משימות'
+  };
+
+  function neSetStep(step) {
+    newEventStep = step;
+    const s1 = document.getElementById('newEventStep1');
+    const s2 = document.getElementById('newEventStep2');
+    const s3 = document.getElementById('newEventStep3');
+    const segs = document.querySelectorAll('[data-ne-seg]');
+    const lbl = document.getElementById('newEventStepLabel');
+    const back = document.getElementById('neBackBtn');
+    const primary = document.getElementById('openEventBtn');
+    if (!s1 || !s2 || !s3) return;
+    s1.hidden = step !== 1;
+    s2.hidden = step !== 2;
+    s3.hidden = step !== 3;
+    segs.forEach(seg => {
+      const n = parseInt(seg.dataset.neSeg, 10);
+      seg.classList.toggle('done',   n <  step);
+      seg.classList.toggle('active', n === step);
+    });
+    if (lbl)     lbl.textContent = NE_STEP_LABELS[step] || '';
+    if (back)    back.hidden = step === 1;
+    if (primary) primary.textContent = step === 3 ? 'פתיחת אירוע' : 'הבא';
+    // Scroll content to top
+    const scr = document.querySelector('.screen[data-screen="newEvent"]');
+    const c = scr && scr.querySelector('.content');
+    if (c) c.scrollTop = 0;
+  }
+
+  // ----- Step 2: affected residents -----
+  function neRenderAffected() {
+    // Seed the family list from the global residents catalog
+    const all = (window.ALL_RESIDENTS || []).slice();
+    // Preserve existing selection state across renders
+    const prev = new Map(neFamilyState.map(f => [f.key, f.selected]));
+    neFamilyState = all.map(r => ({
+      key: r.key,
+      name: r.name,
+      village: r.village,
+      selected: prev.has(r.key) ? prev.get(r.key) : false
+    }));
+    // Populate village summary
+    const villageLabel = document.getElementById('newEventVillage')?.value || '—';
+    const familiesInVillage = neFamilyState.filter(f => f.village === villageLabel).length;
+    const vs = document.getElementById('neVillageSummary');
+    if (vs) {
+      vs.textContent = villageLabel === '—'
+        ? 'יישוב לא נבחר'
+        : (familiesInVillage
+            ? villageLabel + ' · ' + familiesInVillage + ' משפחות תחת הטיפול שלך'
+            : villageLabel);
+    }
+    neRefreshAffectedView();
+    neRenderFamilyList('');
+  }
+
+  function neRefreshAffectedView() {
+    const villageWrap  = document.getElementById('neAffectedVillageWrap');
+    const specificWrap = document.getElementById('neAffectedSpecificWrap');
+    const unknownWrap  = document.getElementById('neAffectedUnknownWrap');
+    if (villageWrap)  villageWrap.hidden  = neAffectedMode !== 'village';
+    if (specificWrap) specificWrap.hidden = neAffectedMode !== 'specific';
+    if (unknownWrap)  unknownWrap.hidden  = neAffectedMode !== 'unknown';
+  }
+
+  function neRenderFamilyList(filter) {
+    const host = document.getElementById('neFamilyList');
+    if (!host) return;
+    const q = (filter || '').trim().toLowerCase();
+    const matches = neFamilyState.filter(f =>
+      !q || f.name.toLowerCase().includes(q) || f.village.toLowerCase().includes(q)
+    );
+    // Clear and build nodes (avoids innerHTML)
+    host.textContent = '';
+    if (!matches.length) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-state';
+      const t = document.createElement('div');
+      t.className = 'empty-title';
+      t.textContent = 'אין משפחות תואמות';
+      empty.appendChild(t);
+      host.appendChild(empty);
+    } else {
+      matches.forEach(f => {
+        const row = document.createElement('div');
+        row.className = 'ne-task-row' + (f.selected ? ' on' : '');
+        row.setAttribute('role', 'checkbox');
+        row.setAttribute('aria-checked', f.selected ? 'true' : 'false');
+        row.dataset.neFamilyKey = f.key;
+        const cb = document.createElement('span');
+        cb.className = 'ne-task-checkbox';
+        cb.setAttribute('aria-hidden', 'true');
+        const main = document.createElement('div');
+        main.className = 'ne-task-main';
+        const nm = document.createElement('div');
+        nm.className = 'ne-task-name';
+        nm.textContent = f.name;
+        const meta = document.createElement('div');
+        meta.className = 'ne-task-meta';
+        meta.textContent = f.village;
+        main.appendChild(nm); main.appendChild(meta);
+        row.appendChild(cb); row.appendChild(main);
+        host.appendChild(row);
+      });
+    }
+    neUpdateFamiliesCount();
+  }
+
+  function neUpdateFamiliesCount() {
+    const el = document.getElementById('neFamiliesCount');
+    if (!el) return;
+    const selected = neFamilyState.filter(f => f.selected).length;
+    el.textContent = selected + ' משפחות נבחרו';
+  }
+
+  // Mode chip clicks
+  document.addEventListener('click', (e) => {
+    const chip = e.target.closest('#neAffectedModeChips .chip[data-affected-mode]');
+    if (!chip) return;
+    document.querySelectorAll('#neAffectedModeChips .chip').forEach(c => c.classList.remove('on'));
+    chip.classList.add('on');
+    neAffectedMode = chip.dataset.affectedMode;
+    neRefreshAffectedView();
+  });
+
+  // Family row clicks
+  document.addEventListener('click', (e) => {
+    const row = e.target.closest('[data-ne-family-key]');
+    if (!row) return;
+    const key = row.dataset.neFamilyKey;
+    const fam = neFamilyState.find(f => f.key === key);
+    if (!fam) return;
+    fam.selected = !fam.selected;
+    row.classList.toggle('on', fam.selected);
+    row.setAttribute('aria-checked', fam.selected ? 'true' : 'false');
+    neUpdateFamiliesCount();
+  });
+
+  // Family search
+  document.getElementById('neFamilySearch')?.addEventListener('input', (e) => {
+    neRenderFamilyList(e.target.value);
+  });
+  // Select all / none in family list
+  document.getElementById('neFamSelectAll')?.addEventListener('click', () => {
+    neFamilyState.forEach(f => f.selected = true);
+    neRenderFamilyList(document.getElementById('neFamilySearch')?.value || '');
+  });
+  document.getElementById('neFamSelectNone')?.addEventListener('click', () => {
+    neFamilyState.forEach(f => f.selected = false);
+    neRenderFamilyList(document.getElementById('neFamilySearch')?.value || '');
+  });
+
+  function neRenderTaskList() {
+    const typeChip = document.querySelector('#eventTypeChips .chip.on');
+    const eventType = typeChip ? typeChip.dataset.etype : '';
+    const source = PREDEFINED[eventType] || [];
+    // Default: all tasks selected
+    neTaskState = source.map(t => ({ ...t, selected: true }));
+    const host = document.getElementById('neTaskList');
+    if (!host) return;
+    if (!neTaskState.length) {
+      host.innerHTML = '<div style="padding:20px; text-align:center; color:var(--ink-3); font-size:13px;">אין משימות מוצעות לסוג אירוע זה. ניתן להוסיף משימות מדף האירוע לאחר פתיחתו.</div>';
+      neUpdateTaskCount();
+      return;
+    }
+    host.innerHTML = neTaskState.map((t, i) => {
+      const urgCls = t.urgency === 'דחוף' ? 'urgent' : t.urgency === 'מהיר' ? 'soon' : 'normal';
+      return `
+        <div class="ne-task-row ${t.selected ? 'on' : ''}" data-ne-task-idx="${i}" role="checkbox" aria-checked="${t.selected}">
+          <span class="ne-task-checkbox" aria-hidden="true"></span>
+          <div class="ne-task-main">
+            <div class="ne-task-name">${t.name}</div>
+            <div class="ne-task-meta">
+              <span class="et-type et-type-${t.type}">${t.type}</span>
+              <span>·</span>
+              <span class="urg-tag ${urgCls}" style="font-size:10.5px; padding:2px 8px;">${t.urgency}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    neUpdateTaskCount();
+  }
+
+  function neUpdateTaskCount() {
+    const total    = neTaskState.length;
+    const selected = neTaskState.filter(t => t.selected).length;
+    const el = document.getElementById('neTasksCount');
+    if (el) el.textContent = `${selected} מתוך ${total} נבחרו`;
+  }
+
+  // Wire selection clicks
+  document.addEventListener('click', (e) => {
+    const row = e.target.closest('[data-ne-task-idx]');
+    if (!row) return;
+    const i = parseInt(row.dataset.neTaskIdx, 10);
+    if (isNaN(i) || !neTaskState[i]) return;
+    neTaskState[i].selected = !neTaskState[i].selected;
+    row.classList.toggle('on', neTaskState[i].selected);
+    row.setAttribute('aria-checked', neTaskState[i].selected ? 'true' : 'false');
+    neUpdateTaskCount();
+  });
+  // Select all / clear
+  document.getElementById('neSelectAll')?.addEventListener('click', () => {
+    neTaskState.forEach(t => t.selected = true);
+    document.querySelectorAll('[data-ne-task-idx]').forEach(row => {
+      row.classList.add('on');
+      row.setAttribute('aria-checked', 'true');
+    });
+    neUpdateTaskCount();
+  });
+  document.getElementById('neSelectNone')?.addEventListener('click', () => {
+    neTaskState.forEach(t => t.selected = false);
+    document.querySelectorAll('[data-ne-task-idx]').forEach(row => {
+      row.classList.remove('on');
+      row.setAttribute('aria-checked', 'false');
+    });
+    neUpdateTaskCount();
+  });
+  // Back button — one step back
+  document.getElementById('neBackBtn')?.addEventListener('click', () => {
+    neSetStep(Math.max(1, newEventStep - 1));
+  });
+
+  // Reset flow to step 1 whenever user enters the screen
+  (function patchGoForNewEvent() {
+    const _go = window.go;
+    if (!_go) return;
+    window.go = function (name) {
+      if (name === 'newEvent') {
+        // Reset affected-residents state on a fresh entry
+        neAffectedMode = 'village';
+        neFamilyState = [];
+        const chips = document.querySelectorAll('#neAffectedModeChips .chip');
+        chips.forEach(c => c.classList.toggle('on', c.dataset.affectedMode === 'village'));
+        neRefreshAffectedView();
+        const search = document.getElementById('neFamilySearch');
+        if (search) search.value = '';
+        neSetStep(1);
+      }
+      return _go(name);
+    };
+  })();
+
   document.getElementById('openEventBtn').addEventListener('click', () => {
+    // Step 1 → advance to affected-residents step
+    if (newEventStep === 1) {
+      const typeChip = document.querySelector('#eventTypeChips .chip.on');
+      if (!typeChip) {
+        if (window.showToast) window.showToast('יש לבחור סוג אירוע');
+        return;
+      }
+      neRenderAffected();
+      neSetStep(2);
+      return;
+    }
+
+    // Step 2 → advance to task-selection step
+    if (newEventStep === 2) {
+      if (neAffectedMode === 'specific') {
+        const anySelected = neFamilyState.some(f => f.selected);
+        if (!anySelected) {
+          if (window.showToast) window.showToast('יש לבחור לפחות משפחה אחת');
+          return;
+        }
+      }
+      neRenderTaskList();
+      neSetStep(3);
+      return;
+    }
+
+    // Step 3 → actually create the event
     const typeChip = document.querySelector('#eventTypeChips .chip.on');
     const eventType = typeChip ? typeChip.dataset.etype : '';
     const name = eventType === 'אחר'
@@ -5456,17 +6353,103 @@
     document.getElementById('edTitle').textContent    = name;
     document.getElementById('edSub').textContent      = code + ' · ' + location;
     document.getElementById('edLocation').textContent = location;
+    document.getElementById('edType').textContent     = eventType || '—';
     document.getElementById('edDesc').textContent     = desc || '—';
     document.getElementById('edWorkers').textContent  = workersLabel;
+
+    // Default status banner for a brand-new event
+    const urgEl = document.getElementById('edUrgency');
+    urgEl.className = 'urg-tag urgent';
+    urgEl.textContent = 'דחוף';
+    document.getElementById('edStatus').textContent     = 'פעיל · נפתח כעת';
+    document.getElementById('edStatusTime').textContent = 'עכשיו';
+
+    // Hide AI + timeline initially — they build up as the event progresses
+    document.getElementById('edAiWrap').hidden        = true;
+    document.getElementById('edTimelineWrap').hidden  = true;
+
+    // Populate affected families section based on step 2 choice
+    const famWrap = document.getElementById('edFamiliesWrap');
+    const famList = document.getElementById('edFamiliesList');
+    let affectedFamilyCount = 0;
+    if (neAffectedMode === 'specific') {
+      const picked = neFamilyState.filter(f => f.selected);
+      affectedFamilyCount = picked.length;
+      famWrap.hidden = false;
+      famList.textContent = '';
+      picked.forEach(f => {
+        const row = document.createElement('div');
+        row.className = 'row-item';
+        row.dataset.toast = f.name + ' — דמו';
+        const tag = document.createElement('span');
+        tag.className = 'urg-tag lead normal';
+        tag.textContent = 'רגיל';
+        const main = document.createElement('div');
+        main.className = 'row-main';
+        const name = document.createElement('div');
+        name.className = 'row-name';
+        name.textContent = f.name;
+        const sub = document.createElement('div');
+        sub.className = 'row-sub';
+        sub.textContent = f.village;
+        main.appendChild(name); main.appendChild(sub);
+        const chev = document.createElement('span');
+        chev.className = 'chev';
+        row.appendChild(tag); row.appendChild(main); row.appendChild(chev);
+        famList.appendChild(row);
+      });
+    } else if (neAffectedMode === 'village') {
+      affectedFamilyCount = neFamilyState.filter(f => f.village === village).length;
+      famWrap.hidden = false;
+      famList.textContent = '';
+      const row = document.createElement('div');
+      row.className = 'row-item';
+      row.style.padding = '14px 18px';
+      const tag = document.createElement('span');
+      tag.className = 'urg-tag lead normal';
+      tag.textContent = 'כל היישוב';
+      const main = document.createElement('div');
+      main.className = 'row-main';
+      const name = document.createElement('div');
+      name.className = 'row-name';
+      name.textContent = village || 'יישוב לא נבחר';
+      const sub = document.createElement('div');
+      sub.className = 'row-sub';
+      sub.textContent = affectedFamilyCount
+        ? affectedFamilyCount + ' משפחות תחת הטיפול שלך ביישוב'
+        : 'סימון את כל המשפחות ביישוב';
+      main.appendChild(name); main.appendChild(sub);
+      row.appendChild(tag); row.appendChild(main);
+      famList.appendChild(row);
+    } else {
+      famWrap.hidden = true;
+    }
 
     const closeBtn = document.getElementById('closeEventBtn');
     closeBtn.disabled = false;
     closeBtn.style.background = 'var(--danger)';
     closeBtn.textContent = 'סגור אירוע';
 
-    // pre-defined tasks
-    eventTasks = (PREDEFINED[eventType] || []).map(t => ({ ...t, assignee: '' }));
+    // Only the tasks the user chose in step 3
+    eventTasks = neTaskState
+      .filter(t => t.selected)
+      .map(t => ({ name: t.name, type: t.type, urgency: t.urgency, assignee: '', done: false }));
     renderEventTasks();
+
+    // Initialize metrics based on the selected tasks + affected families
+    const open = eventTasks.filter(t => !t.done).length;
+    const done = eventTasks.filter(t =>  t.done).length;
+    document.getElementById('edMetricFamilies').textContent = affectedFamilyCount;
+    // Rough estimate: ~3.5 people per family
+    document.getElementById('edMetricPeople').textContent   = affectedFamilyCount ? Math.round(affectedFamilyCount * 3.5) : 0;
+    document.getElementById('edMetricOpen').textContent     = open;
+    document.getElementById('edMetricDone').textContent     = done;
+    const total = open + done;
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    document.getElementById('edProgressFill').style.width = pct + '%';
+    document.getElementById('edProgressLabel').textContent = total
+      ? `${pct}% מהמשימות הושלמו · ${done} מתוך ${total}`
+      : 'אין עדיין משימות';
 
     go('eventDetail');
   });
@@ -5479,14 +6462,16 @@
       return;
     }
     list.innerHTML = eventTasks.map((t, i) => {
-      const dotCls = t.urgency === 'דחוף' ? 'urgent' : t.urgency === 'מהיר' ? 'soon' : '';
-      return `<div class="row-item" data-toast="משימה — דמו">
-        <span class="dot-status ${dotCls}"></span>
+      const urgCls = t.urgency === 'דחוף' ? 'urgent' : t.urgency === 'מהיר' ? 'soon' : 'normal';
+      const doneStyle = t.done ? 'opacity:.55;' : '';
+      const checkMark = t.done ? '<span style="color:var(--success); font-weight:800; margin-inline-end:4px;">✓</span>' : '';
+      const nameStyle = t.done ? 'text-decoration: line-through;' : '';
+      return `<div class="row-item" data-toast="משימה — דמו" style="${doneStyle}">
+        <span class="urg-tag lead ${urgCls}">${t.urgency}</span>
         <div class="row-main">
-          <div class="row-name">${t.name}</div>
+          <div class="row-name" style="${nameStyle}">${checkMark}${t.name}</div>
           <div class="row-sub" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
             <span class="et-type et-type-${t.type}">${t.type}</span>
-            <span>${t.urgency}</span>
             <span>·</span><span>${t.assignee || 'לא הוקצה'}</span>
           </div>
         </div>
