@@ -1,0 +1,60 @@
+{
+  "code": "STAGE_3_RECOVERY",
+  "stage": "3",
+  "title_he": "שאלון \"מה נשמע\" — שלב השיקום המתמשך (Reaching Out)",
+  "description_he": "יצירת קשר יזומה (Reaching Out) עם כלל תושבי היישוב — כולל משפחות שאינן מוכרות ברווחה. הנתונים נטענים למערכת ומשמשים כתמונת מצב ישובית שתוצג בשולחן עגול יישובי. משפחות שיאובחנו כזקוקות לתכנית התערבות יטופלו כמו כלל לקוחות האגף.",
+  "groups": [
+    { "key": "opening", "label_he": "פתיחה ותיאום ציפיות", "order": 1 },
+    { "key": "identification", "label_he": "פרטי זיהוי", "order": 2 },
+    { "key": "needs", "label_he": "צרכים", "order": 3 },
+    { "key": "worker_summary", "label_he": "סיכום העו\"ס", "order": 4 }
+  ],
+  "questions": [
+    { "id": "q_date", "group": "identification", "order": 10, "label_he": "תאריך", "type": "date", "required": true, "category": "functional_routine" },
+    { "id": "q_first_name", "group": "identification", "order": 20, "label_he": "שם פרטי של ראש המשפחה", "type": "open_text", "required": true, "category": "functional_routine" },
+    { "id": "q_last_name", "group": "identification", "order": 30, "label_he": "שם משפחה", "type": "open_text", "required": true, "category": "functional_routine" },
+    { "id": "q_phone", "group": "identification", "order": 40, "label_he": "טלפון", "type": "phone", "required": true, "category": "functional_routine" },
+    { "id": "q_village", "group": "identification", "order": 50, "label_he": "יישוב", "type": "single_choice", "required": true, "category": "community", "options_from_taxonomy": "VILLAGE_LIST" },
+    { "id": "q_current_address", "group": "identification", "order": 60, "label_he": "כתובת נוכחית", "type": "open_text", "required": true, "category": "functional_routine" },
+
+    { "id": "q_open_question", "group": "needs", "order": 100, "label_he": "התקשרנו לשאול לשלומכם. האם יש כרגע איזשהו צורך שנוכל לסייע בו?", "type": "open_text", "required": true, "category": "emotional" },
+    {
+      "id": "q_needs_list",
+      "group": "needs",
+      "order": 110,
+      "label_he": "רשימת צרכים",
+      "type": "multi_choice",
+      "required": false,
+      "category": "functional_routine",
+      "options": [
+        { "label_he": "בבית", "value": "at_home" },
+        { "label_he": "מפונה עם המשפחה", "value": "evacuated_with_family" },
+        { "label_he": "מפונה לבד", "value": "evacuated_alone" },
+        { "label_he": "פצוע", "value": "injured" },
+        { "label_he": "צורך כספי", "value": "financial_need" },
+        { "label_he": "צורך לוגיסטי", "value": "logistical_need" },
+        { "label_he": "צורך רגשי", "value": "emotional_need" },
+        { "label_he": "מיצוי זכויות", "value": "rights_exhaustion" },
+        { "label_he": "שכול", "value": "bereavement" },
+        { "label_he": "צרכים מיוחדים", "value": "special_needs" },
+        { "label_he": "בן משפחה בשירות בטחוני", "value": "security_service_family" },
+        { "label_he": "אחר", "value": "other" }
+      ]
+    },
+
+    { "id": "q_worker_recommendation", "group": "worker_summary", "order": 200, "label_he": "המלצת העו\"ס להמשך טיפול", "type": "single_choice", "required": true, "category": "functional_routine", "options": [
+      { "label_he": "אין צורך בהמשך — משפחה בשגרה יציבה", "value": "no_followup_needed" },
+      { "label_he": "הכוונה חד-פעמית", "value": "one_time_guidance" },
+      { "label_he": "לבניית תכנית התערבות", "value": "open_intervention_plan" },
+      { "label_he": "להעברה לשולחן עגול יישובי", "value": "to_village_roundtable" }
+    ]},
+    { "id": "q_worker_note", "group": "worker_summary", "order": 210, "label_he": "הערות העו\"ס", "type": "open_text", "required": false, "category": "functional_routine" },
+    { "id": "q_worker_tasks", "group": "worker_summary", "order": 220, "label_he": "משימות לעו\"ס", "type": "open_text", "required": false, "category": "functional_routine" }
+  ],
+  "outputs": {
+    "creates_unknown_to_welfare_flag_if": "resident.known_to_welfare == false",
+    "auto_generates_tasks_from": "q_worker_tasks",
+    "feeds_dashboards": ["village_situation_picture_stage3", "unknown_to_welfare_surfaced"],
+    "feeds_roundtable_view": true
+  }
+}

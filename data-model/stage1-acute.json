@@ -1,0 +1,286 @@
+{
+  "code": "STAGE_1_ACUTE",
+  "stage": "1",
+  "title_he": "שאלון היכרות — שלב החירום האקוטי",
+  "description_he": "איסוף מידע ראשוני על משפחות בשלב החירום האקוטי, סיווג דחוף/מיידי/לא דחוף. הנתונים נטענים למערכת להצגת תמונת מצב יישובית.",
+  "groups": [
+    { "key": "opening", "label_he": "פתיחה ותיאום ציפיות", "order": 1 },
+    { "key": "head_of_family", "label_he": "ראש משפחה", "order": 2 },
+    { "key": "family_status", "label_he": "מצב משפחתי", "order": 3 },
+    { "key": "partner", "label_he": "בן/בת זוג", "order": 4 },
+    { "key": "children", "label_he": "ילדים", "order": 5 },
+    { "key": "household", "label_he": "משק הבית", "order": 6 },
+    { "key": "support_network", "label_he": "מערכות תמיכה", "order": 7 },
+    { "key": "worker_assessment", "label_he": "הערכת העו\"ס", "order": 8 }
+  ],
+  "questions": [
+    {
+      "id": "q_date",
+      "group": "head_of_family",
+      "order": 10,
+      "label_he": "תאריך",
+      "type": "date",
+      "required": true,
+      "category": "functional_routine"
+    },
+    {
+      "id": "q_first_name",
+      "group": "head_of_family",
+      "order": 20,
+      "label_he": "שם פרטי של ראש המשפחה",
+      "type": "open_text",
+      "required": true,
+      "category": "functional_routine"
+    },
+    {
+      "id": "q_last_name",
+      "group": "head_of_family",
+      "order": 30,
+      "label_he": "שם משפחה",
+      "type": "open_text",
+      "required": true,
+      "category": "functional_routine"
+    },
+    {
+      "id": "q_national_id",
+      "group": "head_of_family",
+      "order": 40,
+      "label_he": "ת.ז.",
+      "type": "open_text",
+      "required": false,
+      "category": "functional_routine"
+    },
+    {
+      "id": "q_phone",
+      "group": "head_of_family",
+      "order": 50,
+      "label_he": "טלפון",
+      "type": "phone",
+      "required": true,
+      "category": "functional_routine"
+    },
+    {
+      "id": "q_age",
+      "group": "head_of_family",
+      "order": 60,
+      "label_he": "גיל",
+      "type": "number",
+      "required": false,
+      "category": "functional_routine"
+    },
+    {
+      "id": "q_special_needs_head",
+      "group": "head_of_family",
+      "order": 70,
+      "label_he": "מאפיינים / צרכים מיוחדים ודחופים של ראש המשפחה",
+      "type": "multi_choice",
+      "required": false,
+      "category": "special_needs",
+      "options_from_taxonomy": "NEEDS_TAXONOMY"
+    },
+    {
+      "id": "q_family_status",
+      "group": "family_status",
+      "order": 80,
+      "label_he": "מצב משפחתי",
+      "type": "single_choice",
+      "required": true,
+      "category": "community",
+      "options": [
+        { "label_he": "רווק/רווקה", "value": "single" },
+        { "label_he": "פרוד/גרוש", "value": "divorced" },
+        { "label_he": "אלמן/אלמנה", "value": "widowed" },
+        { "label_he": "נשוי ללא ילדים", "value": "married_no_kids" },
+        { "label_he": "נשוי עם ילדים", "value": "married_with_kids" },
+        { "label_he": "ידוע בציבור ללא ילדים", "value": "common_law_no_kids" },
+        { "label_he": "ידוע בציבור עם ילדים", "value": "common_law_with_kids" },
+        { "label_he": "ילדים בוגרים מחוץ לבית", "value": "adult_kids_out_of_home" }
+      ]
+    },
+    {
+      "id": "q_partner_first_name",
+      "group": "partner",
+      "order": 90,
+      "label_he": "שם פרטי של בן/בת זוג",
+      "type": "open_text",
+      "required": false,
+      "category": "community"
+    },
+    {
+      "id": "q_partner_last_name",
+      "group": "partner",
+      "order": 100,
+      "label_he": "שם משפחה",
+      "type": "open_text",
+      "required": false,
+      "category": "community"
+    },
+    {
+      "id": "q_partner_national_id",
+      "group": "partner",
+      "order": 110,
+      "label_he": "ת.ז. (לא חובה)",
+      "type": "open_text",
+      "required": false,
+      "category": "community"
+    },
+    {
+      "id": "q_partner_phone",
+      "group": "partner",
+      "order": 120,
+      "label_he": "טלפון (לא חובה)",
+      "type": "phone",
+      "required": false,
+      "category": "community"
+    },
+    {
+      "id": "q_partner_age",
+      "group": "partner",
+      "order": 130,
+      "label_he": "גיל (לא חובה)",
+      "type": "number",
+      "required": false,
+      "category": "community"
+    },
+    {
+      "id": "q_partner_special_needs",
+      "group": "partner",
+      "order": 140,
+      "label_he": "מאפיינים / צרכים מיוחדים ודחופים של בן/בת הזוג",
+      "type": "multi_choice",
+      "required": false,
+      "category": "special_needs",
+      "options_from_taxonomy": "NEEDS_TAXONOMY"
+    },
+    {
+      "id": "q_village",
+      "group": "household",
+      "order": 150,
+      "label_he": "יישוב",
+      "type": "single_choice",
+      "required": true,
+      "category": "community",
+      "options_from_taxonomy": "VILLAGE_LIST"
+    },
+    {
+      "id": "q_current_address",
+      "group": "household",
+      "order": 160,
+      "label_he": "כתובת נוכחית",
+      "type": "open_text",
+      "required": true,
+      "category": "functional_routine"
+    },
+    {
+      "id": "q_health_fund",
+      "group": "household",
+      "order": 170,
+      "label_he": "קופ\"ח",
+      "type": "single_choice",
+      "required": false,
+      "category": "functional_routine",
+      "options": [
+        { "label_he": "כללית", "value": "klalit" },
+        { "label_he": "מכבי", "value": "maccabi" },
+        { "label_he": "מאוחדת", "value": "meuhedet" },
+        { "label_he": "לאומית", "value": "leumit" }
+      ]
+    },
+    {
+      "id": "q_num_children",
+      "group": "children",
+      "order": 180,
+      "label_he": "מספר ילדים",
+      "type": "number",
+      "required": false,
+      "category": "community"
+    },
+    {
+      "id": "q_children_table",
+      "group": "children",
+      "order": 190,
+      "label_he": "פרטי ילדים",
+      "type": "nested_table",
+      "required": false,
+      "category": "community",
+      "repeats_based_on": "q_num_children",
+      "columns": [
+        { "key": "age", "label_he": "גיל", "type": "number", "required": true },
+        {
+          "key": "evacuation_status",
+          "label_he": "סטטוס פינוי/מצב",
+          "type": "single_choice",
+          "required": true,
+          "options": [
+            { "label_he": "בבית", "value": "at_home" },
+            { "label_he": "מפונה עם המשפחה", "value": "evacuated_with_family" },
+            { "label_he": "מפונה לבד", "value": "evacuated_alone" },
+            { "label_he": "פצוע", "value": "injured" },
+            { "label_he": "צורך כספי", "value": "financial_need" },
+            { "label_he": "צורך לוגיסטי", "value": "logistical_need" },
+            { "label_he": "צורך רגשי", "value": "emotional_need" },
+            { "label_he": "מיצוי זכויות", "value": "rights_exhaustion" },
+            { "label_he": "שכול", "value": "bereavement" },
+            { "label_he": "צרכים מיוחדים", "value": "special_needs" },
+            { "label_he": "בן משפחה בשירות בטחוני", "value": "security_service_family" },
+            { "label_he": "אחר", "value": "other" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q_extended_family_nearby",
+      "group": "support_network",
+      "order": 200,
+      "label_he": "משפחה מורחבת בקרבה גיאוגרפית",
+      "type": "single_choice",
+      "required": false,
+      "category": "community",
+      "options": [
+        { "label_he": "כן", "value": "yes" },
+        { "label_he": "לא", "value": "no" }
+      ]
+    },
+    {
+      "id": "q_worker_urgency",
+      "group": "worker_assessment",
+      "order": 210,
+      "label_he": "הערכת העו\"ס — דחיפות כללית",
+      "type": "single_choice",
+      "required": true,
+      "category": "functional_routine",
+      "options": [
+        { "label_he": "דחוף", "value": "urgent" },
+        { "label_he": "מיידי", "value": "immediate" },
+        { "label_he": "לא דחוף", "value": "not_urgent" },
+        { "label_he": "אין צורך בהמשך טיפול", "value": "no_followup_needed" }
+      ]
+    },
+    {
+      "id": "q_worker_note",
+      "group": "worker_assessment",
+      "order": 220,
+      "label_he": "הערכת העו\"ס מילולית — האם נראה מצליח/ה להתארגן, דחיפות קשר, לאן להפנות",
+      "type": "open_text",
+      "required": false,
+      "category": "functional_routine"
+    },
+    {
+      "id": "q_worker_tasks",
+      "group": "worker_assessment",
+      "order": 230,
+      "label_he": "משימות לעו\"ס",
+      "type": "open_text",
+      "help_he": "לכל משימה: טקסט חופשי + תאריך יעד. המשימות נכנסות אוטומטית למסך המשימות שלך.",
+      "required": false,
+      "category": "functional_routine"
+    }
+  ],
+  "outputs": {
+    "creates_resident_if_not_exists": true,
+    "creates_family_if_not_exists": true,
+    "auto_generates_tasks_from": "q_worker_tasks",
+    "triages_encounter_urgency_from": "q_worker_urgency",
+    "feeds_dashboards": ["village_situation_picture", "needs_by_age"]
+  }
+}

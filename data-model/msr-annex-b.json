@@ -1,0 +1,62 @@
+{
+  "code": "MSR_INTAKE",
+  "stage": "msr",
+  "title_he": "טופס התערבות ומיפוי צרכים עו\"ס במס\"ר",
+  "description_he": "טופס הטיפול הסוציאלי במרכז סיוע ראשוני (מס\"ר), מבוסס נספח ב' במנחה המקצועי של פיקוד העורף, פברואר 2026. מיועד לעו\"ס פסיכו-סוציאלית במס\"ר.",
+  "groups": [
+    { "key": "personal", "label_he": "פרטים אישיים של הפונה", "order": 1 },
+    { "key": "family_present", "label_he": "מצב משפחתי במס\"ר", "order": 2 },
+    { "key": "children_comprehension", "label_he": "ילדים והבנת האירוע", "order": 3 },
+    { "key": "family_resources", "label_he": "כוחות ומשאבים במשפחה", "order": 4 },
+    { "key": "risk", "label_he": "זיהוי סיכונים", "order": 5 },
+    { "key": "support_systems", "label_he": "גורמי תמיכה", "order": 6 },
+    { "key": "medical", "label_he": "בעיות רפואיות ומיוחדות", "order": 7 },
+    { "key": "welfare_acquaintance", "label_he": "היכרות עם הרווחה", "order": 8 },
+    { "key": "missing_person", "label_he": "נעדר/ת (במידה ורלוונטי)", "order": 9 },
+    { "key": "worker_summary", "label_he": "סיכום והתרשמות עו\"ס", "order": 10 }
+  ],
+  "questions": [
+    { "id": "q_full_name", "group": "personal", "order": 10, "label_he": "שם פרטי ומשפחה", "type": "open_text", "required": true, "category": "functional_routine" },
+    { "id": "q_national_id", "group": "personal", "order": 20, "label_he": "ת\"ז", "type": "open_text", "required": true, "category": "functional_routine" },
+    { "id": "q_phone", "group": "personal", "order": 30, "label_he": "נייד", "type": "phone", "required": true, "category": "functional_routine" },
+    { "id": "q_address", "group": "personal", "order": 40, "label_he": "כתובת מגורים", "type": "open_text", "required": true, "category": "functional_routine" },
+
+    { "id": "q_who_is_with_you", "group": "family_present", "order": 100, "label_he": "מי נמצא איתך כאן היום?", "type": "open_text", "required": true, "category": "community" },
+    { "id": "q_young_kids", "group": "family_present", "order": 110, "label_he": "האם יש ילדים קטנים?", "type": "open_text", "required": false, "category": "community" },
+    { "id": "q_told_kids", "group": "children_comprehension", "order": 120, "label_he": "האם מישהו סיפר להם על האירוע? מהם החששות?", "type": "open_text", "required": false, "category": "emotional" },
+    { "id": "q_family_understanding", "group": "children_comprehension", "order": 130, "label_he": "מה מידת הבנת המצב על ידי בני המשפחה?", "type": "open_text", "required": false, "category": "emotional" },
+
+    { "id": "q_strengths_in_family", "group": "family_resources", "order": 200, "label_he": "מי הם האנשים עם הכוחות במערכת המשפחתית?", "type": "open_text", "required": false, "category": "community" },
+    { "id": "q_decision_maker", "group": "family_resources", "order": 210, "label_he": "מיהו מקבל ההחלטות?", "type": "open_text", "required": false, "category": "community" },
+    { "id": "q_who_functions", "group": "family_resources", "order": 220, "label_he": "מי נראה כרגע כמתפקד?", "type": "open_text", "required": false, "category": "functional_routine" },
+
+    { "id": "q_risk_people", "group": "risk", "order": 300, "label_he": "האם יש אנשים במערכת המשפחתית הנמצאים להערכתך בסיכון?", "type": "open_text", "required": true, "category": "emotional" },
+
+    { "id": "q_family_support", "group": "support_systems", "order": 400, "label_he": "האם קיימים גורמי תמיכה משפחתיים? (דרגה ראשונה או שנייה) והיכן הם מתגוררים?", "type": "open_text", "required": false, "category": "community" },
+    { "id": "q_community_support", "group": "support_systems", "order": 410, "label_he": "האם קיימים גורמי תמיכה קהילתיים?", "type": "open_text", "required": false, "category": "community" },
+
+    { "id": "q_medical_conditions", "group": "medical", "order": 500, "label_he": "האם יש בני משפחה המתמודדים עם בעיות רפואיות (מחלת לב, סוכרת, אסטמה, אפילפסיה, מחלות נפש, אחר)?", "type": "open_text", "required": true, "category": "special_needs" },
+    { "id": "q_special_symptoms", "group": "medical", "order": 510, "label_he": "האם ידוע לך על ילדים או מבוגרים המגלים, או עלולים לגלות, תסמינים מיוחדים או הזקוקים לטיפול / סיוע מיוחד?", "type": "open_text", "required": false, "category": "special_needs" },
+    { "id": "q_hard_to_locate", "group": "medical", "order": 520, "label_he": "האם ידוע לך על מישהו מבני המשפחה הקרובה שיש קושי לאתרו? (בחו\"ל, במילואים, בכלא)", "type": "open_text", "required": false, "category": "community" },
+
+    { "id": "q_known_to_welfare", "group": "welfare_acquaintance", "order": 600, "label_he": "האם המשפחה מוכרת לשירותי הרווחה?", "type": "single_choice", "required": true, "category": "functional_routine", "options": [{"label_he":"כן","value":"yes"},{"label_he":"לא","value":"no"},{"label_he":"לא יודע/ת","value":"unknown"}] },
+    { "id": "q_current_need", "group": "welfare_acquaintance", "order": 610, "label_he": "האם יש משהו שאנחנו יכולים לעשות כדי לסייע לך בשלב זה?", "type": "open_text", "required": true, "category": "functional_routine" },
+
+    { "id": "q_missing_relation", "group": "missing_person", "order": 700, "label_he": "יחס קרבה לנעדר", "type": "open_text", "required": false, "category": "bereavement" },
+    { "id": "q_missing_name", "group": "missing_person", "order": 710, "label_he": "שם פרטי ומשפחה של הנעדר + ת\"ז", "type": "open_text", "required": false, "category": "bereavement" },
+    { "id": "q_missing_address", "group": "missing_person", "order": 720, "label_he": "כתובת", "type": "open_text", "required": false, "category": "bereavement" },
+    { "id": "q_missing_second_citizenship", "group": "missing_person", "order": 730, "label_he": "האם קיימת אזרחות נוספת?", "type": "open_text", "required": false, "category": "bereavement" },
+    { "id": "q_missing_identifying", "group": "missing_person", "order": 740, "label_he": "פרטים מזהים של הנעדר — מגדר, גובה, היכן שהה", "type": "open_text", "required": false, "category": "bereavement" },
+
+    { "id": "q_worker_impression", "group": "worker_summary", "order": 800, "label_he": "התרשמות אישית של ממלא השאלון — מאפיינים / כוחות / קשיים שחשובים בהמשך לצורך ליווי והיערכות", "type": "open_text", "required": true, "category": "functional_routine" },
+    { "id": "q_worker_name_role", "group": "worker_summary", "order": 810, "label_he": "שם ממלא הטופס ותפקידו", "type": "open_text", "required": true, "category": "functional_routine" },
+    { "id": "q_timestamp", "group": "worker_summary", "order": 820, "label_he": "תאריך + שעה", "type": "date", "required": true, "category": "functional_routine" }
+  ],
+  "outputs": {
+    "creates_resident_if_not_exists": true,
+    "creates_family_if_not_exists": true,
+    "flags_risk_if_present": "q_risk_people",
+    "generates_missing_person_record_if_filled": ["q_missing_name", "q_missing_identifying"],
+    "exports_to": ["msr_population_intelligence", "welfare_intake"]
+  }
+}

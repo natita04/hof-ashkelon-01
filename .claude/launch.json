@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "hof-ashkelon",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "3000", "mockups"],
+      "port": 3000
+    }
+  ]
+}
