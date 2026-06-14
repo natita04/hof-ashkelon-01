@@ -6,36 +6,61 @@
 <title>CRCC — אב טיפוס · חוף אשקלון</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* Clubhouse-inspired: warm cream canvas, white cards, bold black ink,
-       vivid iOS-blue CTAs, butter-yellow accent for highlights. */
-    --bg:         #f5efe3;   /* warm cream page background */
-    --bg-2:       #f9f5ec;   /* slightly lighter cream for nested panels */
-    --surface:    #ffffff;
-    --ink:        #0f0f10;   /* near-black, bold */
-    --ink-2:      #3a3a3e;
-    --ink-3:      #8f8f94;
-    --line:       #eae3d3;
-    --line-2:     #f0ebdf;
-    --brand:      #1d8bf8;   /* Clubhouse blue CTA */
-    --brand-press:#1073d6;
-    --brand-soft: #e6f1fe;
-    --accent:     #f5c518;   /* butter yellow for accents */
+    /* "הצעת עיצוב" pastel styleguide — warm cream canvas, teal-green primary,
+       soft pastel urgency pills, dark-red emergency chrome. Font: Rubik. */
+    --bg:         #f5f0e8;   /* warm cream page background */
+    --bg-2:       #faf6ee;   /* lighter cream for nested panels / tracks */
+    --surface:    #fdfcfa;   /* card surface */
+    --ink:        #1c1814;   /* warm near-black */
+    --ink-2:      #4a4440;
+    --ink-3:      #9b9590;
+    --line:       #ede7dc;
+    --line-2:     #f0ebe3;
+    --brand:      oklch(0.52 0.13 168);   /* teal-green primary */
+    --brand-press:oklch(0.45 0.13 168);
+    --brand-soft: oklch(0.90 0.06 168);   /* light teal — icon backgrounds */
+    --brand-ink:  oklch(0.42 0.16 168);
+    --accent:     #f5c518;   /* amber — reserved for AI highlight cards */
     --accent-soft:#fdf1bc;
-    --danger:     #e5572b;
-    --success:    #3dbe80;
-    --shadow:     0 1px 2px rgba(20,15,5,.04), 0 10px 28px rgba(20,15,5,.06);
+    --accent-ink: oklch(0.42 0.16 168);
+    --danger:     oklch(0.55 0.20 25);    /* red — emergency CTA / urgent solid */
+    --success:    oklch(0.52 0.13 168);   /* teal — positive */
+    /* Pastel urgency pills (soft bg + readable ink) */
+    --urgent-bg:  oklch(0.94 0.07 22);   --urgent-ink: oklch(0.45 0.18 22);
+    --soon-bg:    oklch(0.92 0.07 295);  --soon-ink:   oklch(0.42 0.18 295);
+    --normal-bg:  oklch(0.93 0.05 225);  --normal-ink: oklch(0.42 0.14 225);
+    /* Pastel separation palette — used ONLY to set apart prominent items. */
+    --info-bg:    oklch(0.93 0.05 225);  /* pastel blue   — info / linked / phones */
+    --info-line:  oklch(0.85 0.06 225);
+    --info-ink:   oklch(0.42 0.14 225);
+    --success-bg: oklch(0.92 0.06 168);  /* pastel teal   — done / referral */
+    --success-ink:oklch(0.42 0.15 168);
+    --warning-bg: #fdf3e0;   /* pastel amber  — attention */
+    --warning-ink:#9a6a17;
+    --danger-bg:  oklch(0.94 0.07 22);   /* pastel coral  — urgent emphasis (bg only) */
+    /* Emergency dark-red chrome (statusbar / header / banner) */
+    --emergency-bg:    oklch(0.30 0.13 25);
+    --emergency-deep:  oklch(0.24 0.14 25);
+    --emergency-line:  oklch(0.38 0.11 25);
+    --emergency-ink:   oklch(0.90 0.05 25);
+    --emergency-accent:oklch(0.78 0.13 25);
+    /* Bottom nav */
+    --nav-bg:     #14161e;
+    --nav-active: oklch(0.72 0.10 168);
+    --shadow:     0 1px 2px rgba(28,24,20,.04), 0 10px 28px rgba(28,24,20,.06);
+    --shadow-2:   0 6px 20px rgba(28,24,20,.08);
     --r-s:  10px;
-    --r-m:  18px;  /* softer, Clubhouse-style rounding */
-    --r-l:  26px;
+    --r-m:  16px;
+    --r-l:  24px;
     --r-xl: 36px;
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0;
-    font-family: "Heebo", -apple-system, "Segoe UI", sans-serif;
+    font-family: "Rubik", -apple-system, "Segoe UI", sans-serif;
     background: #ffffff; /* white — lets the phone mockup stand out */
     color: var(--ink);
     -webkit-font-smoothing: antialiased;
@@ -223,9 +248,10 @@
     flex: 1; padding: 16px 18px 20px; overflow: auto;
   }
 
-  /* Clubhouse-style card: cream background, no border, generous radius */
+  /* Styleguide card: light surface, hairline border, soft radius */
   .card {
-    background: var(--bg-2);
+    background: var(--surface);
+    border: 1px solid var(--line);
     border-radius: var(--r-m);
     margin-bottom: 14px;
     overflow: hidden;
@@ -272,11 +298,57 @@
     white-space: nowrap;
     flex-shrink: 0;
   }
-  .urg-tag.urgent  { background: var(--danger);     color: #fff; }
-  .urg-tag.soon    { background: var(--accent);     color: var(--ink); }
-  .urg-tag.normal  { background: var(--line);       color: var(--ink-2); }
+  .urg-tag.urgent  { background: var(--urgent-bg);  color: var(--urgent-ink); }
+  .urg-tag.soon    { background: var(--soon-bg);    color: var(--soon-ink); }
+  .urg-tag.normal  { background: var(--normal-bg);  color: var(--normal-ink); }
+  /* Pastel separation for completed / linked states (kept soft, not saturated). */
+  .urg-tag.done    { background: var(--success-bg); color: var(--success-ink); }
+  .urg-tag.linked  { background: var(--info-bg);    color: var(--info-ink); }
   /* Inline variant inside row-sub (slightly tighter) */
   .row-sub .urg-tag { font-size: 10.5px; padding: 2px 8px; }
+
+  /* Closed/completed task rows are de-emphasized and shown for reference only. */
+  .row-item.row-closed .row-name { color: var(--ink-2); }
+  .row-item.row-closed .row-name { text-decoration: line-through; text-decoration-color: var(--line); }
+
+  /* Home: important-info card */
+  #homeImportantInfo .info-desc {
+    font-size: 13px; line-height: 1.55; color: var(--ink-2); margin: 0 0 4px;
+  }
+  #homeImportantInfo .info-section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: .02em;
+    color: var(--ink-3); text-transform: none;
+    margin: 14px 0 4px; padding-top: 10px; border-top: 1px solid var(--line-2);
+  }
+  #homeImportantInfo .info-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 2px; text-decoration: none; color: inherit;
+  }
+  #homeImportantInfo .info-ic {
+    flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--info-bg, #eef4fb); color: var(--accent-ink, #2a6099);
+  }
+  #homeImportantInfo .info-ic svg { width: 17px; height: 17px; }
+  #homeImportantInfo .info-ic-accent {
+    background: var(--success-bg, #eaf6ee); color: var(--success-ink, #2f7d4f);
+  }
+  #homeImportantInfo .info-main { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  #homeImportantInfo .info-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+  #homeImportantInfo .info-sub { font-size: 12px; color: var(--ink-3); direction: ltr; text-align: start; }
+
+  /* Banner shown when a Stage B/C questionnaire is prefilled from Stage A data. */
+  .case-prefill-banner {
+    display: flex; align-items: flex-start; gap: 8px;
+    background: var(--info-bg, #eef4fb);
+    border: 1px solid var(--info-line, #cfe0f3);
+    color: var(--ink-2);
+    border-radius: var(--r-s); padding: 10px 12px; margin: 0 0 14px;
+    font-size: 12.5px; line-height: 1.45;
+  }
+  .case-prefill-banner .ai-badge { flex-shrink: 0; }
+  .case-step .field-input.is-prefilled,
+  .case-step .chip.is-prefilled.on { box-shadow: inset 0 0 0 1px var(--info-line, #cfe0f3); }
 
   /* Task list rows often have the urgency tag replacing the leading dot.
      Reserve the inline-start slot so tags have consistent alignment. */
@@ -312,7 +384,7 @@
   /* Pill buttons (Clubhouse-style fully rounded) */
   .btn {
     display: inline-flex; align-items: center; justify-content: center;
-    padding: 14px 20px; border-radius: 999px;
+    padding: 14px 20px; border-radius: var(--r-m);
     font-size: 15px; font-weight: 700; cursor: pointer;
     font-family: inherit; border: none; user-select: none;
     width: 100%;
@@ -444,7 +516,7 @@
     transition: background 150ms, color 150ms;
   }
   .mode-btn.on {
-    background: var(--surface); color: var(--ink);
+    background: var(--brand); color: #fff;
     box-shadow: 0 1px 5px rgba(0,0,0,.13);
   }
   .mode-btn.emergency.on {
@@ -499,7 +571,8 @@
     border: 1px solid var(--line);
   }
   .ed-meta-item {
-    display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 80px;
+    display: flex; flex-direction: column; gap: 1px;
+    flex: 1 1 calc(50% - 4px); min-width: 0;
   }
   .ed-meta-label { font-size: 11px; color: var(--ink-3); font-weight: 600; }
   .ed-meta-val { font-size: 13px; font-weight: 700; color: var(--ink); }
@@ -637,6 +710,11 @@
   .ed-ai-body {
     margin: 0; font-size: 13px; color: var(--ink-2); line-height: 1.55;
   }
+  /* Insights "תמות עולות" reusing the AI summary card look */
+  .ai-themes { padding: 14px; margin-bottom: 14px; }
+  .ai-themes .ed-ai-head { margin-bottom: 8px; }
+  .ai-themes .ed-ai-title { font-size: 14.5px; }
+  .ai-themes .theme:first-of-type { padding-top: 2px; }
 
   /* Progress metrics grid */
   .ed-metrics {
@@ -676,6 +754,71 @@
   /* Family rows in event detail */
   #edFamiliesList .row-name { font-weight: 700; }
   #edFamiliesList .row-sub { font-size: 12px; }
+
+  /* Attach-residents-to-event control */
+  .ed-link-search { position: relative; margin-bottom: 10px; }
+  .ed-link-search .ic {
+    position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--ink-3); font-size: 15px; pointer-events: none;
+  }
+  .ed-link-search input {
+    width: 100%; box-sizing: border-box;
+    padding: 11px 36px 11px 14px;
+    border: 1px solid var(--line); border-radius: var(--r-s);
+    background: var(--surface); font-family: inherit; font-size: 14px; color: var(--ink);
+  }
+  .ed-link-results {
+    position: absolute; inset-inline: 0; top: calc(100% + 4px); z-index: 20;
+    background: #fff; border: 1px solid var(--line); border-radius: var(--r-s);
+    box-shadow: var(--shadow-2, 0 6px 20px rgba(0,0,0,.08));
+    max-height: 220px; overflow-y: auto;
+  }
+  .ed-link-opt {
+    padding: 10px 14px; cursor: pointer; font-size: 14px;
+    display: flex; justify-content: space-between; gap: 8px; align-items: center;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .ed-link-opt:last-child { border-bottom: 0; }
+  .ed-link-opt:hover { background: var(--bg, #f7f4ec); }
+  .ed-link-opt .opt-village { color: var(--ink-3); font-size: 12px; }
+  .ed-link-opt.is-empty { cursor: default; color: var(--ink-3); }
+  .ed-link-opt.is-empty:hover { background: transparent; }
+  .ed-link-empty { padding: 16px 14px; text-align: center; color: var(--ink-3); font-size: 13px; }
+  .ed-linked-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 14px; border-bottom: 1px solid var(--line-2);
+  }
+  .ed-linked-row:last-child { border-bottom: 0; }
+  .ed-linked-row .row-main { flex: 1; }
+  .ed-linked-row .row-name { font-weight: 700; font-size: 14px; }
+  .ed-linked-row .row-sub { font-size: 12px; color: var(--ink-3); }
+  .ed-linked-remove {
+    border: 0; background: transparent; color: var(--ink-3);
+    font-size: 20px; line-height: 1; cursor: pointer; padding: 2px 6px; border-radius: 6px;
+  }
+  .ed-linked-remove:hover { background: var(--line-2); color: var(--danger); }
+
+  /* Involved families/residents rows (event detail + full screen) */
+  .ed-inv-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 14px; border-bottom: 1px solid var(--line-2);
+  }
+  .ed-inv-row:last-child { border-bottom: 0; }
+  .ed-inv-row .row-main { flex: 1; min-width: 0; }
+  .ed-inv-row .row-name { font-weight: 700; font-size: 14px; }
+  .ed-inv-row .row-sub { font-size: 12px; color: var(--ink-3); }
+  .ed-inv-row .urg-tag.lead { flex-shrink: 0; }
+  /* Count badge next to the "משפחות מעורבות" title */
+  .ed-count { font-size: 13px; font-weight: 700; color: var(--ink-3); }
+  /* "Show all" button under the compact list */
+  .ed-showall {
+    width: 100%; margin-top: 8px; padding: 11px 14px;
+    background: var(--surface); color: var(--info-ink, #2a6099);
+    border: 1px solid var(--line); border-radius: var(--r-s);
+    font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;
+  }
+  .ed-showall:hover { background: var(--bg-2, #f9f5ec); }
+
   /* Timeline list: compact bullets */
   .ed-timeline-row {
     display: flex; gap: 10px;
@@ -726,7 +869,7 @@
     margin-bottom: 10px;
     transition: background 120ms, transform 80ms;
   }
-  .action-hero:hover  { background: #cf4a22; }
+  .action-hero:hover  { filter: brightness(.93); }
   .action-hero:active { transform: scale(.99); }
   .action-hero svg { width: 26px; height: 26px; flex-shrink: 0; }
 
@@ -754,7 +897,7 @@
   .events-tab:hover { color: var(--ink-2); }
   .events-tab.on {
     color: var(--ink);
-    border-bottom-color: var(--ink);
+    border-bottom-color: var(--brand);
     font-weight: 700;
   }
 
@@ -772,9 +915,9 @@
     cursor: pointer; font-family: inherit;
     font-size: 15px; font-weight: 700; letter-spacing: -.1px;
     transition: background 120ms, transform 80ms;
-    box-shadow: 0 2px 8px rgba(229, 87, 43, .22);
+    box-shadow: 0 2px 8px rgba(150, 30, 24, .22);
   }
-  .emergency-cta-btn:hover  { background: #cf4a22; }
+  .emergency-cta-btn:hover  { filter: brightness(.93); }
   .emergency-cta-btn:active { transform: scale(.99); }
   .emergency-cta-btn svg {
     width: 16px; height: 16px; flex-shrink: 0;
@@ -1536,7 +1679,7 @@
   .tabbar {
     display:grid; grid-template-columns: repeat(5, 1fr);
     padding: 8px 6px 12px;
-    background: var(--ink);
+    background: var(--nav-bg);
     border-top: 1px solid rgba(255,255,255,.06);
   }
   .tabbar .t {
@@ -1557,18 +1700,58 @@
     stroke-linecap: round; stroke-linejoin: round;
   }
   .tabbar .t .lbl { font-size: 11px; font-weight: 600;}
-  .tabbar .t.on { color: #fff;}
+  .tabbar .t.on { color: var(--nav-active);}
   .tabbar .t.on .lbl { font-weight: 700;}
   .tabbar .t:hover { color: rgba(255,255,255,.85);}
-  .tabbar .t.on:hover { color: #fff;}
+  .tabbar .t.on:hover { color: var(--nav-active);}
 
   footer.page {
     padding: 8px 32px 40px;
     color: var(--ink-3); font-size: 11.5px; text-align: center;
   }
+
+  /* ===== Routine mode chrome (home) — teal header ===== */
+  .screen[data-screen="home"]:not(.emergency-mode) .statusbar {
+    background: var(--brand-press);
+    color: #fff;
+  }
+  .screen[data-screen="home"]:not(.emergency-mode) .brandbar {
+    background: var(--brand);
+    border-bottom: 1px solid var(--brand-press);
+  }
+  .screen[data-screen="home"]:not(.emergency-mode) .brandbar-app { color: #fff; }
+  .screen[data-screen="home"]:not(.emergency-mode) .brandbar-council { color: rgba(255,255,255,.78); }
+  .screen[data-screen="home"]:not(.emergency-mode) .mode-toggle-compact { background: rgba(0,0,0,.18); }
+  .screen[data-screen="home"]:not(.emergency-mode) .mode-btn { color: rgba(255,255,255,.82); }
+  .screen[data-screen="home"]:not(.emergency-mode) .mode-btn.on {
+    background: #fff; color: var(--brand-ink);
+  }
+
+  /* Emergency mode (app-wide): main buttons turn dark red instead of teal */
+  body.app-emergency .btn.primary { background: var(--danger); }
+  body.app-emergency .btn.primary:hover { background: var(--danger); filter: brightness(.93); }
+
+  /* ===== Emergency mode chrome (home) — dark-red, calm but distinct ===== */
+  .screen.emergency-mode .statusbar {
+    background: var(--emergency-deep);
+    color: var(--emergency-ink);
+  }
+  .screen.emergency-mode .brandbar {
+    background: var(--emergency-bg);
+    border-bottom: 1px solid var(--emergency-line);
+  }
+  .screen.emergency-mode .brandbar-app { color: #fff; }
+  .screen.emergency-mode .brandbar-council { color: var(--emergency-ink); }
+  .screen.emergency-mode .mode-toggle-compact { background: rgba(0,0,0,.24); }
+  .screen.emergency-mode .mode-btn { color: var(--emergency-ink); }
+  .screen.emergency-mode .mode-btn.on { background: var(--brand); color: #fff; }
+  .screen.emergency-mode .mode-btn.emergency.on {
+    background: var(--emergency-accent); color: oklch(0.26 0.12 25);
+  }
+  .screen.emergency-mode .events-tab.on { border-bottom-color: var(--danger); }
 </style>
 </head>
-<body>
+<body class="app-emergency">
 
 <header class="page">
   <h1>מערכת שירותים חברתיים — אב טיפוס</h1>
@@ -1595,7 +1778,7 @@
     <div class="phone">
 
       <!-- HOME -->
-      <div class="screen on" data-screen="home">
+      <div class="screen on emergency-mode" data-screen="home">
         <div class="statusbar"><span>9:42</span><span>4G · 78%</span></div>
         <div class="brandbar">
           <img class="brandbar-logo" src="assets/council-logo.png" alt="לוגו מועצה אזורית חוף אשקלון" />
@@ -1604,17 +1787,17 @@
             <div class="brandbar-council">מועצה אזורית חוף אשקלון</div>
           </div>
           <div class="mode-toggle-compact">
-            <button class="mode-btn on" id="modeRoutine" onclick="setHomeMode('routine')">שגרה</button>
-            <button class="mode-btn emergency" id="modeEmergency" onclick="setHomeMode('emergency')">חירום</button>
+            <button class="mode-btn emergency on" id="modeEmergency" onclick="setHomeMode('emergency')">חירום</button>
+            <button class="mode-btn" id="modeRoutine" onclick="setHomeMode('routine')">שגרה</button>
           </div>
         </div>
 
         <div class="content">
 
-          <div class="card-title" id="homeQuickActionsTitle" style="margin-top: 4px;">פעולות מהירות</div>
+          <div class="card-title" id="homeQuickActionsTitle" style="margin-top: 4px; display:none;">פעולות מהירות</div>
 
           <!-- routine actions -->
-          <div class="actions" id="actionsRoutine">
+          <div class="actions" id="actionsRoutine" style="display:none;">
             <button class="action" data-nav="questionnaire">
               <span class="action-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M12 13v6M9 16h6"/></svg>
@@ -1645,7 +1828,7 @@
           </div>
 
           <!-- emergency actions: open/closed events tabs -->
-          <div id="actionsEmergency" style="display:none;">
+          <div id="actionsEmergency">
             <div class="events-tabs" role="tablist">
               <button type="button" class="events-tab on" data-events-tab="open" role="tab" aria-selected="true">אירועים פתוחים</button>
               <button type="button" class="events-tab" data-events-tab="closed" role="tab" aria-selected="false">אירועים סגורים</button>
@@ -1701,7 +1884,7 @@
           </div>
 
           <!-- routine: my tasks today -->
-          <div id="tasksRoutine" style="margin-top: 22px;">
+          <div id="tasksRoutine" style="margin-top: 22px; display:none;">
             <div class="section-head">
               <div class="card-title" style="margin: 0;">המשימות שלי היום</div>
               <div class="sort-dd" data-sort-dd="home">
@@ -1720,10 +1903,54 @@
             </div>
           </div>
 
+          <!-- important info for the worker -->
+          <div id="homeImportantInfo" style="margin-top: 22px;">
+            <div class="card-title" style="margin: 0 0 8px;">טלפונים וקישורים</div>
+            <div class="card card-pad">
+              <a class="info-row" href="tel:+97286776300">
+                <span class="info-ic" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+                </span>
+                <span class="info-main">
+                  <span class="info-name">מוקד האגף לשירותים חברתיים</span>
+                  <span class="info-sub">08-6776300</span>
+                </span>
+              </a>
+              <a class="info-row" href="tel:*8944">
+                <span class="info-ic" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+                </span>
+                <span class="info-main">
+                  <span class="info-name">קו חירום נפשי — עוטף עזה</span>
+                  <span class="info-sub">*8944</span>
+                </span>
+              </a>
+              <a class="info-row" href="tel:1201">
+                <span class="info-ic" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+                </span>
+                <span class="info-main">
+                  <span class="info-name">ער"ן — עזרה ראשונה נפשית</span>
+                  <span class="info-sub">1201</span>
+                </span>
+              </a>
+
+              <a class="info-row" href="tel:+97286776300">
+                <span class="info-ic info-ic-accent" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </span>
+                <span class="info-main">
+                  <span class="info-name">הפניה למרכז חוסן חוף אשקלון</span>
+                  <span class="info-sub">תיאום פנייה והפניית תושב/ת</span>
+                </span>
+              </a>
+            </div>
+          </div>
+
         </div>
 
         <!-- pinned emergency CTA (shown only in emergency mode) -->
-        <div id="emergencyCta" class="emergency-cta" style="display:none;">
+        <div id="emergencyCta" class="emergency-cta">
           <button class="emergency-cta-btn" type="button" data-nav="newEvent">
             <span>פתיחת אירוע</span>
           </button>
@@ -2063,7 +2290,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </div>
           <div class="appbar-main">
-            <div class="title">שלב א'</div>
+            <div class="title" data-case-stage-title>שלב א'</div>
             <div class="sub" data-case-title>בחירת תושב/ת</div>
           </div>
           <button class="case-save-btn" type="button" data-case-save>שמירה</button>
@@ -2084,6 +2311,10 @@
 
           <!-- STEP 1: create new resident -->
           <div class="case-step" data-step="1">
+            <div class="case-prefill-banner" data-case-prefill-banner hidden>
+              <span class="ai-badge">↻</span>
+              <span>הפרטים נשאבו אוטומטית משלב א' הקיים במערכת — ניתן לעדכן במידת הצורך.</span>
+            </div>
             <div class="q-help" style="margin: 0 0 10px;">פרטי ראש המשפחה החדש</div>
             <div class="card">
               <label class="field">
@@ -2285,7 +2516,7 @@
         <div class="statusbar"><span>10:15</span><span>5G · 81%</span></div>
         <div class="appbar appbar-split">
           <div class="appbar-main">
-            <div class="title">משימות פתוחות</div>
+            <div class="title" id="tasksScreenTitle">משימות פתוחות</div>
           </div>
           <button class="appbar-action" type="button" data-nav="newTask">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -2294,6 +2525,12 @@
         </div>
 
         <div class="content">
+          <!-- open / closed (completed) tasks toggle -->
+          <div class="events-tabs" role="tablist" style="margin-bottom:12px;">
+            <button type="button" class="events-tab on" data-tasks-tab="open" role="tab" aria-selected="true">משימות פתוחות</button>
+            <button type="button" class="events-tab" data-tasks-tab="closed" role="tab" aria-selected="false">משימות שנסגרו</button>
+          </div>
+
           <!-- Sort control: urgency (default) vs. timing/deadline -->
           <div class="sort-bar">
             <div class="sort-dd" data-sort-dd="tasks">
@@ -2322,8 +2559,8 @@
             <div class="title">תובנות</div>
           </div>
           <button class="appbar-action" type="button" data-nav="themeDeepDive">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l7 7-7 7M5 12h14"/></svg>
             ניתוח עומק
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l-7-7 7-7M19 12H5"/></svg>
           </button>
         </div>
 
@@ -2388,6 +2625,15 @@
             </div>
 
             <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 10px;">פילוח לפי תגיות</div>
+              <div class="split-row"><div class="split-lbl">מוגבלויות</div><div class="split-track"><span class="split-bar" style="width:18%"></span></div><div class="split-v">86</div></div>
+              <div class="split-row"><div class="split-lbl">אזרחים ותיקים</div><div class="split-track"><span class="split-bar" style="width:26%"></span></div><div class="split-v">122</div></div>
+              <div class="split-row"><div class="split-lbl">נוער וצעירים</div><div class="split-track"><span class="split-bar" style="width:14%"></span></div><div class="split-v">64</div></div>
+              <div class="split-row"><div class="split-lbl">אחר</div><div class="split-track"><span class="split-bar" style="width:9%"></span></div><div class="split-v">41</div></div>
+              <p class="micro">פילוח לטובת חלוקת העבודה של העובדות הפונקציונאליות.</p>
+            </div>
+
+            <div class="card card-pad">
               <div class="card-title" style="margin: 0 0 10px;">צרכים נפוצים</div>
               <div class="bar-row"><div class="lbl">צורך רגשי</div><div class="bar"><span style="width:78%"></span></div><div class="v">247</div></div>
               <div class="bar-row"><div class="lbl">מיצוי זכויות</div><div class="bar"><span style="width:62%"></span></div><div class="v">196</div></div>
@@ -2396,9 +2642,11 @@
               <div class="bar-row"><div class="lbl">שכול</div><div class="bar"><span style="width:19%"></span></div><div class="v">59</div></div>
             </div>
 
-            <div class="card card-pad">
-              <div class="card-title" style="margin: 0 0 8px;">תמות עולות</div>
-              <p class="micro" style="margin-bottom: 10px;">דפוסים שזוהו ע"י AI מהשיחות והתיקים במועצה.</p>
+            <div class="ed-ai-card ai-themes">
+              <div class="ed-ai-head">
+                <span class="ai-badge">✨ AI</span>
+                <span class="ed-ai-title">תמות עולות</span>
+              </div>
 
               <div class="theme">
                 <div class="theme-head">
@@ -2454,6 +2702,15 @@
             </div>
 
             <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 10px;">פילוח לפי תגיות</div>
+              <div class="split-row"><div class="split-lbl">מוגבלויות</div><div class="split-track"><span class="split-bar" style="width:20%"></span></div><div class="split-v">38</div></div>
+              <div class="split-row"><div class="split-lbl">אזרחים ותיקים</div><div class="split-track"><span class="split-bar" style="width:28%"></span></div><div class="split-v">55</div></div>
+              <div class="split-row"><div class="split-lbl">נוער וצעירים</div><div class="split-track"><span class="split-bar" style="width:15%"></span></div><div class="split-v">29</div></div>
+              <div class="split-row"><div class="split-lbl">אחר</div><div class="split-track"><span class="split-bar" style="width:9%"></span></div><div class="split-v">18</div></div>
+              <p class="micro">פילוח לטובת חלוקת העבודה של העובדות הפונקציונאליות.</p>
+            </div>
+
+            <div class="card card-pad">
               <div class="card-title" style="margin: 0 0 10px;">צרכים נפוצים</div>
               <div class="bar-row"><div class="lbl">צורך רגשי</div><div class="bar"><span style="width:82%"></span></div><div class="v">67</div></div>
               <div class="bar-row"><div class="lbl">מיצוי זכויות</div><div class="bar"><span style="width:64%"></span></div><div class="v">52</div></div>
@@ -2462,9 +2719,11 @@
               <div class="bar-row"><div class="lbl">שכול</div><div class="bar"><span style="width:17%"></span></div><div class="v">14</div></div>
             </div>
 
-            <div class="card card-pad">
-              <div class="card-title" style="margin: 0 0 8px;">תמות עולות</div>
-              <p class="micro" style="margin-bottom: 10px;">דפוסים ששבו בשיחות האחרונות. זוהו ע"י AI, מסומנות בהתאם לעקביות וההיקף.</p>
+            <div class="ed-ai-card ai-themes">
+              <div class="ed-ai-head">
+                <span class="ai-badge">✨ AI</span>
+                <span class="ed-ai-title">תמות עולות</span>
+              </div>
 
               <div class="theme">
                 <div class="theme-head">
@@ -2553,6 +2812,15 @@
             </div>
 
             <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 10px;">פילוח לפי תגיות</div>
+              <div class="split-row"><div class="split-lbl">מוגבלויות</div><div class="split-track"><span class="split-bar" style="width:22%"></span></div><div class="split-v">14</div></div>
+              <div class="split-row"><div class="split-lbl">אזרחים ותיקים</div><div class="split-track"><span class="split-bar" style="width:32%"></span></div><div class="split-v">21</div></div>
+              <div class="split-row"><div class="split-lbl">נוער וצעירים</div><div class="split-track"><span class="split-bar" style="width:17%"></span></div><div class="split-v">11</div></div>
+              <div class="split-row"><div class="split-lbl">אחר</div><div class="split-track"><span class="split-bar" style="width:10%"></span></div><div class="split-v">7</div></div>
+              <p class="micro">פילוח לטובת חלוקת העבודה של העובדות הפונקציונאליות.</p>
+            </div>
+
+            <div class="card card-pad">
               <div class="card-title" style="margin: 0 0 10px;">צרכים נפוצים</div>
               <div class="bar-row"><div class="lbl">צורך רגשי</div><div class="bar"><span style="width:82%"></span></div><div class="v">47</div></div>
               <div class="bar-row"><div class="lbl">מיצוי זכויות</div><div class="bar"><span style="width:62%"></span></div><div class="v">35</div></div>
@@ -2561,8 +2829,11 @@
               <div class="bar-row"><div class="lbl">שכול</div><div class="bar"><span style="width:18%"></span></div><div class="v">10</div></div>
             </div>
 
-            <div class="card card-pad">
-              <div class="card-title" style="margin: 0 0 8px;">תמות עולות</div>
+            <div class="ed-ai-card ai-themes">
+              <div class="ed-ai-head">
+                <span class="ai-badge">✨ AI</span>
+                <span class="ed-ai-title">תמות עולות</span>
+              </div>
               <div class="theme">
                 <div class="theme-head">
                   <div class="theme-name">מסגרות אחה"צ חסרות</div>
@@ -2625,6 +2896,15 @@
             </div>
 
             <div class="card card-pad">
+              <div class="card-title" style="margin: 0 0 10px;">פילוח לפי תגיות</div>
+              <div class="split-row"><div class="split-lbl">מוגבלויות</div><div class="split-track"><span class="split-bar" style="width:20%"></span></div><div class="split-v">9</div></div>
+              <div class="split-row"><div class="split-lbl">אזרחים ותיקים</div><div class="split-track"><span class="split-bar" style="width:30%"></span></div><div class="split-v">13</div></div>
+              <div class="split-row"><div class="split-lbl">נוער וצעירים</div><div class="split-track"><span class="split-bar" style="width:16%"></span></div><div class="split-v">7</div></div>
+              <div class="split-row"><div class="split-lbl">אחר</div><div class="split-track"><span class="split-bar" style="width:11%"></span></div><div class="split-v">5</div></div>
+              <p class="micro">פילוח לטובת חלוקת העבודה של העובדות הפונקציונאליות.</p>
+            </div>
+
+            <div class="card card-pad">
               <div class="card-title" style="margin: 0 0 10px;">צרכים נפוצים</div>
               <div class="bar-row"><div class="lbl">צורך רגשי</div><div class="bar"><span style="width:80%"></span></div><div class="v">20</div></div>
               <div class="bar-row"><div class="lbl">מיצוי זכויות</div><div class="bar"><span style="width:68%"></span></div><div class="v">17</div></div>
@@ -2633,8 +2913,11 @@
               <div class="bar-row"><div class="lbl">שכול</div><div class="bar"><span style="width:16%"></span></div><div class="v">4</div></div>
             </div>
 
-            <div class="card card-pad">
-              <div class="card-title" style="margin: 0 0 8px;">תמות עולות</div>
+            <div class="ed-ai-card ai-themes">
+              <div class="ed-ai-head">
+                <span class="ai-badge">✨ AI</span>
+                <span class="ed-ai-title">תמות עולות</span>
+              </div>
               <div class="theme">
                 <div class="theme-head">
                   <div class="theme-name">מיצוי זכויות — עומס בירוקרטי</div>
@@ -3084,11 +3367,18 @@
               <div class="q-help">ניתן לבחור יותר מאפשרות אחת</div>
               <div class="chip-row" data-togglegroup="multi" data-nr-field="tags">
                 <div class="chip">שכול</div>
-                <div class="chip">נכות</div>
+                <div class="chip">מוגבלויות</div>
+                <div class="chip">אזרחים ותיקים</div>
+                <div class="chip">הורות עצמאית</div>
+                <div class="chip">נוער בסיכון</div>
+                <div class="chip">עוני</div>
+                <div class="chip">הזנחה</div>
+                <div class="chip">בריאות הנפש</div>
                 <div class="chip">שורדי שואה</div>
                 <div class="chip">אלימות</div>
                 <div class="chip">רווחה</div>
                 <div class="chip">כלכלי</div>
+                <div class="chip">אחר</div>
               </div>
             </div>
           </div>
@@ -3409,7 +3699,7 @@
               <span class="ed-meta-label">סוג</span>
               <span class="ed-meta-val" id="edType">—</span>
             </div>
-            <div class="ed-meta-item" style="flex-basis:100%;">
+            <div class="ed-meta-item">
               <span class="ed-meta-label">עוסיות</span>
               <span class="ed-meta-val" id="edWorkers"></span>
             </div>
@@ -3455,10 +3745,19 @@
             <p class="micro" id="edProgressLabel" style="margin-top: 8px;">—</p>
           </div>
 
-          <!-- Affected families -->
-          <div id="edFamiliesWrap" hidden>
-            <div class="card-title">משפחות מעורבות</div>
+          <!-- Involved families / residents (families and residents are one and the same here).
+               Add via search, remove per row; if many, "show all" opens a dedicated screen. -->
+          <div id="edFamiliesWrap">
+            <div class="card-title" style="display:flex; align-items:center; gap:8px;">
+              <span>משפחות מעורבות</span><span class="ed-count" id="edFamCount"></span>
+            </div>
+            <div class="ed-link-search">
+              <span class="ic" aria-hidden="true">⌕</span>
+              <input id="edResidentSearch" type="text" placeholder="הוספת משפחה / תושב/ת לאירוע" autocomplete="off" />
+              <div class="ed-link-results" id="edResidentResults" hidden></div>
+            </div>
             <div class="card" id="edFamiliesList"></div>
+            <button type="button" id="edShowAllFamilies" class="ed-showall" hidden></button>
           </div>
 
           <!-- tasks -->
@@ -3497,6 +3796,31 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- EVENT FAMILIES — full list of involved families/residents -->
+      <div class="screen" data-screen="eventFamilies">
+        <div class="statusbar"><span>9:47</span><span>4G · 78%</span></div>
+        <div class="appbar with-back">
+          <div class="back" role="button" aria-label="חזרה" data-nav="eventDetail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </div>
+          <div class="appbar-main">
+            <div class="title">משפחות מעורבות</div>
+            <div class="sub" id="efSub"></div>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="ed-link-search">
+            <span class="ic" aria-hidden="true">⌕</span>
+            <input id="efSearch" type="text" placeholder="הוספת משפחה / תושב/ת לאירוע" autocomplete="off" />
+            <div class="ed-link-results" id="efResults" hidden></div>
+          </div>
+          <div class="card" id="efAllList"></div>
+        </div>
+
+        <div class="tabbar"></div>
       </div>
 
       <!-- NEW EVENT TASK -->
@@ -3693,6 +4017,7 @@
     newTask: 'tasks',
     newEvent: 'home',
     eventDetail: 'home',
+    eventFamilies: 'home',
     newEventTask: 'home',
     convene: 'home',
     themeDeepDive: 'insights'
@@ -3953,7 +4278,11 @@
     if (kind === 'task') {
       footer.hidden = false;
       footer.innerHTML =
-        '<button class="btn primary" data-detail-complete>סמן כהושלמה</button>';
+        '<button class="btn primary" data-detail-complete>סמן כהושלמה</button>' +
+        '<button class="btn ghost" type="button" data-toast="המשימה סונכרנה ליומן — דמו">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;vertical-align:-2px;margin-inline-end:6px;"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>' +
+          'הוסף ליומן' +
+        '</button>';
     } else {
       footer.hidden = true;
       footer.innerHTML = '';
@@ -4319,6 +4648,8 @@
 
   const caseState = {
     step: 1,
+    stage: 'a',
+    prefilled: false,
     residentKey: null,
     residentName: null,
     residentVillage: null,
@@ -4343,6 +4674,8 @@
 
   function caseReset() {
     caseState.step = 1;
+    caseState.stage = 'a';
+    caseState.prefilled = false;
     caseState.residentKey = null;
     caseState.residentName = null;
     caseState.residentVillage = null;
@@ -4364,7 +4697,56 @@
     scr.querySelectorAll('[data-case-new-field]').forEach(el => {
       if (el.tagName === 'INPUT') el.value = '';
     });
+    // Reset prefill chrome
+    scr.querySelectorAll('.is-prefilled').forEach(el => el.classList.remove('is-prefilled'));
+    const banner = scr.querySelector('[data-case-prefill-banner]');
+    if (banner) banner.hidden = true;
+    const stageTitle = scr.querySelector('[data-case-stage-title]');
+    if (stageTitle) stageTitle.textContent = "שלב א'";
+    caseRenderMembers();
   }
+
+  // Pull an existing family's details into the case flow so Stage B/C don't
+  // require re-entering data that already exists from Stage A.
+  function casePrefillFromFamily(key) {
+    const f = (typeof FAMILIES !== 'undefined') ? FAMILIES[key] : null;
+    if (!f) return;
+
+    const sub = f.sub || '';
+    const village = sub.split('·')[0].trim();
+    const stage = /שלב\s*ג/.test(sub) ? 'c' : /שלב\s*ב/.test(sub) ? 'b' : 'a';
+
+    // Best-effort split of the family title into first / last name.
+    let firstName = '', lastName = '';
+    const title = (f.title || '').trim();
+    if (title.startsWith('משפחת')) {
+      lastName = title.replace('משפחת', '').trim();
+    } else {
+      const parts = title.split(/\s+/);
+      firstName = parts.shift() || '';
+      lastName = parts.join(' ');
+    }
+
+    caseState.stage = stage;
+    caseState.prefilled = true;
+    caseState.residentKey = key;
+    caseState.residentName = f.title;
+    caseState.residentVillage = village;
+    caseState.newResident = { firstName, lastName, village, phone: '', email: '' };
+    caseState.fields.members = (f.members || []).map(m => ({
+      name: m.name || '', age: m.age ?? '', gender: m.role || ''
+    }));
+
+    const scr = document.querySelector('.screen[data-screen="questionnaire"]');
+    if (!scr) return;
+    const stageTitle = scr.querySelector('[data-case-stage-title]');
+    if (stageTitle) stageTitle.textContent = stage === 'c' ? "שלב ג'" : stage === 'b' ? "שלב ב'" : "שלב א'";
+    const banner = scr.querySelector('[data-case-prefill-banner]');
+    if (banner) banner.hidden = false;
+    caseRenderMembers();
+  }
+  // Expose so the navigation override (separate scope) can call it.
+  window.casePrefillFromFamily = casePrefillFromFamily;
 
   function caseRenderMembers() {
     const scr = document.querySelector('.screen[data-screen="questionnaire"]');
@@ -4402,13 +4784,18 @@
     const nr = caseState.newResident;
     scr.querySelectorAll('[data-case-new-field]').forEach(el => {
       const f = el.dataset.caseNewField;
-      if (el.tagName === 'INPUT') el.value = nr[f] || '';
+      if (el.tagName === 'INPUT') {
+        el.value = nr[f] || '';
+        el.classList.toggle('is-prefilled', !!(caseState.prefilled && nr[f]));
+      }
     });
     // Reflect the village chip selection
     const villageRow = scr.querySelector('[data-case-new-field="village"]');
     if (villageRow) {
       villageRow.querySelectorAll('.chip').forEach(c => {
-        c.classList.toggle('on', nr.village && c.textContent.trim() === nr.village);
+        const on = nr.village && c.textContent.trim() === nr.village;
+        c.classList.toggle('on', !!on);
+        c.classList.toggle('is-prefilled', !!(caseState.prefilled && on));
       });
     }
   }
@@ -5126,7 +5513,13 @@
   const _go = go;
   go = function (name) {
     if (name === 'questionnaire') {
+      // If launched from an existing family's profile, pull their Stage A data
+      // so Stage B/C don't require re-entering it.
+      const fromProfile = document.querySelector('.screen.on')?.dataset.screen === 'profile';
       caseReset();
+      if (fromProfile && window.currentFamilyKey && window.casePrefillFromFamily) {
+        window.casePrefillFromFamily(window.currentFamilyKey);
+      }
       caseRenderNewResident();
       caseRenderStep();
     } else if (name === 'newResident') {
@@ -5419,6 +5812,25 @@
     'ברכיה · 58 משפחות': 'Brachia · 58 families',
     'משפחות לפי סיווג דחיפות': 'Families by urgency classification',
     'פילוח לפי יישוב': 'Breakdown by village',
+    'פילוח לפי תגיות': 'Breakdown by tags',
+    'נוער וצעירים': 'Youth & young adults',
+    'פילוח לטובת חלוקת העבודה של העובדות הפונקציונאליות.': 'Breakdown to help functional workers divide the caseload.',
+    'הוסף ליומן': 'Add to calendar',
+    'המשימה סונכרנה ליומן — דמו': 'Task synced to calendar — demo',
+    'משפחות מעורבות': 'Involved families',
+    'הוספת משפחה / תושב/ת לאירוע': 'Add a family / resident to the event',
+    'לא שויכו משפחות לאירוע. ניתן להוסיף מהחיפוש למעלה.': 'No families linked yet. Add from the search above.',
+    'לא נמצאו תוצאות תואמות': 'No matching results',
+    'אין עדיין': 'None yet',
+    'טלפונים וקישורים': 'Phones & links',
+    'אגף השירותים החברתיים — מועצה אזורית חוף אשקלון. צוות העובדות הסוציאליות הקהילתיות והפונקציונאליות, מענה שגרה וחירום לתושבי המועצה.': 'Department of Social Services — Hof Ashkelon Regional Council. Community and functional social-worker team, routine and emergency response for residents.',
+    'טלפונים חשובים': 'Key phone numbers',
+    'קישורים': 'Links',
+    'מוקד האגף לשירותים חברתיים': 'Social services department hotline',
+    'קו חירום נפשי — עוטף עזה': 'Emotional emergency line — Gaza envelope',
+    'ער"ן — עזרה ראשונה נפשית': 'ERAN — emotional first aid',
+    'הפניה למרכז חוסן חוף אשקלון': 'Referral to Hof Ashkelon resilience center',
+    'תיאום פנייה והפניית תושב/ת': 'Coordinate and refer a resident',
     'ברכיה': 'Brachia',
     'משקל הטיפול שלך מחולק בקירוב 60/40 בין היישובים.': 'Your caseload is split roughly 60/40 between the two villages.',
     'צרכים נפוצים': 'Common needs',
@@ -5939,11 +6351,18 @@
     // Tags
     'תגיות': 'Tags',
     'שכול': 'Bereavement',
-    'נכות': 'Disability',
+    'מוגבלויות': 'Disabilities',
+    'אזרחים ותיקים': 'Senior citizens',
+    'הורות עצמאית': 'Single parenthood',
+    'נוער בסיכון': 'At-risk youth',
+    'עוני': 'Poverty',
+    'הזנחה': 'Neglect',
+    'בריאות הנפש': 'Mental health',
     'שורדי שואה': 'Holocaust survivors',
     'אלימות': 'Violence',
     'רווחה': 'Welfare',
     'כלכלי': 'Financial',
+    'אחר': 'Other',
 
     // --- Translation audit pass: UI chrome, statuses, task names, insight titles ---
     // Sidebar / generic UI
@@ -6401,24 +6820,8 @@
       ? `${pct}% מהמשימות הושלמו · ${m.done} מתוך ${totalTasks}`
       : 'אין עדיין משימות';
 
-    // Families
-    const famWrap = document.getElementById('edFamiliesWrap');
-    const famList = document.getElementById('edFamiliesList');
-    if (ev.families && ev.families.length) {
-      famWrap.hidden = false;
-      famList.innerHTML = ev.families.map(f => `
-        <div class="row-item" data-toast="${f.name} — דמו">
-          ${f.urgent ? '<span class="urg-tag lead urgent">דחוף</span>' : '<span class="urg-tag lead normal">רגיל</span>'}
-          <div class="row-main">
-            <div class="row-name">${f.name}</div>
-            <div class="row-sub">${f.sub}</div>
-          </div>
-          <span class="chev">›</span>
-        </div>
-      `).join('');
-    } else {
-      famWrap.hidden = true;
-    }
+    // Involved families / residents — unified, add/remove + show-all.
+    if (window.edSetInvolved) window.edSetInvolved(ev.families || []);
 
     // Tasks
     eventTasks = (ev.tasks || []).slice();
@@ -6958,62 +7361,24 @@
     document.getElementById('edAiWrap').hidden        = true;
     document.getElementById('edTimelineWrap').hidden  = true;
 
-    // Populate affected families section based on step 2 choice
-    const famWrap = document.getElementById('edFamiliesWrap');
-    const famList = document.getElementById('edFamiliesList');
+    // Populate involved families section based on step 2 choice
     let affectedFamilyCount = 0;
+    let involvedList = [];
     if (neAffectedMode === 'specific') {
       const picked = neFamilyState.filter(f => f.selected);
       affectedFamilyCount = picked.length;
-      famWrap.hidden = false;
-      famList.textContent = '';
-      picked.forEach(f => {
-        const row = document.createElement('div');
-        row.className = 'row-item';
-        row.dataset.toast = f.name + ' — דמו';
-        const tag = document.createElement('span');
-        tag.className = 'urg-tag lead normal';
-        tag.textContent = 'רגיל';
-        const main = document.createElement('div');
-        main.className = 'row-main';
-        const name = document.createElement('div');
-        name.className = 'row-name';
-        name.textContent = f.name;
-        const sub = document.createElement('div');
-        sub.className = 'row-sub';
-        sub.textContent = f.village;
-        main.appendChild(name); main.appendChild(sub);
-        const chev = document.createElement('span');
-        chev.className = 'chev';
-        row.appendChild(tag); row.appendChild(main); row.appendChild(chev);
-        famList.appendChild(row);
-      });
+      involvedList = picked.map(f => ({ name: f.name, sub: f.village, urgent: false }));
     } else if (neAffectedMode === 'village') {
       affectedFamilyCount = neFamilyState.filter(f => f.village === village).length;
-      famWrap.hidden = false;
-      famList.textContent = '';
-      const row = document.createElement('div');
-      row.className = 'row-item';
-      row.style.padding = '14px 18px';
-      const tag = document.createElement('span');
-      tag.className = 'urg-tag lead normal';
-      tag.textContent = 'כל היישוב';
-      const main = document.createElement('div');
-      main.className = 'row-main';
-      const name = document.createElement('div');
-      name.className = 'row-name';
-      name.textContent = village || 'יישוב לא נבחר';
-      const sub = document.createElement('div');
-      sub.className = 'row-sub';
-      sub.textContent = affectedFamilyCount
-        ? affectedFamilyCount + ' משפחות תחת הטיפול שלך ביישוב'
-        : 'סימון את כל המשפחות ביישוב';
-      main.appendChild(name); main.appendChild(sub);
-      row.appendChild(tag); row.appendChild(main);
-      famList.appendChild(row);
-    } else {
-      famWrap.hidden = true;
+      involvedList = [{
+        name: village || 'יישוב לא נבחר',
+        sub: affectedFamilyCount
+          ? affectedFamilyCount + ' משפחות תחת הטיפול שלך ביישוב'
+          : 'סימון את כל המשפחות ביישוב',
+        urgent: false
+      }];
     }
+    if (window.edSetInvolved) window.edSetInvolved(involvedList);
 
     const closeBtn = document.getElementById('closeEventBtn');
     closeBtn.disabled = false;
@@ -7060,10 +7425,7 @@
         <span class="urg-tag lead ${urgCls}">${t.urgency}</span>
         <div class="row-main">
           <div class="row-name" style="${nameStyle}">${checkMark}${t.name}</div>
-          <div class="row-sub" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-            <span class="et-type et-type-${t.type}">${t.type}</span>
-            <span>·</span><span>${t.assignee || 'לא הוקצה'}</span>
-          </div>
+          <div class="row-sub">${t.type} · ${t.assignee || 'לא הוקצה'}</div>
         </div>
         <span class="chev">›</span>
       </div>`;
@@ -7158,6 +7520,9 @@ function setHomeMode(mode) {
   const isEmergency = mode === 'emergency';
   document.getElementById('modeRoutine').classList.toggle('on', !isEmergency);
   document.getElementById('modeEmergency').classList.toggle('on', isEmergency);
+  const homeScreen = document.querySelector('.screen[data-screen="home"]');
+  if (homeScreen) homeScreen.classList.toggle('emergency-mode', isEmergency);
+  document.body.classList.toggle('app-emergency', isEmergency);
   document.getElementById('actionsRoutine').style.display = isEmergency ? 'none' : '';
   document.getElementById('actionsEmergency').style.display = isEmergency ? '' : 'none';
   document.getElementById('tasksRoutine').style.display = isEmergency ? 'none' : '';
@@ -7269,10 +7634,15 @@ document.addEventListener('click', (e) => {
 });
 
 // Initial render (also after DOMContentLoaded in case scripts load before DOM)
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', renderHomeTasks);
-} else {
+// Home opens in emergency mode by default (stakeholder request).
+function initHome() {
   renderHomeTasks();
+  setHomeMode('emergency');
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initHome);
+} else {
+  initHome();
 }
 
 // -------- Tasks screen (open tasks list) --------
@@ -7287,16 +7657,28 @@ const OPEN_TASKS = [
   { family: 'alon',    kind: 'task', idx: 1, name: 'חיבור לקבוצת תמיכה — נועה אלון',   sub: 'בשבועיים הקרובים · ברכיה',       urgency: 'רגיל', day: 5, time: '10:00' }
 ];
 
+// Closed (completed) tasks — kept visible so workers can review what was already done.
+const CLOSED_TASKS = [
+  { family: 'cohen',   kind: 'task', idx: 0, name: 'חלוקת ציוד חירום — משפחת כהן',     sub: 'נסגרה 24.4 · יד מרדכי · הושלמה ע"י דנה כהן',  urgency: 'דחוף', day: 0, time: '09:00' },
+  { family: 'avraham', kind: 'task', idx: 0, name: 'ביקור בית ראשוני — רחלי אברהם',     sub: 'נסגרה 22.4 · ברכיה · הושלמה ע"י דנה כהן',      urgency: 'מהיר', day: 0, time: '10:00' },
+  { family: 'alon',    kind: 'task', idx: 0, name: 'רישום למסגרת חירום — נועה אלון',    sub: 'נסגרה 20.4 · ברכיה · הושלמה ע"י אביטל שרון',   urgency: 'רגיל', day: 0, time: '12:00' },
+  { family: 'cohen',   kind: 'task', idx: 1, name: 'תיאום הסעה למרכז חוסן — משפחת כהן', sub: 'נסגרה 18.4 · יד מרדכי · הושלמה ע"י דנה כהן',   urgency: 'מהיר', day: 0, time: '15:00' }
+];
+
 let tasksSort = 'urgency';
+let tasksFilter = 'open'; // 'open' | 'closed'
 
 function renderTasksScreen() {
   const host = document.getElementById('tasksScreenList');
   if (!host) return;
+  const isClosed = tasksFilter === 'closed';
+  const source = isClosed ? CLOSED_TASKS : OPEN_TASKS;
+
   // Group by current sort key
   const groups = new Map();
   if (tasksSort === 'urgency') {
     ['דחוף', 'מהיר', 'רגיל'].forEach(k => groups.set(k, []));
-    OPEN_TASKS.forEach(t => (groups.get(t.urgency) || []).push(t));
+    source.forEach(t => (groups.get(t.urgency) || []).push(t));
     // Within each urgency group, order by time
     groups.forEach((arr) => arr.sort((a, b) => (a.day - b.day) || a.time.localeCompare(b.time)));
   } else {
@@ -7304,7 +7686,7 @@ function renderTasksScreen() {
     groups.set('היום',  []);
     groups.set('מחר',   []);
     groups.set('השבוע', []);
-    OPEN_TASKS.forEach(t => {
+    source.forEach(t => {
       const k = t.day === 0 ? 'היום' : t.day === 1 ? 'מחר' : 'השבוע';
       groups.get(k).push(t);
     });
@@ -7332,12 +7714,14 @@ function renderTasksScreen() {
         </div>
         <div class="card">
           ${items.map(t => {
-            // Leading element depends on sort mode
-            const lead = (tasksSort === 'time')
-              ? `<span class="urg-tag lead ${URG_CLASS[t.urgency] || 'normal'}">${t.urgency}</span>`
-              : '';
+            // Leading element depends on sort mode; closed tasks always show a "הושלם" pill.
+            const lead = isClosed
+              ? `<span class="urg-tag lead done">הושלם</span>`
+              : (tasksSort === 'time'
+                  ? `<span class="urg-tag lead ${URG_CLASS[t.urgency] || 'normal'}">${t.urgency}</span>`
+                  : '');
             return `
-              <div class="row-item" data-nav="detail" data-family="${t.family}" data-detail-kind="${t.kind}" data-detail-index="${t.idx}" data-urgency="${URG_CLASS[t.urgency] || ''}">
+              <div class="row-item${isClosed ? ' row-closed' : ''}" data-nav="detail" data-family="${t.family}" data-detail-kind="${t.kind}" data-detail-index="${t.idx}" data-urgency="${URG_CLASS[t.urgency] || ''}">
                 ${lead}
                 <div class="row-main">
                   <div class="row-name">${t.name}</div>
@@ -7351,12 +7735,169 @@ function renderTasksScreen() {
       </div>
     `);
   });
+  if (!html.length) {
+    html.push(`<div class="card" style="padding:24px; text-align:center; color:var(--ink-3); font-size:14px;">אין משימות להצגה</div>`);
+  }
   host.innerHTML = html.join('');
 
-  // Update subtitle count
+  // Update screen title + subtitle count
+  const title = document.getElementById('tasksScreenTitle');
+  if (title) title.textContent = isClosed ? 'משימות שנסגרו' : 'משימות פתוחות';
   const sub = document.querySelector('[data-tasks-sub]');
-  if (sub) sub.textContent = OPEN_TASKS.length + ' פתוחות';
+  if (sub) sub.textContent = source.length + (isClosed ? ' סגורות' : ' פתוחות');
 }
+
+// Wire up the open/closed tasks toggle
+document.addEventListener('click', (e) => {
+  const tab = e.target.closest('[data-tasks-tab]');
+  if (!tab) return;
+  e.stopPropagation();
+  tasksFilter = tab.dataset.tasksTab;
+  document.querySelectorAll('[data-tasks-tab]').forEach(t => {
+    const active = t.dataset.tasksTab === tasksFilter;
+    t.classList.toggle('on', active);
+    t.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  renderTasksScreen();
+});
+
+// -------- Event detail: involved families / residents (unified) --------
+// Families and residents are the same entity here. The worker can ADD via
+// search, REMOVE per row, and — when there are many — open a dedicated
+// full-list screen. The compact list on the event page shows the first few.
+(function () {
+  const compactList = document.getElementById('edFamiliesList');
+  if (!compactList) return;
+
+  const COMPACT_MAX = 3;
+  let involved = [];   // [{ id, name, sub, urgent }]
+  let seq = 0;
+
+  function rowHtml(it) {
+    const tag = it.urgent
+      ? '<span class="urg-tag lead urgent">דחוף</span>'
+      : '<span class="urg-tag lead normal">רגיל</span>';
+    return `
+      <div class="ed-inv-row">
+        ${tag}
+        <div class="row-main">
+          <div class="row-name">${it.name}</div>
+          <div class="row-sub">${it.sub || ''}</div>
+        </div>
+        <button class="ed-linked-remove" type="button" aria-label="הסרה" data-inv-remove="${it.id}">×</button>
+      </div>`;
+  }
+  const emptyHtml = '<div class="ed-link-empty">לא שויכו משפחות לאירוע. ניתן להוסיף מהחיפוש למעלה.</div>';
+
+  function render() {
+    const total = involved.length;
+
+    compactList.innerHTML = total
+      ? involved.slice(0, COMPACT_MAX).map(rowHtml).join('')
+      : emptyHtml;
+
+    const count = document.getElementById('edFamCount');
+    if (count) count.textContent = total ? '· ' + total : '';
+
+    const showAll = document.getElementById('edShowAllFamilies');
+    if (showAll) {
+      const more = total > COMPACT_MAX;
+      showAll.hidden = !more;
+      if (more) showAll.textContent = `הצג את כל המשפחות (${total})`;
+    }
+
+    const allList = document.getElementById('efAllList');
+    if (allList) allList.innerHTML = total ? involved.map(rowHtml).join('') : emptyHtml;
+    const efSub = document.getElementById('efSub');
+    if (efSub) efSub.textContent = total ? total + ' משפחות / תושבים' : 'אין עדיין';
+  }
+
+  function setInvolved(list) {
+    involved = (list || []).map(it => ({
+      id: ++seq, name: it.name, sub: it.sub || '', urgent: !!it.urgent
+    }));
+    render();
+  }
+  function addResident(key) {
+    const r = (window.ALL_RESIDENTS || []).find(x => x.key === key);
+    if (!r || involved.some(i => i.name === r.name)) return;
+    involved.push({ id: ++seq, name: r.name, sub: r.village || '', urgent: false });
+    render();
+  }
+  function removeInvolved(id) {
+    involved = involved.filter(i => String(i.id) !== String(id));
+    render();
+  }
+  window.edSetInvolved = setInvolved;
+
+  // ----- search (shared by the compact + full-screen inputs) -----
+  function renderResults(query, resultsEl) {
+    const all = (window.ALL_RESIDENTS || []);
+    const present = new Set(involved.map(i => i.name));
+    const q = (query || '').trim().toLowerCase();
+    const matches = all.filter(r =>
+      !present.has(r.name) &&
+      (!q || r.name.toLowerCase().includes(q) || (r.village || '').toLowerCase().includes(q))
+    ).slice(0, 8);
+    if (!q) { resultsEl.hidden = true; resultsEl.innerHTML = ''; return; }
+    resultsEl.innerHTML = matches.length
+      ? matches.map(r => `<div class="ed-link-opt" data-add-key="${r.key}"><span>${r.name}</span><span class="opt-village">${r.village || ''}</span></div>`).join('')
+      : '<div class="ed-link-opt is-empty">לא נמצאו תוצאות תואמות</div>';
+    resultsEl.hidden = false;
+  }
+  function wireSearch(inputId, resultsId) {
+    const input = document.getElementById(inputId);
+    const results = document.getElementById(resultsId);
+    if (!input || !results) return;
+    input.addEventListener('input', () => renderResults(input.value, results));
+    input.addEventListener('focus', () => { if (input.value.trim()) renderResults(input.value, results); });
+    results.addEventListener('click', (e) => {
+      const opt = e.target.closest('[data-add-key]');
+      if (!opt) return;
+      addResident(opt.dataset.addKey);
+      input.value = '';
+      results.hidden = true; results.innerHTML = '';
+    });
+  }
+  wireSearch('edResidentSearch', 'edResidentResults');
+  wireSearch('efSearch', 'efResults');
+
+  // Remove (delegated — covers both compact + full lists)
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-inv-remove]');
+    if (btn) removeInvolved(btn.dataset.invRemove);
+  });
+
+  // "Show all" → dedicated screen
+  const showAllBtn = document.getElementById('edShowAllFamilies');
+  if (showAllBtn) showAllBtn.addEventListener('click', () => { if (window.go) window.go('eventFamilies'); });
+
+  // Hide result dropdowns when clicking outside a search box
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.ed-link-search')) return;
+    document.querySelectorAll('.ed-link-results').forEach(r => { r.hidden = true; });
+  });
+
+  // Clear only the search UI when entering the event screens. The list itself
+  // is set by the open / new-event flows and must persist across back-nav.
+  if (typeof window.go === 'function') {
+    const origGo = window.go;
+    window.go = function (name) {
+      const r = origGo.apply(this, arguments);
+      if (name === 'eventDetail' || name === 'eventFamilies') {
+        ['edResidentResults', 'efResults'].forEach(id => {
+          const el = document.getElementById(id); if (el) { el.hidden = true; el.innerHTML = ''; }
+        });
+        ['edResidentSearch', 'efSearch'].forEach(id => {
+          const el = document.getElementById(id); if (el) el.value = '';
+        });
+      }
+      return r;
+    };
+  }
+
+  render();
+})();
 
 // Sort dropdown (tasks screen): open/close + selection
 document.addEventListener('click', (e) => {
